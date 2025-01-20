@@ -35,6 +35,20 @@ class Recommendation(models.Model):
     # OPTIONAL we will add a created on for auditing or debugging purposes
     created_on = models.DateTimeField(auto_now_add=True)
 
+    #(unsure if this code works, currently just a placeholder)
+    # def average_score(self):
+    #     """
+    #     Method to calculate the votes, the votes are added by users and calculated here
+    #     when the object (recommendation) is displayed, the vote is tallied and then shown
+    #     """
+    #     votes = self.votes.all()
+    #     if votes.count() == 0:
+    #         # No votes, return 0 as default
+    #         return 0  
+    #     total_score = sum(vote.vote for vote in votes)
+    #     # Return the average score, rounded to 1 decimal place
+    #     return round(total_score / votes.count(), 1)
+
 ### comment model
 
 class Comment(models.Model):
@@ -60,3 +74,29 @@ class Comment(models.Model):
     approved = models.BooleanField(default=False)
     # created on date for accurate judging
     created_on = models.DateTimeField(auto_now_add=True)
+
+
+#### VOTE MODEL
+
+# we want to create a model to record votes, this is purely to enable us
+# to create a total vote that will be used by the recommondation to average
+# scores
+class Vote(models.Model):
+    VOTE_CHOICES = [
+        (1, 'Upvote'),
+        (-1, 'Downvote'),
+    ]
+
+    recommendation = models.ForeignKey(
+        Recommendation,
+        on_delete=models.CASCADE,
+        related_name='votes',
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='votes',
+    )
+    # The actual vote, either upvote (1) or downvote (-1)
+    vote = models.IntegerField(choices=VOTE_CHOICES)
+
