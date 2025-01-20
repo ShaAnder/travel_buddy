@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+#we want to import our env here, defensive programming tho, only import if it exists
+import os
+import dj_database_url
+if os.path.isfile('env.py'):
+    import env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +25,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%-kun=j4_bjz8po$&fbihyr&+#cr-g*!oegt8jy@ir@@9g65=m'
+SECRET_KEY = os.environ.get("SECRET_KEY")
+
+# Paths for our static, templates and other directories
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -29,7 +39,8 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     '111.222.333.444',
-    'mywebsite.example'
+    'mywebsite.example',
+    '.herokuapp.com',
 ]
 
 
@@ -42,9 +53,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_summernote',
+    'recommendations',
 ]
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -52,6 +66,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+# we add heroku and the code institute ide as csrf trusted 
+# for running our db ect
+CSRF_TRUSTED_ORIGINS = [
+	"https://*.codeinstitute-ide.net/", 
+    "https://*.herokuapp.com" ,
 ]
 
 ROOT_URLCONF = 'travel_buddy.urls'
@@ -78,11 +99,9 @@ WSGI_APPLICATION = 'travel_buddy.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# we're also going to import our own db url for the code institute db
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
 }
 
 
