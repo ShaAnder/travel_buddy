@@ -35,7 +35,7 @@ class Recommendation(models.Model):
     # OPTIONAL we will add a created on for auditing or debugging purposes
     created_on = models.DateTimeField(auto_now_add=True)
 
-    #(unsure if this code works, currently just a placeholder)
+    #method for calculating votes, method will be called when a user votes 
     def average_score(self):
         """
         Method to calculate the votes, the votes are added by users and calculated here
