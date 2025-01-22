@@ -5,8 +5,8 @@ from django.dispatch import receiver
 from .models import Profile
 
 # we want to create a new profile instance if a new user and save if existing
-# this is for ease and preventing the user for having to take extra
-# steps on signup, they can edit their profile later
+# this is for ease and not having to manually create profiles on signup.
+# Also ensures consistency 
 
 # create the profile
 @receiver(post_save, sender=User)
