@@ -1,0 +1,110 @@
+# Testing
+
+The deployed project live link is [Travel Buddy]()
+This application was extensively tested via automatic and manual tests these are detailed below 
+
+
+## Brief Intro
+The testing of this application came in three parts, as the testing was extensive and covered varying different
+aspects of the code base i decided to opt for a non standard structure and created a testing folder. 
+
+Inside this folder you will find the test files, the testing.md as well as the validation images which
+can be seen later in this document.
+
+
+## Automatic Testing
+As the name implies this is testing that was done automatically via the inbuilt django tests or 
+the code validation websites. I'll break the two of these up into subcategories.
+
+### Automatic tests
+
+
+### Validation
+
+#### PEP8 Python Validation
+
+<details>
+<summary><strong style="color:yellow"></strong></summary>
+
+</details>
+
+<details>
+<summary><strong style="color:yellow"></strong></summary>
+
+</details>
+
+<details>
+<summary><strong style="color:yellow"></strong></summary>
+
+</details>
+
+<details>
+<summary><strong style="color:yellow"></strong></summary>
+
+</details>
+
+#### JS validation
+
+
+
+#### HTML CSS Validation
+
+
+<details>
+<summary><strong style="color:green"></strong></summary>
+
+</details>
+
+<details>
+<summary><strong style="color:green"></strong></summary>
+
+</details>
+
+<details>
+<summary><strong style="color:green"></strong></summary>
+
+</details>
+
+<details>
+<summary><strong style="color:green"></strong></summary>
+
+</details>
+
+## Manual Testing
+Manual testing was undertaken in a variety of ways, these included firstly building tests
+to test each part of the code base. These are detailed more in the test.py files, as well as
+this we tested the responsive design on browsers for clipping or design errors and finally
+ran through a batter of manual tests and expected behaviour tests. These are detailed below
+
+#### Manually built tests
+The manually built tests were designed to do the following:
+
+#### Browser Tests
+The game was tested on a variety of browsers:
+
+- Chrome
+- Edge
+- Firefox
+- Opera
+- Safari
+
+Result:
+
+
+#### Expected Behaviours
+
+| **Feature**              | **Action**                                                                | **Expected Result**                         | **Actual Result** |
+| ------------------------ | ------------------------------------------------------------------------- | ------------------------------------------- | ----------------- |
+|
+
+
+## BUG Fixing
+As this was built as a small scale project and django is still relativly fresh to me there was
+sadly bound to be present, all known bugs are listed below, for fixing purposes at a later date
+
+### Known Bugs
+
+<br>
+
+
+### [BACK TO README](https://github.com/shaAnder/travel_buddy/blob/main/README.md)

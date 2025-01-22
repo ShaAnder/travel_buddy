@@ -36,18 +36,18 @@ class Recommendation(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
 
     #(unsure if this code works, currently just a placeholder)
-    # def average_score(self):
-    #     """
-    #     Method to calculate the votes, the votes are added by users and calculated here
-    #     when the object (recommendation) is displayed, the vote is tallied and then shown
-    #     """
-    #     votes = self.votes.all()
-    #     if votes.count() == 0:
-    #         # No votes, return 0 as default
-    #         return 0  
-    #     total_score = sum(vote.vote for vote in votes)
-    #     # Return the average score, rounded to 1 decimal place
-    #     return round(total_score / votes.count(), 1)
+    def average_score(self):
+        """
+        Method to calculate the votes, the votes are added by users and calculated here
+        when the object (recommendation) is displayed, the vote is tallied and then shown
+        """
+        votes = self.votes.all()
+        if votes.count() == 0:
+            # No votes, return 0 as default
+            return 0  
+        total_score = sum(vote.vote for vote in votes)
+        # Return the average score, rounded to 1 decimal place
+        return round(total_score / votes.count(), 1)
 
 ### comment model
 
