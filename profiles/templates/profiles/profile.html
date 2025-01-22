@@ -1,0 +1,26 @@
+{% load static %}
+{% extends base.html %}
+
+{% block content %}
+
+<h1>{{ user.username }}'s Profile</h1>
+<p>{{ profile.bio }}</p>
+<p>{{ profile.location }}</p>
+
+<h2>Your Recommendations</h2>
+<ul>
+    {% for recommendation in recommendations %}
+        <li>
+            <h3>{{ recommendation.title }}</h3>
+            <p>{{ recommendation.description }}</p>
+            <p>{{ recommendation.address }}</p>
+            <a href="{% url 'update_recommendation' recommendation.id %}">Edit</a> |
+            <a href="{% url 'delete_recommendation' recommendation.id %}">Delete</a>
+        </li>
+    {% empty %}
+        <p>No recommendations yet.</p>
+    {% endfor %}
+</ul>
+<a href="{% url 'create_recommendation' %}">Add New Recommendation</a>
+
+{% endblock %}

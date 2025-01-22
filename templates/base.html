@@ -1,0 +1,39 @@
+
+{% load static %}
+{% url 'home' as home_url %}
+{% url 'about' as about_url %}
+
+<!DOCTYPE html>
+<html class="h-100" lang="en">
+
+<head>
+    <title>Travel Buddy - The Travel App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/vendor/bootstrap/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendor/bootstrap/bootstrap.min.css' %}">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="d-flex flex-column h-100 main-bg">
+
+    <!-- Nav -->
+
+    <!-- Main Content -->
+    <main class="flex-shrink-0 main-bg">
+
+        {% block content %}
+        <!-- Content Goes here -->
+        {% endblock content %}
+    </main>
+
+    <!-- Footer -->
+
+    <script src="{% static 'js/vendor/bootstrap/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+
+</html>
