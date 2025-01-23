@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'django_summernote',
     'recommendations',
     'profiles',
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -81,7 +82,7 @@ ROOT_URLCONF = 'travel_buddy.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
