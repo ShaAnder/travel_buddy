@@ -1,3 +1,4 @@
 from django.shortcuts import render
 
-# Create your views here.
+def recommendations(request):
+    return render(request, "recommendations/recommendations.html")
