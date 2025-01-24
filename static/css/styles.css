@@ -247,7 +247,7 @@ h3 {
 @media (max-width: 1199px) {
     /*hide header on anything under 1199 px*/
     .header {
-        left: -100%;
+        left: -300px;
     }
 }
 
