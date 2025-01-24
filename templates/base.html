@@ -24,10 +24,6 @@
     {% if show_navbar %}
     <header id="header" class="header d-flex flex-column">
         <i class="header-toggle d-xl-none bi bi-list"></i>
-        <a class="scroll-to-top" href="#section-home">
-            <i class="bi bi-arrow-up"></i>
-        </a>
-
         {% if user.is_authenticated and settings.ANON_MODE %}
         <div class="header-image-container">
             <img class="header-image"
@@ -55,30 +51,37 @@
                     Home
                     </a>
                 </li>
-                {% comment %} <li>
-                    <a href="{% url 'about_us' %}">
+                <li>
+                    <a href="{% url 'about' %}">
                     <i class="bi bi-person navicon"></i>
                     About Us
                     </a>
-                </li> {% endcomment %}
+                </li>
+                <li>
+                    <a href="{% url 'policy' %}">
+                    <i class="bi bi-person navicon"></i>
+                    Privacy Policy
+                    </a>
+                </li>
                 <li>
                     <a href="{% url 'recommendations' %}">
                     <i class="bi bi-person navicon"></i>
                     Recommendations
                     </a>
                 </li>
-                {% comment %} <li>
+                <li>
                     <!-- show is user is logged in -->
-                    {% if user.is_authenticated %}
+                    {% if user.is_authenticated and settings.ANON_MODE %}
                         <a href="{% url 'add_recommendation' %}">
                         <i class="bi bi-chat-quote navicon"></i>
-                        Add A Recommendation
+                        Add Rec
                         </a>
+                    {% else %}
                     {% endif %}
                 </li>
                 <li>
                     <!-- show is user is logged in -->
-                    {% if user.is_authenticated %}
+                    {% if user.is_authenticated and settings.ANON_MODE %}
                         <a href="{% url 'profile' %}">
                         <i class="bi bi-chat-quote navicon"></i>
                         Your Profile
@@ -88,8 +91,8 @@
                 </li>
                 <li>
                     <!-- similarly we want this to appear based on if user is logged in or logged out -->
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'logout' %}">
+                    {% if user.is_authenticated and settings.ANON_MODE %}
+                        <a href="#">
                         <i class="bi bi-chat-quote navicon"></i>
                         Logout
                         </a>
@@ -99,7 +102,7 @@
                         Login
                         </a>
                     {% endif %}
-                </li> {% endcomment %}
+                </li>
             </ul>
         </nav>
                 <!-- social links -->

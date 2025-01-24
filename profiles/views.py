@@ -7,8 +7,11 @@ def profile(request):
     # # Get all recommendations made by the user
     # recommendations = user.recommendations.all()  
 
-    return render(request, "profiles/profile.html")
+    return render(request, "profiles/profile.html", {'show_navbar': True})
     # return render(request, "profiles/profile.html", {
     #     "profile": profile,
     #     "recommendations": recommendations,
     # })
+
+def signup_login(request):
+    return render(request, "profiles/signup_login.html", {'show_navbar': True})

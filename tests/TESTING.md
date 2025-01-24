@@ -98,6 +98,24 @@ Result:
 |
 
 
+#### EXTRA TESTS
+
+One of the biggest issues i ran into was the fact that in dev mode i was always treat as loggin in or authenticated, the only way to fix this was to 
+clear my session cache, to simulate a logged out state i utilized a global variable that we could manually apply to force a logged out state:
+
+In travel_buddy.settings
+
+```py
+ANON_MODE = True
+```
+
+Then whenever i needed to see if a feature appeared or disappeared with a toggle i could add it to the is_authenticated conditionals, this 
+helped immensely especially in the early versions as I had not gotten login and signup ready
+
+```py
+{% if user.is_authenticated and settings.ANON_MODE %}
+```
+
 ## BUG Fixing
 As this was built as a small scale project and django is still relativly fresh to me there was
 sadly bound to be present, all known bugs are listed below, for fixing purposes at a later date
