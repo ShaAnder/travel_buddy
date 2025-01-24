@@ -28,9 +28,10 @@
         </a>
 
         {% if user.is_authenticated and settings.ANON_MODE %}
-        <div class="header-image">
-            <img
-                src="{{ user.profile_image.url|default:'#' }}"
+        <div class="header-image-container">
+            <img class="header-image"
+                src="{% static 'images/header-image.webp' %}"
+                {% comment %} src="{{ user.profile_image.url|default:'#' }}" {% endcomment %}
                 alt="profile picture of user"
                 aria-label="The current user's profile picture"
             />
@@ -39,7 +40,7 @@
         I want to keep the navbar still centered, just that there will be no pfp
         only blank space in it's place -->
         {%else %}
-        <div class="header-image">
+        <div class="header-image-container">
 
         </div>
         {% endif %}
@@ -126,10 +127,10 @@
     {% endif %}
 
     <!-- Main Content -->
-    <main class="flex-shrink-0 main-bg">
+    <main class="main">
 
         {% block content %}
-        <!-- Content Goes here -->
+        
         {% endblock content %}
     </main>
 
