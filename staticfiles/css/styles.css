@@ -1,0 +1,243 @@
+/* Font Imports */
+@import url("https://fonts.googleapis.com/css2?family=Bonheur+Royale&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+/* root variable color scheme*/
+:root {
+    /* colors */
+    --main-lightest: #ffffff;
+    --main-light: #b8b8b8;
+    --main-darker: #2c2c2c;
+    --main-darkest: #111111;
+    --main-contrast: #e79600;
+
+    /* fonts */
+    --default-font: "Roboto", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --heading-font: "Raleway", sans-serif;
+    --nav-font: "Poppins", sans-serif;
+    --quote-font: "Bonheur Royale", sans-serif;
+}
+
+/* reset all margins and padding*/
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/*---------------------------------------------*/
+/*  DEFAULT / GENERIC STYLING
+/*---------------------------------------------*/
+
+section {
+    height: 100vh;
+    padding: 2rem;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.section-title {
+    padding-bottom: 0;
+}
+
+.section-title h1:after {
+    content: "";
+    position: relative;
+    display: block;
+    border-radius: 25px;
+    width: 50px;
+    height: 5px;
+    background: var(--main-contrast);
+}
+
+.section-title p {
+    font-size: 20px;
+}
+
+strong {
+    font-weight: 500;
+    font-size: 1.05rem;
+}
+
+p {
+    font-size: 1rem;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+/*---------------------------------------------*/
+/*  HEADER
+/*---------------------------------------------*/
+
+.header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    width: 300px;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    text-align: center;
+    font-family: var(--heading-font);
+    color: var(--main-lightest);
+    background-color: var(--main-darkest);
+    z-index: 9999;
+    transition: ease(0.3s);
+}
+  
+.header .header-image {
+    width: 250px;
+    border-radius: 50%;
+    display: block;
+    margin-bottom: 20px;
+    transition: ease 0.3s;
+}
+  
+.header .sitename {
+    text-decoration: none;
+    margin: 0;
+    color: var(--main-lightest);
+    font-size: 30px;
+    font-weight: 600;
+}
+  
+/* HEADER SOCIAL LINKS */
+  
+.header .social-links {
+    margin-top: auto; 
+    margin: 0px 0 20px 0;
+}
+  
+.header .social-links i {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+.header .social-links a {
+    margin: 10px 2px;
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 18px;
+    background: color-mix(in srgb, var(--main-lightest), transparent 90%);
+    color: var(--default-color);
+    text-decoration: none;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+  
+.header .social-links a:hover {
+    background: var(--main-contrast);
+}
+  
+/* NAV LINKS */
+  
+/* toggle mobile nav bar off until we want to use it */
+.mobile-nav-toggle {
+    display: none;
+}
+  
+.nav-links ul {
+    list-style: none;
+}
+  
+.nav-links a {
+    padding: 15px 10px;
+    width: 100%;
+    font-family: var(--nav-font);
+    font-size: 20px;
+    font-weight: 400;
+    display: flex;
+    color: var(--main-light);
+    text-decoration: none;
+    transition: 0.3s;
+}
+  
+.nav-links a .navicon {
+    margin-right: 1rem;
+    font-size: 20px;
+    align-items: center;
+}
+  
+.nav-links a:hover .navicon {
+    color: var(--main-contrast);
+}
+  
+.nav-links a:hover {
+    color: white;
+}
+  
+/* HEADER TOGGLE BUTTON */
+  
+.header .header-toggle {
+    width: 40px;
+    height: 40px;
+    font-size: 30px;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 15px;
+    right: 15px;
+    color: var(--contrast-color);
+    background-color: var(--main-darker);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 9999;
+    transition: background-color 0.3s;
+}
+  
+/* moves header back left when it's being shown */
+.header.header-show {
+    left: 0;
+}
+  
+/* SCROLL TO TOP */
+  
+.header .scroll-to-top {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: 15px;
+    right: 15px;
+    color: var(--main-light);
+    background-color: var(--main-darker);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 9999;
+    opacity: 0;
+    transition: ease 0.3s;
+}
+  
+/* change our header toggle / scroll to toggle button when it's hovered over */
+.header-toggle:hover,
+.scroll-to-top:hover {
+    color: var(--contrast-color);
+    background-color: color-mix(in srgb, var(--main-contrast) 90%, white 15%);
+    color: var(--main-darker);
+}
+  
+/* visible class for showing out buttons as needed*/
+.scroll-visible {
+    opacity: 1 !important;
+}
