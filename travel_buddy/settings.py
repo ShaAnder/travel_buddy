@@ -150,7 +150,7 @@ ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 # Email settings
 
 #backend - our email backend that django will use to connect
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 #the email host backend
 EMAIL_HOST = 'smtp.gmail.com' 
 #port we will send it on and if we will use tls
