@@ -76,10 +76,10 @@ to test each part of the code base. These are detailed more in the test.py files
 this we tested the responsive design on browsers for clipping or design errors and finally
 ran through a batter of manual tests and expected behaviour tests. These are detailed below
 
-#### Manually built tests
+### Manually built tests
 The manually built tests were designed to do the following:
 
-#### Browser Tests
+### Browser Tests
 The game was tested on a variety of browsers:
 
 - Chrome
@@ -91,17 +91,17 @@ The game was tested on a variety of browsers:
 Result:
 
 
-#### Expected Behaviours
+### Expected Behaviours
 
 | **Feature**              | **Action**                                                                | **Expected Result**                         | **Actual Result** |
 | ------------------------ | ------------------------------------------------------------------------- | ------------------------------------------- | ----------------- |
 |
 
 
-#### EXTRA TESTS
+### EXTRA TESTS
 
 
-###### Testing logged out view
+#### Testing logged out view
 
 One of the biggest issues i ran into was the fact that in dev mode i was always treat as loggin in or authenticated, the only way to fix this was to 
 clear my session cache, to simulate a logged out state i utilized a global variable that we could manually apply to force a logged out state:
@@ -119,7 +119,23 @@ helped immensely especially in the early versions as I had not gotten login and 
 {% if user.is_authenticated and settings.ANON_MODE %}
 ```
 
-###### Testing Email Sending
+As we managed to get login systems online I moved to a more django form of testing and cleared my sessions followed by setting up test users, this
+was achieved with the following steps:
+
+```py
+1/  python manage.py shell
+
+2/  from django.contrib.sessions.models import Session
+    Session.objects.all().delete()
+
+3/  python manage.py createsuperuser
+    python manage.py shell
+
+4/  from django.contrib.auth.models import User
+    User.objects.create_user(username='testuser', email='test@example.com', password='password123')
+```
+
+#### Testing Email Sending
 
 I wanted to get the login / logout signup up and running early so that we could create proper views based on user login status, however i did not
 want to flood user emails, so to simulate and test email sending with core components i found that adding console rather than smtp (django docs)
