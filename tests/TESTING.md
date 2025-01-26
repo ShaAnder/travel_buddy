@@ -100,6 +100,9 @@ Result:
 
 #### EXTRA TESTS
 
+
+###### Testing logged out view
+
 One of the biggest issues i ran into was the fact that in dev mode i was always treat as loggin in or authenticated, the only way to fix this was to 
 clear my session cache, to simulate a logged out state i utilized a global variable that we could manually apply to force a logged out state:
 
@@ -115,6 +118,17 @@ helped immensely especially in the early versions as I had not gotten login and 
 ```py
 {% if user.is_authenticated and settings.ANON_MODE %}
 ```
+
+###### Testing Email Sending
+
+I wanted to get the login / logout signup up and running early so that we could create proper views based on user login status, however i did not
+want to flood user emails, so to simulate and test email sending with core components i found that adding console rather than smtp (django docs)
+i was able to send email information to the console instead so i could get realtime feedback without having to send emails 
+
+```py
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+```
+
 
 ## BUG Fixing
 As this was built as a small scale project and django is still relativly fresh to me there was

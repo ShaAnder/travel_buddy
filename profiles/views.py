@@ -13,5 +13,3 @@ def profile(request):
     #     "recommendations": recommendations,
     # })
 
-def signup_login(request):
-    return render(request, "profiles/signup_login.html", {'show_navbar': True})

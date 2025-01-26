@@ -54,11 +54,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'django_summernote',
     'recommendations',
     'profiles',
     'core',
 ]
+
+# Our login urls and site id, we need a site id for every project in our app
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -69,6 +78,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 # we add heroku and the code institute ide as csrf trusted 
@@ -126,6 +136,37 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+### EMAIL SETUP
+
+# Require an email
+ACCOUNT_EMAIL_REQUIRED = True
+# Require a username
+ACCOUNT_USERNAME_REQUIRED = True
+# Options: "none", "optional", "mandatory"
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+# Allows login with username or email
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"  
+
+# Email settings
+
+#backend - our email backend that django will use to connect
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#the email host backend
+EMAIL_HOST = 'smtp.gmail.com' 
+#port we will send it on and if we will use tls
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+#the email account django will send from
+EMAIL_HOST_USER = os.environ.get("HOST_EMAIL")
+EMAIL_HOST_PASSWORD = os.environ.get("HOST_PW")
+
+#the default / forward facing email users will see
+DEFAULT_FROM_EMAIL = 'thetravelbuddyteam@travelbuddy.com'  
+#the verification requirement (we want mandatory for simplicities sake)
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory' 
+#the redirect for the email. this will be a template that just says congratz
+#welcome to travel buddy and a home link
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/'  
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/

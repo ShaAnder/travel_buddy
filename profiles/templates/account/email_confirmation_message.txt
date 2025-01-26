@@ -1,0 +1,9 @@
+Welcome to Travel Buddy!
+
+Please confirm your email address by clicking the link below:
+{{ activate_url }}
+
+If you did not sign up for this account, you can safely ignore this email.
+
+Best regards,  
+The Travel Buddy travel team!
