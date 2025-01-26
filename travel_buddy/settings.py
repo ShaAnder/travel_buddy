@@ -161,7 +161,7 @@ EMAIL_HOST_USER = os.environ.get("HOST_EMAIL")
 EMAIL_HOST_PASSWORD = os.environ.get("HOST_PW")
 
 #the default / forward facing email users will see
-DEFAULT_FROM_EMAIL = 'thetravelbuddyteam@travelbuddy.com'  
+DEFAULT_FROM_EMAIL = 'noreply@travelbuddy.com'  
 #the verification requirement (we want mandatory for simplicities sake)
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory' 
 #the redirect for the email. this will be a template that just says congratz

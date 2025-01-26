@@ -129,6 +129,13 @@ i was able to send email information to the console instead so i could get realt
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ```
 
+![alt text](test_images/django_shell_email_test.png)
+
+Utilizing the django shell and the test backkend var we tested to see if errors would be raised when emailing the recipient, this 
+raised 1 error where we were not using a secure enough account, after enabling two factor and an app password this was no longer 
+raised.
+
+Following this i tested sending multiple emails to various accounts to full successes all around
 
 ## BUG Fixing
 As this was built as a small scale project and django is still relativly fresh to me there was
