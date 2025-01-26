@@ -162,8 +162,8 @@ EMAIL_HOST_PASSWORD = os.environ.get("HOST_PW")
 
 #the default / forward facing email users will see
 DEFAULT_FROM_EMAIL = 'noreply@travelbuddy.com'  
-#the verification requirement (we want mandatory for simplicities sake)
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory' 
+#the verification requirement (we want optional for simplicities sake)
+ACCOUNT_EMAIL_VERIFICATION = 'optional' 
 #the redirect for the email. this will be a template that just says congratz
 #welcome to travel buddy and a home link
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/'  
@@ -189,3 +189,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Default login/logout redirect urls
+
+LOGOUT_REDIRECT_URL = 'recommendations'
+LOGIN_REDIRECT_URL = 'recommendations'
