@@ -147,7 +147,7 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 # Allows login with username or email
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"  
 
-# Email settings
+### --- Email settings --- ###
 
 #backend - our email backend that django will use to connect
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -156,22 +156,26 @@ EMAIL_HOST = 'smtp.gmail.com'
 #port we will send it on and if we will use tls
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
 #the email account django will send from
 EMAIL_HOST_USER = os.environ.get("HOST_EMAIL")
 EMAIL_HOST_PASSWORD = os.environ.get("HOST_PW")
 
 #the default / forward facing email users will see
-DEFAULT_FROM_EMAIL = 'noreply@travelbuddy.com' 
-#the verification requirement (we want optional for simplicities sake)
+DEFAULT_FROM_EMAIL = "Travel Buddy Team <noreply@travelbuddy.com>"
+
+#the verification requirement (we want mandatory to ensure verified users)
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory' 
-#the redirect for the email. this will be a template that just says congratz
-#welcome to travel buddy and a home link
+
+#the redirect for when the user authenticates
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = 'recommended'
+
 #also we will use these additional defualts
-ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'http'
 ACCOUNT_EMAIL_SUBJECT_PREFIX = "[Travel Buddy] "
 
-# Internationalization
+### --- Internationalization --- ###
+
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
@@ -182,18 +186,20 @@ USE_I18N = True
 
 USE_TZ = True
 
+### --- Static files (CSS, JavaScript, Images) --- ### 
 
-# Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
 
-# Default primary key field type
+### --- Default primary key field type --- ### 
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Default login/logout redirect urls
+### --- Default login/logout redirect urls --- ### 
 
+# these don't seem like a lot but we want the user to stay on recommendations
+# page when they log in or out.
 LOGOUT_REDIRECT_URL = 'recommendations'
 LOGIN_REDIRECT_URL = 'recommendations'
