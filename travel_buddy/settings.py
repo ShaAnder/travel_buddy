@@ -161,12 +161,15 @@ EMAIL_HOST_USER = os.environ.get("HOST_EMAIL")
 EMAIL_HOST_PASSWORD = os.environ.get("HOST_PW")
 
 #the default / forward facing email users will see
-DEFAULT_FROM_EMAIL = 'noreply@travelbuddy.com'  
+DEFAULT_FROM_EMAIL = 'noreply@travelbuddy.com' 
 #the verification requirement (we want optional for simplicities sake)
-ACCOUNT_EMAIL_VERIFICATION = 'optional' 
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory' 
 #the redirect for the email. this will be a template that just says congratz
 #welcome to travel buddy and a home link
-ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/'  
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = 'recommended'
+#also we will use these additional defualts
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
+ACCOUNT_EMAIL_SUBJECT_PREFIX = "[Travel Buddy] "
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
