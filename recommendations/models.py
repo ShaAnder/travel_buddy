@@ -1,17 +1,45 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Now we create our models:
+### MODELS ###
 
-### Recommendation model
+class Category(models.Model):
+    """Category model
+
+    Args:
+        models (django model class): class from djangos model framework
+
+    Description:
+        category model for the recommendations, a many to many relationship and we will
+        populate these ourself, we take this route to allow the user to select multiple
+        categories for each recommendation.
+    """
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
 
 class Recommendation(models.Model):
-    # String representation for the places we create
+    """Recommendation model
+
+    Args:
+        models (django model class): class from djangos model framework
+
+    Description:
+        recommendation model for the database, once created here get's migrated
+        to the database and is used for allowing users to see active recommendations 
+        made
+    """
+
     def __str__(self):
+        """String func
+
+        Returns:
+            formatted string for admin viewing 
+        """
         return f"{self.title} | Recommended by {self.user}"
     
-    # Our fields for the database
-    # title field, our PK we want it unique to prevent duplicates
+    #title of the recommendation
     title = models.CharField(max_length=100, unique=True)
     # user, our fk linking back to the user who created it
     user = models.ForeignKey(
@@ -19,27 +47,30 @@ class Recommendation(models.Model):
         on_delete=models.CASCADE,
         related_name="recommendations",
     )
-    # description, optional field to add a short description about the place
+    # optional description field for the recommendation
     description = models.TextField(max_length=200, blank=True, null=True)
-    # we add in our lat and long, these can be null initially but they are needed to pin
-    # markers on the map we won't have users fill these in 
+    # we add lat/long cords for rec to put on map (invisible to user)
     latitude = models.FloatField(blank=True, null=True)  
     longitude = models.FloatField(blank=True, null=True)
-    # then we will get the address
+    # address of place in question
     address = models.CharField(max_length=255, unique=True)
-    # finally a category for what the user wants to label it as,
-    # will add a filtering option later to pull the correct 
-    # categories a user filters
-    category = models.CharField(max_length=50, blank=True, null=True)
+    # Many-to-many field for categories
+    categories = models.ManyToManyField(
+        Category,
+        related_name="recommendations",
+        blank=True,
+    )
 
-    # OPTIONAL we will add a created on for auditing or debugging purposes
-    created_on = models.DateTimeField(auto_now_add=True)
-
-    #method for calculating votes, method will be called when a user votes 
     def average_score(self):
         """
-        Method to calculate the votes, the votes are added by users and calculated here
-        when the object (recommendation) is displayed, the vote is tallied and then shown
+        Average Score Func
+
+        Args:
+            self: (num): number to average
+
+        Description:
+            Method to calculate the votes, the votes are added by users and calculated here
+            when the object (recommendation) is displayed, the vote is tallied and then shown
         """
         votes = self.votes.all()
         if votes.count() == 0:
@@ -49,9 +80,16 @@ class Recommendation(models.Model):
         # Return the average score, rounded to 1 decimal place
         return round(total_score / votes.count(), 1)
 
-### comment model
-
 class Comment(models.Model):
+    """Comment model
+
+    Args:
+        models (django model class): class from djangos model framework
+
+    Description:
+        comment model for the users comments on each recommendation, allows 
+        us to populate comments on the recommendation models we will create later
+    """
     # Metadata for ordering comments
     class Meta:
         ordering = ["created_on"] 
@@ -75,13 +113,17 @@ class Comment(models.Model):
     # created on date for accurate judging
     created_on = models.DateTimeField(auto_now_add=True)
 
-
-#### VOTE MODEL
-
-# we want to create a model to record votes, this is purely to enable us
-# to create a total vote that will be used by the recommondation to average
-# scores
 class Vote(models.Model):
+    """Vote model
+
+    Args:
+        models (django model class): class from djangos model framework
+
+    Description:
+        simple vote model to track if user has created a vote for a specific
+        recommendation or not, we want to create a rating system for each
+        recommendation.
+    """
     VOTE_CHOICES = [
         (1, 'Upvote'),
         (-1, 'Downvote'),
