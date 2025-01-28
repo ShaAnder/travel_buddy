@@ -1,48 +1,103 @@
-from django.shortcuts import render, redirect
+### IMPORTS ###
+
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login as auth_login, logout as auth_logout
+from django.contrib.auth.models import User
+from recommendations.models import Recommendation
+from django.contrib.auth.decorators import login_required
 from allauth.account.forms import LoginForm, SignupForm
-from django.http import HttpResponse
+from .forms import ProfileForm
 
-def profile(request):
-    # user = request.User
-    # # Access the profile via the `related_name`
-    # profile = user.profile 
-    # # Get all recommendations made by the user
-    # recommendations = user.recommendations.all()  
+### PROFILE VIEWS ###
 
-    return render(request, "profiles/profile.html", {'show_navbar': True})
-    # return render(request, "profiles/profile.html", {
-    #     "profile": profile,
-    #     "recommendations": recommendations,
-    # })
+def profile(request, username):
+    """Profile view
 
-# custom allauth views - these overwrite the default views and are different from 
-# our django signal, the forms are for creating the account, once the account / user
-# is created it then fires our signal which creates a profile. It's from there the
-# profile will be checked for updates ect
+    Args:
+        request (request): the request (click) to take us to desired profile
+        username (User): the username of the owner of said profile
+
+    Description:
+        the view that handles loading the user profile
+
+    Returns:
+        returns the render of the template with the args passed in
+        the main one to know is that we're passing in the ability to edit
+        if the current user is the owner.
+    """
+    user = get_object_or_404(User, username=username)
+    profile = user.profile
+    recommendations = Recommendation.objects.filter(user=user)
+    return render(request, "profile.html", {
+        "profile": profile,
+        "recommendations": recommendations,
+        "can_edit": request.user == user 
+    })
+
+@login_required
+def edit_profile(request):
+    """Edit Profile View
+
+    Args:
+        request (request): request click we recieve from the edit button
+
+    Description:
+        the view (or function) that handles loading our edit profile form
+    """
+    profile = request.user.profile
+    if request.method == "POST":
+        form = ProfileForm(request.POST, instance = profile)
+        if form.is_valid():
+            form.save()
+            return redirect("profile")
+    else:
+        form = ProfileForm(instance=profile)
+    return render(request, "edit_profile.html", {"form": form})
+
+### ALL AUTH ACCOUNT MANAGEMENT VIEWS ###
 
 def login(request):
-    # check if posting
+    """Login View
+
+    Args:
+        request (_type_): request from the click to login
+
+    Description:
+        custom login view override for djangos allauth login view, 
+        allows us to login the user or redirect them to where we want
+        them to go
+
+    Returns:
+        returns the render of our login page or if logged in returns
+        a url redirect to the recommendations page
+    """
     if request.method == 'POST':
-        # create and check if form valid
         form = LoginForm(request.POST)
         if form.is_valid():
-            # Perform the login
             auth_login(request, form.get_user())
             return redirect('recommendations') 
     else:
-        # render our loginform
         form = LoginForm()
-    # return our render request
     return render(request, 'account/login.html', {'form': form})
 
 def signup(request):
+    """Signup View
+
+    Args:
+        request (_type_): request from the click to signup
+
+    Description:
+        custom signup view override for djangos allauth signup view, 
+        allows us to sign the user up and add optional extras like auto login ect
+
+    Returns:
+        returns the render of our signup page and redirect them to the recommendations
+        if they are verified (must click verification email)
+    """
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
-            # Create the new user account
             form.save()
-            # Optionally, log the user in after signup
             new_user = form.save(commit=False)
             auth_login(request, new_user)
             return redirect('recommendations')
@@ -51,6 +106,18 @@ def signup(request):
 
     return render(request, 'account/signup.html', {'form': form})
 
-def logout(request):
+def logout(request):    
+    """Logout View
+
+    Args:
+        request (_type_): request from the click to logout
+
+    Description:
+        custom logout overide, allows user to logout and 
+        redirects straight to recommendations
+
+    Returns:
+        returns the redirect to recommendations
+    """
     auth_logout(request)
     return redirect('recommendations')
