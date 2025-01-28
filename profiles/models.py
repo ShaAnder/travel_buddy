@@ -2,17 +2,20 @@ from django.contrib.auth.models import User
 from django.db import models
 
 class Profile(models.Model):
-    """Profile Model
-
+    """
+    Displays the user's profile page along with their recommendations.
+    
     Args:
-        models (Class)
-
-    Description:
-        Model containing the db setup for our user profile, when the model is
-        builds a databse using the variables below
-
+        request: The HTTP request object containing user data.
+        username (str): The username of the user whose profile is being viewed.
+    
     Returns:
-        __str__ for the admin view that shows the text formatted as such
+        Renders the user's profile page with a list of their recommendations.
+    
+    Description:
+        This view fetches the user profile based on the provided username and displays
+        the recommendations associated with that user. The recommendations are filtered 
+        by the user who created them.
     """
     AVATAR_CHOICES = [
         ("images/header-image.webp", "Avatar 1"),
