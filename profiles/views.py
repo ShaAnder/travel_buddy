@@ -1,11 +1,12 @@
 ### IMPORTS ###
 
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.models import User
-from recommendations.models import Recommendation
 from django.contrib.auth.decorators import login_required
 from allauth.account.forms import LoginForm, SignupForm
+from recommendations.models import Recommendation
 from .forms import ProfileForm
 
 ### PROFILE VIEWS ###
@@ -35,16 +36,33 @@ def profile(request, username):
     })
 
 @login_required
-def edit_profile(request):
+def edit_profile(request, username=None):
     """Edit Profile View
 
     Args:
         request (request): request click we recieve from the edit button
+        username (str): the username being passed into the edit function
+        to check current user and allow editing the page
 
     Description:
         the view (or function) that handles loading our edit profile form
+        also has built in safeguards to prevent editing other users profiles
     """
-    profile = request.user.profile
+    # firstly we want to check if there is a user
+    if username:
+        # now check if the user is the owner 
+        if request.user.username != username:
+            # if not return edit profile without a form, error message instead
+            messages.error(request, "You don't have authorization to view this page.")
+            return render(request, "profiles/edit_profile.html", {})
+        # else the user is the owner so set our user profile
+        user = get_object_or_404(User, username=username)
+        profile = user.profile
+    # then catch if no username provided (aka we didn't type it in the bar)
+    # we hit the edit button in that case return our profile
+    else:
+        profile = request.user.profile
+    # now catch if we pressed the button to edit our profile
     if request.method == "POST":
         form = ProfileForm(request.POST, instance = profile)
         if form.is_valid():
@@ -52,7 +70,7 @@ def edit_profile(request):
             return redirect("profile", username=request.user.username)
     else:
         form = ProfileForm(instance=profile)
-    return render(request, "edit_profile.html", {"form": form})
+    return render(request, "profiles/edit_profile.html", {"form": form})
 
 ### ALL AUTH ACCOUNT MANAGEMENT VIEWS ###
 

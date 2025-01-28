@@ -1,11 +1,28 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Edit Profile</h2>
-<!-- we need enctype for uploading media -->
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save Changes</button>
-</form>
+  <!-- show error message if someone edits other users profile -->
+  {% if messages %}
+    <div class="alert alert-danger">
+      {% for message in messages %}
+        <p>{{ message }}</p>
+      {% endfor %}
+    </div>
+    <!-- script goes here as it's exclusive to this problem so doesn't need a general script file -->
+    <script type="text/javascript">
+      // Set a brief delay (e.g., 3 seconds)
+      setTimeout(function() {
+        window.history.back();  // Go back to the previous page
+      }, 3000);  // 3000 milliseconds = 3 seconds
+    </script>
+  {% endif %}
+  <!-- well if it's the real user a form will populate so let them edit -->
+  {% if form %}
+    <h2>Edit Profile</h2>
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Save Changes</button>
+    </form>
+  {% endif %}
 {% endblock %}
