@@ -1,28 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <!-- show error message if someone edits other users profile -->
-  {% if messages %}
-    <div class="alert alert-danger">
-      {% for message in messages %}
-        <p>{{ message }}</p>
-      {% endfor %}
-    </div>
-    <!-- script goes here as it's exclusive to this problem so doesn't need a general script file -->
-    <script type="text/javascript">
-      // Set a brief delay (e.g., 3 seconds)
-      setTimeout(function() {
-        window.history.back();  // Go back to the previous page
-      }, 3000);  // 3000 milliseconds = 3 seconds
-    </script>
-  {% endif %}
-  <!-- well if it's the real user a form will populate so let them edit -->
-  {% if form %}
-    <h2>Edit Profile</h2>
-    <form method="POST">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">Save Changes</button>
-    </form>
-  {% endif %}
+    <!-- Show error message if someone tries to edit another user's profile -->
+    {% if messages %}
+        <div class="alert alert-danger" id="edit-profile-error-message" role="alert" aria-live="assertive">
+            {% for message in messages %}
+                <p id="edit-profile-error-text">{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- If the form is available, allow the user to edit their profile -->
+    {% if form %}
+        <h2>Edit Profile</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn btn-primary" aria-label="Save profile changes">Save Changes</button>
+        </form>
+    {% endif %}
 {% endblock %}
