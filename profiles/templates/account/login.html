@@ -4,11 +4,24 @@
     <div class="login-container">
         <div class="form-wrapper">
             <h1>Welcome Back</h1>
-            <form method="post">
+            <form method="post" aria-labelledby="login-form">
                 {% csrf_token %}
-                {{ form.as_p }}
+                <fieldset>
+                    <legend id="login-form" class="sr-only">Login Form</legend>
+                    
+                    <div class="form-group">
+                        <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
+                        {{ form.username }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
+                        {{ form.password }}
+                    </div>
+                    
+                </fieldset>
+                
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Sign In</button>
+                    <button type="submit" class="btn btn-primary" aria-label="Sign in to your account">Sign In</button>
                 </div>
             </form>
             <p>Don’t have an account? <a href="{% url 'account_signup' %}">Sign Up</a></p>
