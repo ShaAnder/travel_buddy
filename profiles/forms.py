@@ -1,18 +1,23 @@
 from django import forms
 from .models import Profile
 
-# we want to create a form to handle our profile editing
 class ProfileForm(forms.ModelForm):
     """
-    Profile Form
+    Form to handle profile editing.
 
     Args:
-        forms (django class)
+        forms (django.forms.ModelForm): A base class for creating model-based forms.
 
     Description:
-        Creates a form based on the meta date below
+        This form is used to edit a user's profile, allowing them to update
+        their bio, location, and avatar.
     """
     class Meta:
-        # basic form setup
+        """
+        Metadata for the ProfileForm class.
+
+        Specifies the model to be used (Profile) and the fields that
+        should be included in the form (bio, location, avatar).
+        """
         model = Profile
         fields = ['bio', 'location', 'avatar']
