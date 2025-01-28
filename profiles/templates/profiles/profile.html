@@ -24,8 +24,7 @@
                 Location: {{ recommendation.address }}<br>
                 
                 {% if recommendation.user == request.user %}
-                    <!-- <a href="{% url 'edit_recommendation' recommendation.id %}">Edit</a>
-                    <a href="{% url 'delete_recommendation' recommendation.id %}">Delete</a> -->
+
                 {% endif %}
             </li>
         {% empty %}

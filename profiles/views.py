@@ -26,11 +26,10 @@ def profile(request, username):
         the main one to know is that we're passing in the ability to edit
         if the current user is the owner.
     """
-    user = get_object_or_404(User, username=username)
-    profile = user.profile
+    user = get_object_or_404(User.objects.select_related('profile'), username=username)
     recommendations = Recommendation.objects.filter(user=user)
     return render(request, "profiles/profile.html", {
-        "profile": profile,
+        "profile": user.profile,
         "recommendations": recommendations,
         "can_edit": request.user == user 
     })
@@ -40,36 +39,30 @@ def edit_profile(request, username=None):
     """Edit Profile View
 
     Args:
-        request (request): request click we recieve from the edit button
+        request (request): request click we receive from the edit button
         username (str): the username being passed into the edit function
         to check current user and allow editing the page
 
     Description:
         the view (or function) that handles loading our edit profile form
-        also has built in safeguards to prevent editing other users profiles
+        also has built-in safeguards to prevent editing other users profiles
     """
-    # firstly we want to check if there is a user
-    if username:
-        # now check if the user is the owner 
-        if request.user.username != username:
-            # if not return edit profile without a form, error message instead
-            messages.error(request, "You don't have authorization to view this page.")
-            return render(request, "profiles/edit_profile.html", {})
-        # else the user is the owner so set our user profile
-        user = get_object_or_404(User, username=username)
-        profile = user.profile
-    # then catch if no username provided (aka we didn't type it in the bar)
-    # we hit the edit button in that case return our profile
-    else:
-        profile = request.user.profile
-    # now catch if we pressed the button to edit our profile
+    if username and request.user.username != username:
+        messages.error(request, "You don't have authorization to view this page.")
+        return render(request, "profiles/edit_profile.html", {})
+    
+    profile = get_object_or_404(User, username=username or request.user.username).profile
+
     if request.method == "POST":
-        form = ProfileForm(request.POST, instance = profile)
+        form = ProfileForm(request.POST, instance=profile)
         if form.is_valid():
             form.save()
             return redirect("profile", username=request.user.username)
+        else:
+            messages.error(request, "There were some issues with your submission. Please check the form.")
     else:
         form = ProfileForm(instance=profile)
+
     return render(request, "profiles/edit_profile.html", {"form": form})
 
 ### ALL AUTH ACCOUNT MANAGEMENT VIEWS ###
@@ -93,9 +86,11 @@ def login(request):
         form = LoginForm(request.POST)
         if form.is_valid():
             auth_login(request, form.get_user())
-            return redirect('recommendations') 
+            next_url = request.GET.get('next', 'recommendations')  # Redirect to 'next' if it exists
+            return redirect(next_url)
     else:
         form = LoginForm()
+
     return render(request, 'account/login.html', {'form': form})
 
 def signup(request):
@@ -106,7 +101,7 @@ def signup(request):
 
     Description:
         custom signup view override for djangos allauth signup view, 
-        allows us to sign the user up and add optional extras like auto login ect
+        allows us to sign the user up and add optional extras like auto login etc
 
     Returns:
         returns the render of our signup page and redirect them to the recommendations
@@ -115,8 +110,7 @@ def signup(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
-            form.save()
-            new_user = form.save(commit=False)
+            new_user = form.save()
             auth_login(request, new_user)
             return redirect('recommendations')
     else:
@@ -131,7 +125,7 @@ def logout(request):
         request (_type_): request from the click to logout
 
     Description:
-        custom logout overide, allows user to logout and 
+        custom logout override, allows user to logout and 
         redirects straight to recommendations
 
     Returns:

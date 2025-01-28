@@ -1,24 +1,51 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <!-- Show error message if someone tries to edit another user's profile -->
-    {% if messages %}
-        <div class="alert alert-danger" id="edit-profile-error-message" role="alert" aria-live="assertive">
-            {% for message in messages %}
-                <p id="edit-profile-error-text">{{ message }}</p>
-            {% endfor %}
-        </div>
-    {% endif %}
+    <div class="container">
+        <div class="profile-edit-container">
+            <div class="form-wrapper">
+                <h1>Edit Profile</h1>
 
-    <!-- If the form is available, allow the user to edit their profile -->
-    {% if form %}
-        <h2>Edit Profile</h2>
-        <form method="POST">
-            {% csrf_token %}
-            <div class="form-group">
-                {{ form.as_p }}
+                <!-- Display a general error message if there are form errors -->
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <ul>
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                            {% if form.avatar.errors %}
+                                <li>{{ form.avatar.errors|first }}</li> <!-- Display avatar error here -->
+                            {% endif %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <!-- Bio field -->
+                    <div class="form-group">
+                        <label for="id_bio">Bio:</label>
+                        {{ form.bio }}
+                    </div>
+
+                    <!-- Location field -->
+                    <div class="form-group">
+                        <label for="id_location">Location:</label>
+                        {{ form.location }}
+                    </div>
+
+                    <!-- Avatar field -->
+                    <div class="form-group">
+                        <label for="id_avatar">Avatar (optional, .jpg, .jpeg, .png):</label>
+                        {{ form.avatar }}
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
             </div>
-            <button type="submit" class="btn btn-primary" aria-label="Save profile changes">Save Changes</button>
-        </form>
-    {% endif %}
+        </div>
+    </div>
 {% endblock %}
