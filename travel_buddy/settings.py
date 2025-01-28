@@ -53,14 +53,16 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
     'django.contrib.sites',
+    'django.contrib.staticfiles',
+
+    'django_extensions',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'django_summernote',
     'recommendations',
-    'profiles',
+    'profiles.apps.ProfilesConfig',
     'core',
 ]
 
@@ -165,7 +167,7 @@ EMAIL_HOST_PASSWORD = os.environ.get("HOST_PW")
 DEFAULT_FROM_EMAIL = "Travel Buddy Team <noreply@travelbuddy.com>"
 
 #the verification requirement (we want mandatory to ensure verified users)
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory' 
+ACCOUNT_EMAIL_VERIFICATION = 'optional' 
 
 #the redirect for when the user authenticates
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = 'recommended'

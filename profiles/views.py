@@ -28,7 +28,7 @@ def profile(request, username):
     user = get_object_or_404(User, username=username)
     profile = user.profile
     recommendations = Recommendation.objects.filter(user=user)
-    return render(request, "profile.html", {
+    return render(request, "profiles/profile.html", {
         "profile": profile,
         "recommendations": recommendations,
         "can_edit": request.user == user 
@@ -49,7 +49,7 @@ def edit_profile(request):
         form = ProfileForm(request.POST, instance = profile)
         if form.is_valid():
             form.save()
-            return redirect("profile")
+            return redirect("profile", username=request.user.username)
     else:
         form = ProfileForm(instance=profile)
     return render(request, "edit_profile.html", {"form": form})

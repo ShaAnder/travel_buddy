@@ -7,5 +7,10 @@
   {% if profile.avatar %}
     <img src="{{ profile.avatar.url }}" alt="Avatar">
   {% endif %}
-  <a href="{% url 'edit_profile' %}">Edit Profile</a>
+  {% if user.is_authenticated %}
+    {% if user == profile.user %}
+        <!-- Show the edit profile button only if the logged-in user is the profile owner -->
+        <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
+    {% endif %}
+{% endif %}
 {% endblock %}

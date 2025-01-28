@@ -26,10 +26,12 @@
         <i class="header-toggle d-xl-none bi bi-list"></i>
         {% if user.is_authenticated %}
         <div class="header-image-container">
-            <a href="{% url 'profile' user.username %}" aria-label="View your profile">
+            <a href="{% url 'profile' username=user.username %}" aria-label="View your profile">
                 <img class="header-image"
                     src="{% static 'images/header-image.webp' %}"
-                    {% comment %} src="{{ user.profile_image.url|default:'images/header-image.webp' }}" {% endcomment %}
+                    {% if user.profile.profile_image %}
+                        src="{{ user.profile.profile_image.url }}"
+                    {% endif %}
                     alt="profile picture of user"
                 />
             </a>
@@ -83,7 +85,7 @@
                 <li>
                     <!-- show is user is logged in -->
                     {% if user.is_authenticated %}
-                        <a href="{% url 'profile' %}">
+                        <a href="{% url 'profile' username=user.username %}">
                         <i class="bi bi-chat-quote navicon"></i>
                         Your Profile
                         </a>
