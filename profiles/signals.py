@@ -6,7 +6,7 @@ from .models import Profile
 
 
 @receiver(post_save, sender=User)
-def create_save_user_profile(sender, instance, created, **kwargs):
+def manage_user_profile(sender, instance, created, **kwargs):
     """user profile signal handler
 
     Args:
@@ -22,9 +22,7 @@ def create_save_user_profile(sender, instance, created, **kwargs):
         however it's good practice to include them
     """
     if created:
-        # Create the profile if the user is created
         Profile.objects.create(user=instance)
     else:
-        # Save the profile instance for existing users
         instance.profile.save()
 

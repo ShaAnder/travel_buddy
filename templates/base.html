@@ -26,12 +26,13 @@
         <i class="header-toggle d-xl-none bi bi-list"></i>
         {% if user.is_authenticated %}
         <div class="header-image-container">
-            <img class="header-image"
-                src="{% static 'images/header-image.webp' %}"
-                {% comment %} src="{{ user.profile_image.url|default:'images/header-image.webp' }}" {% endcomment %}
-                alt="profile picture of user"
-                aria-label="The current user's profile picture"
-            />
+            <a href="{% url 'profile' user.username %}" aria-label="View your profile">
+                <img class="header-image"
+                    src="{% static 'images/header-image.webp' %}"
+                    {% comment %} src="{{ user.profile_image.url|default:'images/header-image.webp' }}" {% endcomment %}
+                    alt="profile picture of user"
+                />
+            </a>
         </div>
         <!-- I want to have the else here because if the user is NOT logged in
         I want to keep the navbar still centered, just that there will be no pfp
