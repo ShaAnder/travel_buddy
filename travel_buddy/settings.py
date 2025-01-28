@@ -57,13 +57,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_extensions',
+    'django_summernote',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'django_summernote',
+    'core',
     'recommendations',
     'profiles.apps.ProfilesConfig',
-    'core',
 ]
 
 # Our login urls and site id, we need a site id for every project in our app
@@ -103,6 +103,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                #custom processor for nav visibility
+                'core.context_processors.navbar_visibility',
             ],
         },
     },
