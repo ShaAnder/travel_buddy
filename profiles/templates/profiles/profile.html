@@ -1,30 +1,35 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h2>{{ profile.user.username }}'s Profile</h2>
-  <p>Bio: {{ profile.bio }}</p>
-  <p>Location: {{ profile.location }}</p>
-  {% if profile.avatar %}
-    <img src="{{ profile.avatar.url }}" alt="Avatar">
-  {% endif %}
-  {% if user.is_authenticated %}
-    {% if user == profile.user %}
-        <!-- Show the edit profile button only if the logged-in user is the profile owner -->
-        <a href="{% url 'edit_profile' username=request.user.username %}" class="btn btn-primary">Edit Profile</a>
+    <h2>{{ profile.user.username }}'s Profile</h2>
+    <p>Bio: {{ profile.bio }}</p>
+    <p>Location: {{ profile.location }}</p>
+    
+    {% if profile.avatar %}
+        <img src="{{ profile.avatar.url }}" alt="{{ profile.user.username }}'s avatar">
     {% endif %}
-  {% endif %}
-    {% for recommendation in recommendations %}
-        <li>
-            <strong>{{ recommendation.title }}</strong><br>
-            {{ recommendation.description }}<br>
-            Location: {{ recommendation.address }}<br>
-            
-            {% if recommendation.user == request.user %}
-                {% comment %} <a href="{% url 'edit_recommendation' recommendation.id %}">Edit</a>
-                <a href="{% url 'delete_recommendation' recommendation.id %}">Delete</a> {% endcomment %}
-            {% endif %}
-        </li>
-    {% empty %}
-        <p>No recommendations yet.</p>
-    {% endfor %}
+    
+    {% if user.is_authenticated %}
+        {% if user == profile.user %}
+            <!-- Show the edit profile button only if the logged-in user is the profile owner -->
+            <a href="{% url 'edit_profile' username=request.user.username %}" class="btn btn-primary">Edit Profile</a>
+        {% endif %}
+    {% endif %}
+    
+    <ul>
+        {% for recommendation in recommendations %}
+            <li>
+                <strong>{{ recommendation.title }}</strong><br>
+                {{ recommendation.description }}<br>
+                Location: {{ recommendation.address }}<br>
+                
+                {% if recommendation.user == request.user %}
+                    <!-- <a href="{% url 'edit_recommendation' recommendation.id %}">Edit</a>
+                    <a href="{% url 'delete_recommendation' recommendation.id %}">Delete</a> -->
+                {% endif %}
+            </li>
+        {% empty %}
+            <p>No recommendations yet.</p>
+        {% endfor %}
+    </ul>
 {% endblock %}
