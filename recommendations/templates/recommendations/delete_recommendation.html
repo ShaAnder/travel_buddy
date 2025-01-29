@@ -1,0 +1,33 @@
+{% for recommendation in user.recommendations.all %}
+    <div class="recommendation-card">
+        <h5>{{ recommendation.title }}</h5>
+        <p>{{ recommendation.description }}</p>
+        
+        <!-- Delete Button (Triggers Modal) -->
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ recommendation.id }}">
+            Delete
+        </button>
+    </div>
+
+    <!-- Bootstrap Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal{{ recommendation.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ recommendation.id }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel{{ recommendation.id }}">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete <strong>{{ recommendation.title }}</strong>?
+                </div>
+                <div class="modal-footer">
+                    <form method="post" action="{% url 'delete_recommendation' recommendation.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

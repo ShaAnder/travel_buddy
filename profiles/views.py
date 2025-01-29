@@ -1,4 +1,4 @@
-### IMPORTS ###
+# IMPORTS #
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
@@ -7,9 +7,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from allauth.account.forms import LoginForm, SignupForm
 from recommendations.models import Recommendation
-from .forms import ProfileForm
+from .import forms
 
-### PROFILE VIEWS ###
+
+# PROFILE VIEWS #
+
 
 def profile(request, username):
     """
@@ -50,15 +52,16 @@ def edit_profile(request, username=None):
     profile = get_object_or_404(User, username=username or request.user.username).profile
 
     if request.method == "POST":
-        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        form = forms.ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
             return redirect("profile", username=request.user.username)
         else:
             messages.error(request, "There were some issues with your submission. Please check the form.")
     else:
-        form = ProfileForm(instance=profile)
+        form = forms.ProfileForm(instance=profile)
     return render(request, "profiles/edit_profile.html", {"form": form, "profile": profile})
+
 
 @login_required
 def delete_account(request, username=None):
@@ -96,7 +99,9 @@ def delete_account(request, username=None):
     else:
         return render(request, "profiles/delete_profile.html")
 
-### ALL AUTH ACCOUNT MANAGEMENT VIEWS ###
+
+# ALL AUTH ACCOUNT MANAGEMENT VIEWS #
+
 
 def login(request):
     """
