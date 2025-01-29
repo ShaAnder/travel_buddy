@@ -5,7 +5,10 @@ const navLinks = document.querySelectorAll("#nav a");
 
 // --- TOGGLE HEADER --- //
 
-if (headerToggleBtn && header) { 
+/**
+ * Toggles the header visibility and button icons.
+ */
+if (headerToggleBtn && header) {
     const handleHeaderToggle = () => {
         header.classList.toggle("header-show");
         headerToggleBtn.classList.toggle("bi-list");
@@ -15,7 +18,9 @@ if (headerToggleBtn && header) {
     // Attach click event listener to the toggle button
     headerToggleBtn.addEventListener("click", handleHeaderToggle);
 
-    // Close the nav bar if a nav link is clicked (when open)
+    /**
+     * Closes the navigation bar if a nav link is clicked when open.
+     */
     navLinks.forEach((nav) => {
         nav.addEventListener("click", () => {
             if (header.classList.contains("header-show")) {
@@ -24,3 +29,4 @@ if (headerToggleBtn && header) {
         });
     });
 }
+

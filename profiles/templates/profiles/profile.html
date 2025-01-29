@@ -23,9 +23,33 @@
                class="btn btn-primary">
                Edit Profile
             </a>
-            <a href="{% url 'delete_account' username=request.user.username %}" class="btn btn-danger">
+            <a href="{% url 'delete_account' username=request.user.username %}" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
                 Delete Account
             </a>
+            <!-- modal for acc deletion, user must be the owner and logged in to even see it -->
+            <div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Confirm Account Deletion</h5>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" action="{% url 'delete_account' username=request.user.username %}">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="password" style="margin-bottom:1rem;">Enter Your Password to Confirm:</label>
+                                    <input type="password" id="password" name="password" class="form-control" required>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-danger">Delete Account</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         {% endif %}
     {% endif %}
 
@@ -43,4 +67,6 @@
             <p>No recommendations yet.</p>
         {% endfor %}
     </ul>
+    <!-- Pass username directly from Django template to JavaScript -->
+
 {% endblock %}

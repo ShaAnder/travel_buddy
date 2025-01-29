@@ -1,14 +1,14 @@
 # IMPORTS #
-
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.contrib.auth import login as auth_login, logout as auth_logout
+from django.contrib.auth import login as auth_login, logout as auth_logout, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from allauth.account.forms import LoginForm, SignupForm
 from recommendations.models import Recommendation
 from .import forms
-
+import json
 
 # PROFILE VIEWS #
 
@@ -46,8 +46,7 @@ def edit_profile(request, username=None):
         HttpResponse: Renders the edit profile page with the profile form.
     """
     if username and request.user.username != username:
-        messages.error(request, "You don't have authorization to view this page.")
-        return redirect("profile", username=request.user.username)
+        return render(request, "error/403.html", status=403)
 
     profile = get_object_or_404(User, username=username or request.user.username).profile
 
@@ -74,30 +73,26 @@ def delete_account(request, username=None):
     Returns:
         HttpResponse: Redirects to a confirmation page or logs the user out after account deletion.
     """
-    # Ensure that the logged-in user can only delete their own account
     if username and request.user.username != username:
-        messages.error(request, "You don't have authorization to delete this account.")
-        return redirect("profile", username=request.user.username)
-        
-    user = request.user  # Get the currently logged-in user
+        return render(request, "error/403.html", status=403)
 
     if request.method == "POST":
-        try:
-            # Delete the user's profile first (even though deleting the user will also delete the profile)
-            profile = user.profile
-            profile.delete()
+        password = request.POST.get('password')
 
-            # Delete the user account
-            user.delete()
-
+        # Authenticate the user with the provided password
+        user = authenticate(username=request.user.username, password=password)
+        if user is not None:
+            # Password is correct, proceed with deletion
+            user.profile.delete()  # Optional: delete user profile first
+            user.delete()  # Delete the user account
             messages.success(request, "Your account has been deleted successfully.")
             logout(request)  # Log out the user after account deletion
             return redirect('home')  # Redirect to the home page or wherever you want
-        except Exception as e:
-            messages.error(request, f"Error deleting account: {str(e)}")
-            return redirect("profile", username=request.user.username)
-    else:
-        return render(request, "profiles/delete_profile.html")
+        else:
+            messages.error(request, "Incorrect password. Please try again.")
+            return redirect('profile', username=request.user.username)  # Redirect back to the profile page
+
+    return redirect('profile', username=request.user.username)
 
 
 # ALL AUTH ACCOUNT MANAGEMENT VIEWS #

@@ -12,7 +12,7 @@
 <!-- set script here as we are only using this 403 fo files -->
 <script>
     setTimeout(function() {
-        window.location.href = document.referrer || "{% url 'home' %}";
+        window.location.href = document.referrer || "{% url 'recommendations' %}";
     }, 2000); 
 </script>
 {% endblock %}

@@ -16,11 +16,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from core import views
+
+# Custom error views
+handler403 = views.custom_403_view
+handler404 = views.custom_404_view
+handler500 = views.custom_500_view
 
 urlpatterns = [
+    # Admin page
     path('admin/', admin.site.urls),
+    
+    # other apps
     path("", include("recommendations.urls")),
     path("", include("profiles.urls")),
-    path("", include("core.urls")), 
+    path("", include("core.urls")),
+    
+    # Summernote for rich text editing
     path('summernote/', include('django_summernote.urls')),
 ]

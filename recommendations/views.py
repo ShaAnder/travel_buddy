@@ -66,11 +66,9 @@ def edit_recommendation(request, recommendation_id):
     """
     #get rec for comparison
     recommendation = get_object_or_404(models.Recommendation, id=recommendation_id)
-    #compare rec user vs current user
+    #defensive programming stop user from deleting /editing others recommendation via url
     if recommendation.user != request.user:
-        #if not current user redirect to owner profile + err msg
-        messages.error(request, "You don't have authorization to edit this recommendation.")
-        return redirect("profile", username=recommendation.user.username)
+        return render(request, "error/403.html", status=403)
     #if owner
     if request.method == 'POST':
         #set form
@@ -104,10 +102,9 @@ def delete_recommendation(request, recommendation_id):
         to their profile page.
     """
     recommendation = get_object_or_404(models.Recommendation, id=recommendation_id)
-
+    #defensive programming stop user from navigating via url to delete others recommendation
     if recommendation.user != request.user:
-        messages.error(request, "You don't have authorization to edit this recommendation.")
-        return redirect("profile", username=recommendation.user.username)
+        return render(request, "error/403.html", status=403)
     
     recommendation.delete()
     messages.success(request, "Recommendation deleted successfully!")
