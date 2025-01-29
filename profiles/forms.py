@@ -21,6 +21,10 @@ class ProfileForm(forms.ModelForm):
         """
         model = Profile
         fields = ['bio', 'location', 'avatar']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['avatar'].widget.attrs.update({'accept': 'image/*'})
 
     def clean_bio(self):
         """

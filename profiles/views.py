@@ -54,16 +54,17 @@ def edit_profile(request, username=None):
     profile = get_object_or_404(User, username=username or request.user.username).profile
 
     if request.method == "POST":
-        form = ProfileForm(request.POST, instance=profile)
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
+            messages.success(request, "Your profile has been updated successfully!")
             return redirect("profile", username=request.user.username)
         else:
             messages.error(request, "There were some issues with your submission. Please check the form.")
     else:
         form = ProfileForm(instance=profile)
 
-    return render(request, "profiles/edit_profile.html", {"form": form})
+    return render(request, "profiles/edit_profile.html", {"form": form, "profile": profile})
 
 ### ALL AUTH ACCOUNT MANAGEMENT VIEWS ###
 
