@@ -9,7 +9,7 @@
     {% if profile.avatar %}
         <img src="{{ profile.avatar.url }}" alt="{{ profile.user.username }}'s avatar" class="profile-avatar">
     {% else %}
-        <img src="{% static 'avatars/default_avatar.png' %}" alt="Default avatar" class="profile-avatar">
+        <img src="{% static 'images/default_avatar.png' %}" alt="Default avatar" class="profile-avatar">
     {% endif %}
     
     {% if user.is_authenticated %}
