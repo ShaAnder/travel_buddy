@@ -5,23 +5,26 @@ from django.dispatch import receiver
 from .models import Profile
 import logging
 
+# Initialize logger for this module
 logger = logging.getLogger(__name__)
 
 @receiver(post_save, sender=User)
 def manage_user_profile(sender, instance, created, **kwargs):
-    """user profile signal handler
+    """
+    Signal handler to create or save a user profile.
 
     Args:
-        sender (_type_): the model being sent in
-        instance (_type_): the instance of the model
-        created (_type_): when it was created? (unsure)
+        sender (Model): The model that triggered the signal (User).
+        instance (User): The instance of the model that was saved.
+        created (bool): A flag indicating if the instance is newly created.
+        **kwargs (dict): Additional keyword arguments (not used here).
 
     Description:
-        Signal for handling user profile instance creation
-        when the profile is created it saves a profile instance
-        for future use whenever the profile is used / modified
-        **Quick Note** sender and kwargs are not nessecarily used here
-        however it's good practice to include them
+        This signal is triggered when a User instance is saved. If the user is newly
+        created, it creates a corresponding Profile instance. If the user already has
+        a profile, it saves the profile instance.
+        
+        This function uses logging to track profile creation and saving.
     """
     if created:
         logger.info(f"Creating profile for user: {instance.username}")

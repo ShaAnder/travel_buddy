@@ -12,76 +12,65 @@ from .forms import ProfileForm
 ### PROFILE VIEWS ###
 
 def profile(request, username):
-    """Profile view
+    """
+    Profile view to display user profile along with their recommendations.
 
     Args:
-        request (request): the request (click) to take us to desired profile
-        username (User): the username of the owner of said profile
-
-    Description:
-        the view that handles loading the user profile
+        request (HttpRequest): The request object to handle the request.
+        username (str): The username of the user whose profile is being viewed.
 
     Returns:
-        returns the render of the template with the args passed in
-        the main one to know is that we're passing in the ability to edit
-        if the current user is the owner.
+        HttpResponse: Renders the profile page with the user's profile and recommendations.
     """
     user = get_object_or_404(User.objects.select_related('profile'), username=username)
     recommendations = Recommendation.objects.filter(user=user)
     return render(request, "profiles/profile.html", {
         "profile": user.profile,
         "recommendations": recommendations,
-        "can_edit": request.user == user 
+        "can_edit": request.user == user
     })
+
 
 @login_required
 def edit_profile(request, username=None):
-    """Edit Profile View
+    """
+    Edit profile view allowing users to update their profile information.
 
     Args:
-        request (request): request click we receive from the edit button
-        username (str): the username being passed into the edit function
-        to check current user and allow editing the page
+        request (HttpRequest): The request object to handle the edit profile request.
+        username (str, optional): The username of the profile to edit. Defaults to None.
 
-    Description:
-        the view (or function) that handles loading our edit profile form
-        also has built-in safeguards to prevent editing other users profiles
+    Returns:
+        HttpResponse: Renders the edit profile page with the profile form.
     """
     if username and request.user.username != username:
         messages.error(request, "You don't have authorization to view this page.")
-        return render(request, "profiles/edit_profile.html", {})
-    
+        return redirect("profile", username=request.user.username)
+
     profile = get_object_or_404(User, username=username or request.user.username).profile
 
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
-            messages.success(request, "Your profile has been updated successfully!")
             return redirect("profile", username=request.user.username)
         else:
             messages.error(request, "There were some issues with your submission. Please check the form.")
     else:
         form = ProfileForm(instance=profile)
-
     return render(request, "profiles/edit_profile.html", {"form": form, "profile": profile})
 
 ### ALL AUTH ACCOUNT MANAGEMENT VIEWS ###
 
 def login(request):
-    """Login View
+    """
+    Login view for user authentication.
 
     Args:
-        request (_type_): request from the click to login
-
-    Description:
-        custom login view override for djangos allauth login view, 
-        allows us to login the user or redirect them to where we want
-        them to go
+        request (HttpRequest): The request object for logging the user in.
 
     Returns:
-        returns the render of our login page or if logged in returns
-        a url redirect to the recommendations page
+        HttpResponse: Renders the login page or redirects to the next page after login.
     """
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -94,19 +83,16 @@ def login(request):
 
     return render(request, 'account/login.html', {'form': form})
 
+
 def signup(request):
-    """Signup View
+    """
+    Signup view for creating a new user.
 
     Args:
-        request (_type_): request from the click to signup
-
-    Description:
-        custom signup view override for djangos allauth signup view, 
-        allows us to sign the user up and add optional extras like auto login etc
+        request (HttpRequest): The request object for signing up a new user.
 
     Returns:
-        returns the render of our signup page and redirect them to the recommendations
-        if they are verified (must click verification email)
+        HttpResponse: Renders the signup page or redirects to recommendations after signup.
     """
     if request.method == 'POST':
         form = SignupForm(request.POST)
@@ -119,18 +105,16 @@ def signup(request):
 
     return render(request, 'account/signup.html', {'form': form})
 
-def logout(request):    
-    """Logout View
+
+def logout(request):
+    """
+    Logout view to log out the current user and redirect to recommendations.
 
     Args:
-        request (_type_): request from the click to logout
-
-    Description:
-        custom logout override, allows user to logout and 
-        redirects straight to recommendations
+        request (HttpRequest): The request object for logging out the user.
 
     Returns:
-        returns the redirect to recommendations
+        HttpResponse: Redirects the user to the recommendations page after logout.
     """
     auth_logout(request)
     return redirect('recommendations')

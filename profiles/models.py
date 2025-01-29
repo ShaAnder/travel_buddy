@@ -4,19 +4,18 @@ from cloudinary.models import CloudinaryField
 
 class Profile(models.Model):
     """
-    Displays the user's profile page along with their recommendations.
-    
+    Represents a user's profile containing personal information and avatar.
+
     Args:
-        request: The HTTP request object containing user data.
-        username (str): The username of the user whose profile is being viewed.
-    
-    Returns:
-        Renders the user's profile page with a list of their recommendations.
-    
+        user (OneToOneField): A relationship field linking the profile to a User.
+        bio (str): A short biography or description of the user.
+        location (str): The user's location.
+        avatar (CloudinaryField): An avatar image uploaded to Cloudinary.
+
     Description:
-        This view fetches the user profile based on the provided username and displays
-        the recommendations associated with that user. The recommendations are filtered 
-        by the user who created them.
+        This model is used to store user profile information, including the user's 
+        bio, location, and avatar. It links to the `User` model with a one-to-one 
+        relationship. The `avatar` field uses Cloudinary for image storage.
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     bio = models.TextField(blank=True)
@@ -24,5 +23,10 @@ class Profile(models.Model):
     avatar = CloudinaryField('image', default='avatars/default_avatar.png')
 
     def __str__(self):
+        """
+        Returns a string representation of the user's profile.
+
+        Returns:
+            str: The username followed by "'s Profile".
+        """
         return f"{self.user.username}'s Profile"
-    
