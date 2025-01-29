@@ -1,15 +1,8 @@
-{% extends "base.html" %}
+<!-- 
 
-{% block content %}
-    <div class="container">
-        <div class="delete-confirmation">
-            <h2>Are you sure you want to delete your account?</h2>
-            <p>This action is irreversible.</p>
-            <form method="POST">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger">Delete Account</button>
-            </form>
-            <a href="{% url 'profile' username=request.user.username %}" class="btn btn-secondary">Cancel</a>
-        </div>
-    </div>
-{% endblock %}
+this isn't used we just need something for our url 
+to point to as we need a url pattern otherwise we throw an error
+we handle account deletion in the profile.html file with a modal 
+and confirmation
+
+-->
