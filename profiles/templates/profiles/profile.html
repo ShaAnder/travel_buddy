@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
     <h2>{{ profile.user.username }}'s Profile</h2>
@@ -6,9 +7,9 @@
     <p>Location: {{ profile.location }}</p>
     
     {% if profile.avatar %}
-    <img src="{{ profile.avatar.url }}" alt="{{ profile.user.username }}'s avatar" class="profile-avatar">
+        <img src="{{ profile.avatar.url }}" alt="{{ profile.user.username }}'s avatar" class="profile-avatar">
     {% else %}
-    <img src="{% static 'images/default_avatar.png' %}" alt="Default avatar" class="profile-avatar">
+        <img src="{% static 'images/default_avatar.png' %}" alt="Default avatar" class="profile-avatar">
     {% endif %}
     
     {% if user.is_authenticated %}
