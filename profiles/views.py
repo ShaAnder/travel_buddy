@@ -60,6 +60,42 @@ def edit_profile(request, username=None):
         form = ProfileForm(instance=profile)
     return render(request, "profiles/edit_profile.html", {"form": form, "profile": profile})
 
+@login_required
+def delete_account(request, username=None):
+    """
+    View to delete a user's account after confirmation.
+    
+    Args:
+        request (HttpRequest): The request object.
+        
+    Returns:
+        HttpResponse: Redirects to a confirmation page or logs the user out after account deletion.
+    """
+    # Ensure that the logged-in user can only delete their own account
+    if username and request.user.username != username:
+        messages.error(request, "You don't have authorization to delete this account.")
+        return redirect("profile", username=request.user.username)
+        
+    user = request.user  # Get the currently logged-in user
+
+    if request.method == "POST":
+        try:
+            # Delete the user's profile first (even though deleting the user will also delete the profile)
+            profile = user.profile
+            profile.delete()
+
+            # Delete the user account
+            user.delete()
+
+            messages.success(request, "Your account has been deleted successfully.")
+            logout(request)  # Log out the user after account deletion
+            return redirect('home')  # Redirect to the home page or wherever you want
+        except Exception as e:
+            messages.error(request, f"Error deleting account: {str(e)}")
+            return redirect("profile", username=request.user.username)
+    else:
+        return render(request, "profiles/delete_profile.html")
+
 ### ALL AUTH ACCOUNT MANAGEMENT VIEWS ###
 
 def login(request):
