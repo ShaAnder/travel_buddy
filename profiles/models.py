@@ -18,13 +18,10 @@ class Profile(models.Model):
         the recommendations associated with that user. The recommendations are filtered 
         by the user who created them.
     """
-    AVATAR_CHOICES = [
-        ("images/header-image.webp", "Avatar 1"),
-    ]
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     bio = models.TextField(blank=True)
     location = models.CharField(max_length=100, blank=True)
-    avatar = CloudinaryField('image', default='placeholder')
+    avatar = CloudinaryField('image', default='avatars/default_avatar.png')
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
