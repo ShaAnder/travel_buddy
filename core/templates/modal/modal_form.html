@@ -1,0 +1,33 @@
+<div class="modal fade" id="{{ modal_id }}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ title }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{ action_url }}">
+                    {% csrf_token %}
+                    
+                    {% if message %}
+                        <p>{{ message }}</p>
+                    {% endif %}
+                    
+                    {% if form %}
+                        {{ form.as_p }}
+                    {% else %}
+                        <div class="form-group">
+                            <label for="password" style="margin-bottom:1rem;">Enter Your Password to Confirm:</label>
+                            <input type="password" id="password" name="password" class="form-control" required>
+                        </div>
+                    {% endif %}
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn {{ submit_class }}">{{ submit_label }}</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

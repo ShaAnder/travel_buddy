@@ -62,11 +62,12 @@
 
                 {% if recommendation.user == request.user %}
                 {% endif %}
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Edit</button>
+                <button type="submit" class="btn btn-danger">Delete</button>
             </li>
         {% empty %}
             <p>No recommendations yet.</p>
         {% endfor %}
     </ul>
-    <!-- Pass username directly from Django template to JavaScript -->
 
 {% endblock %}
