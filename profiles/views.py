@@ -1,5 +1,5 @@
 # IMPORTS #
-from django.http import JsonResponse
+from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login as auth_login, logout as auth_logout, authenticate
@@ -8,7 +8,6 @@ from django.contrib.auth.decorators import login_required
 from allauth.account.forms import LoginForm, SignupForm
 from recommendations.models import Recommendation
 from .import forms
-import json
 
 # PROFILE VIEWS #
 
@@ -26,10 +25,12 @@ def profile(request, username):
     """
     user = get_object_or_404(User.objects.select_related('profile'), username=username)
     recommendations = Recommendation.objects.filter(user=user)
+    delete_account_url = reverse("delete_account", kwargs={"username": username})
     return render(request, "profiles/profile.html", {
         "profile": user.profile,
         "recommendations": recommendations,
-        "can_edit": request.user == user
+        "can_edit": request.user == user,
+        "delete_account_url": delete_account_url,
     })
 
 

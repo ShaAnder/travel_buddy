@@ -6,13 +6,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <!-- Dynamic message -->
+                <p id="modalMessage">{{ message }}</p>
+
+                <!-- Optional form in the modal (if needed) -->
                 <form method="POST" action="{{ action_url }}">
                     {% csrf_token %}
-                    
-                    {% if message %}
-                        <p>{{ message }}</p>
-                    {% endif %}
-                    
                     {% if form %}
                         {{ form.as_p }}
                     {% else %}
@@ -21,13 +20,39 @@
                             <input type="password" id="password" name="password" class="form-control" required>
                         </div>
                     {% endif %}
-
-                    <div class="modal-footer">
-                        <button type="submit" class="btn {{ submit_class }}">{{ submit_label }}</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    </div>
                 </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn {{ submit_class }}">{{ submit_label }}</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
 </div>
+
+
+<script>
+  // Function to update the modal message based on form data
+  function updateModalMessage() {
+    const form = document.querySelector('#modalForm');
+    const modalMessage = document.getElementById('modalMessage');
+    
+    if (form) {
+      const formData = new FormData(form);
+      let message = '';
+
+      // Loop through the form data and format it into a message
+      formData.forEach((value, key) => {
+        message += `${key}: ${value}\n`; // Customize this based on your form's fields
+      });
+
+      // Set the message into the modal's paragraph
+      modalMessage.textContent = message;
+    }
+  }
+
+  // Trigger when the modal is about to be shown
+  $('#modalId').on('show.bs.modal', function () {
+    updateModalMessage();
+  });
+</script>

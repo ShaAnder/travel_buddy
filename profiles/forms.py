@@ -64,11 +64,18 @@ class ProfileForm(forms.ModelForm):
             ValidationError: If the avatar file type is invalid.
         """
         avatar = self.cleaned_data.get('avatar')
+        allowed_extensions = ['.jpg', '.jpeg', '.png']
+        avatar = self.cleaned_data.get("avatar")
         if avatar:
-            # List of allowed avatar file extensions
-            allowed_extensions = ['.jpg', '.jpeg', '.png']
-            extension = avatar.name.split('.')[-1].lower()
-            if f".{extension}" not in allowed_extensions:
+            extension = None  # Default to None
+
+            if hasattr(avatar, "public_id") and "." in avatar.public_id:
+                extension = avatar.public_id.split(".")[-1].lower()  # Extract from public_id
+            elif hasattr(avatar, "url") and "." in avatar.url:
+                extension = avatar.url.split("?")[0].split(".")[-1].lower()  # Extract from URL
+
+            # This is a separate check for allowed extensions after getting the extension
+            if extension and f".{extension}" not in allowed_extensions:
                 raise forms.ValidationError(
                     "Invalid file type for avatar. Allowed types: .jpg, .jpeg, .png."
                 )
