@@ -3,6 +3,7 @@ from django.contrib import messages
 from . import models
 from . import forms
 from core.utils import get_lat_long
+from travel_buddy.settings import OPENCAGE_API
 
 
 def recommendations(request):
@@ -28,30 +29,26 @@ def add_recommendation(request):
         This view renders a form for creating a new recommendation. If the form is valid, 
         it associates the recommendation with the logged-in user and saves it to the database.
     """
-    #if post
     if request.method == 'POST':
-        #set our rec form
         form = forms.RecommendationForm(request.POST)
-        #if valid = make the rec
         if form.is_valid():
             recommendation = form.save(commit=False)
-            # Get lat/long from the address
             address = recommendation.address
-            lat, lng = get_lat_long(address, 'YOUR_OPENCAGE_API_KEY')
-            
-            # Save lat/long in the recommendation model
-            recommendation.lat = lat
-            recommendation.lng = lng
-
-            # Associate the rec to the user
-            recommendation.user = request.user
-            # Save the recommendation
-            recommendation.save()
-            return redirect('profile', username=request.user.username)
+            lat, lng = get_lat_long(address, OPENCAGE_API)
+            print(f"Latitude: {lat}, Longitude: {lng}")  # Debugging
+            if lat is not None and lng is not None:
+                recommendation.latitude = lat
+                recommendation.longitude = lng
+                recommendation.user = request.user
+                recommendation.save()
+                return redirect('profile', username=request.user.username)
+            else:
+                # Handle the case where lat/lng is None (API issue)
+                print("no lat/lng")
+                form.add_error('address', 'Unable to get latitude and longitude.')
     else:
-        #else form not valid
         form = forms.RecommendationForm()
-    #return rec page + form
+
     return render(request, 'recommendations/add_recommendation.html', {'form': form})
 
 

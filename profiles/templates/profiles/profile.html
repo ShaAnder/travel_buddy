@@ -49,5 +49,5 @@
     {% endfor %}
 
     <!-- Account Deletion Confirmation Modal -->
-    {% include "modal/modal.html" with modal_id="deleteAccountModal" title="Confirm Account Deletion" message="This action is irreversible. Please confirm." context_type="account_deletion" action_url=delete_account_url submit_class="btn-danger" submit_label="Delete Account" %}
+    {% include "modals/modal.html" with modal_id="deleteAccountModal" title="Confirm Account Deletion" message="This action is irreversible. Please confirm." context_type="account_deletion" action_url=delete_account_url submit_class="btn-danger" submit_label="Delete Account" %}
 {% endblock %}
