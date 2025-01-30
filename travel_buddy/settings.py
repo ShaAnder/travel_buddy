@@ -37,6 +37,7 @@ DEBUG = True
 ANON_MODE = True
 
 ALLOWED_HOSTS = [
+    '127.0.0.1:8000'
     'localhost',
     '127.0.0.1',
     '111.222.333.444',
@@ -87,7 +88,7 @@ MIDDLEWARE = [
 # we add heroku and the code institute ide as csrf trusted 
 # for running our db ect
 CSRF_TRUSTED_ORIGINS = [
-	"https://*.codeinstitute-ide.net/", 
+	"https://localhost",
     "https://*.herokuapp.com" ,
 ]
 
