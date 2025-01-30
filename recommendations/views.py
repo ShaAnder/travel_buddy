@@ -82,7 +82,7 @@ def edit_recommendation(request, recommendation_id):
         #display form
         form = forms.RecommendationForm(instance=recommendation)
     #render form / rec
-    return render(request, 'profiles/edit_recommendation.html', {'form': form, 'recommendation': recommendation})
+    return render(request, '/edit_recommendation.html', {'form': form, 'recommendation': recommendation})
 
 
 def delete_recommendation(request, recommendation_id):

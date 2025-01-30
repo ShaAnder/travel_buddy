@@ -37,14 +37,27 @@
                 Location: {{ recommendation.address }}<br>
 
                 {% if recommendation.user == request.user %}
+                    <a href="{% url 'edit_recommendation' recommendation.id %}" class="btn btn-success">Edit</a>
+                    <a href="#" 
+                    class="btn btn-danger" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#deleteItemModal" 
+                    data-item-id="{{ recommendation.id }}" 
+                    data-item-type="recommendation" 
+                    data-action-url="{{ delete_recommendation_urls.recommendation.id }}">
+                        Delete
+                    </a>
                 {% endif %}
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Edit</button>
-                <button type="submit" class="btn btn-danger">Delete</button>
             </li>
         {% empty %}
             <p>No recommendations yet.</p>
         {% endfor %}
     </ul>
 
-    {% include "modal/modal_form.html" with modal_id="deleteAccountModal" title="Confirm Account Deletion" action_url=delete_account_url submit_label="Delete Account" submit_class="btn-danger" %}
-{% endblock %}
+    <!-- Account Deletion Confirmation Modal -->
+    {% include "modal/modal_password.html" with modal_id="deleteAccountModal" title="Confirm Account Deletion" action_url=delete_account_url submit_label="Delete Account" submit_class="btn-danger" %}
+
+    <!-- Recommendation Deletion Confirmation Modal -->
+    {% for recommendation in recommendations %}
+        {% include "modal/modal_confirm.html" with modal_id="deleteRecommendationModal_{{ recommendation.id }}" title="Confirm Deletion of Recommendation" action_url=delete_recommendation_urls.recommendation.id submit_label="Delete Recommendation" submit_class="btn-danger" %}
+{% endfor %}{% endblock %}
