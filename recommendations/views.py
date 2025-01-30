@@ -35,7 +35,6 @@ def add_recommendation(request):
             recommendation = form.save(commit=False)
             address = recommendation.address
             lat, lng = get_lat_long(address, OPENCAGE_API)
-            print(f"Latitude: {lat}, Longitude: {lng}")  # Debugging
             if lat is not None and lng is not None:
                 recommendation.latitude = lat
                 recommendation.longitude = lng
@@ -68,24 +67,29 @@ def edit_recommendation(request, recommendation_id):
         If the user is not the owner of the recommendation, they are redirected 
         to their profile page.
     """
-    #get rec for comparison
     recommendation = get_object_or_404(models.Recommendation, id=recommendation_id)
-    #defensive programming stop user from deleting /editing others recommendation via url
     if recommendation.user != request.user:
         return render(request, "error/403.html", status=403)
-    #if owner
     if request.method == 'POST':
-        #set form
         form = forms.RecommendationForm(request.POST, instance=recommendation)
-        #if valid
         if form.is_valid():
-            #save form redirect to profile
-            form.save()
+            updated_recommendation = form.save(commit=False)
+            #bug it thinks that even when we change address it's the same address
+            #but functionality still works the same
+            if updated_recommendation.address == recommendation.address:
+                address = updated_recommendation.address
+                lat, lng = get_lat_long(address, OPENCAGE_API)
+                updated_recommendation.lat = lat
+                updated_recommendation.lng = lng
+            else:
+                # Handle the case where lat/lng is None (API issue)
+                print("no lat/lng")
+                form.add_error('address', 'Unable to get latitude and longitude.')
+            updated_recommendation.save()
             return redirect('profile', username=request.user.username)
     else:
-        #display form
         form = forms.RecommendationForm(instance=recommendation)
-    #render form / rec
+
     return render(request, 'recommendations/edit_recommendation.html', {'form': form, 'recommendation': recommendation})
 
 
