@@ -45,7 +45,7 @@ def add_recommendation(request):
         #else form not valid
         form = forms.RecommendationForm()
     #return rec page + form
-    return render(request, 'profiles/add_recommendation.html', {'form': form})
+    return render(request, 'recommendations/add_recommendation.html', {'form': form})
 
 
 def edit_recommendation(request, recommendation_id):
@@ -82,7 +82,7 @@ def edit_recommendation(request, recommendation_id):
         #display form
         form = forms.RecommendationForm(instance=recommendation)
     #render form / rec
-    return render(request, '/edit_recommendation.html', {'form': form, 'recommendation': recommendation})
+    return render(request, 'recommendations/edit_recommendation.html', {'form': form, 'recommendation': recommendation})
 
 
 def delete_recommendation(request, recommendation_id):
@@ -103,6 +103,7 @@ def delete_recommendation(request, recommendation_id):
     """
     recommendation = get_object_or_404(models.Recommendation, id=recommendation_id)
     #defensive programming stop user from navigating via url to delete others recommendation
+    print(id)
     if recommendation.user != request.user:
         return render(request, "error/403.html", status=403)
     

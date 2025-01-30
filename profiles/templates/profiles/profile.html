@@ -29,35 +29,25 @@
         {% endif %}
     {% endif %}
 
-    <ul>
-        {% for recommendation in recommendations %}
-            <li>
-                <strong>{{ recommendation.title }}</strong><br>
-                {{ recommendation.description }}<br>
-                Location: {{ recommendation.address }}<br>
-
-                {% if recommendation.user == request.user %}
-                    <a href="{% url 'edit_recommendation' recommendation.id %}" class="btn btn-success">Edit</a>
-                    <a href="#" 
-                    class="btn btn-danger" 
-                    data-bs-toggle="modal" 
-                    data-bs-target="#deleteItemModal" 
-                    data-item-id="{{ recommendation.id }}" 
-                    data-item-type="recommendation" 
-                    data-action-url="{{ delete_recommendation_urls.recommendation.id }}">
+    <!-- Display Recommendations -->
+    <h3>Recommendations</h3>
+    {% for recommendation in recommendations %}
+        <div class="recommendation">
+            <strong>{{ recommendation.title }}</strong><br>
+            {{ recommendation.description }}<br>
+            Location: {{ recommendation.address }}<br>
+            {% if user == profile.user %}
+                <a href="{% url 'edit_recommendation' recommendation_id=recommendation.id %}" class="btn btn-primary">Edit</a>
+                <form action="{{ recommendation.delete_url }}" method="POST" class="d-inline" onsubmit="return confirmDelete();">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
                         Delete
-                    </a>
-                {% endif %}
-            </li>
-        {% empty %}
-            <p>No recommendations yet.</p>
-        {% endfor %}
-    </ul>
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+    {% endfor %}
 
     <!-- Account Deletion Confirmation Modal -->
-    {% include "modal/modal_password.html" with modal_id="deleteAccountModal" title="Confirm Account Deletion" action_url=delete_account_url submit_label="Delete Account" submit_class="btn-danger" %}
-
-    <!-- Recommendation Deletion Confirmation Modal -->
-    {% for recommendation in recommendations %}
-        {% include "modal/modal_confirm.html" with modal_id="deleteRecommendationModal_{{ recommendation.id }}" title="Confirm Deletion of Recommendation" action_url=delete_recommendation_urls.recommendation.id submit_label="Delete Recommendation" submit_class="btn-danger" %}
-{% endfor %}{% endblock %}
+    {% include "modal/modal.html" with modal_id="deleteAccountModal" title="Confirm Account Deletion" message="This action is irreversible. Please confirm." context_type="account_deletion" action_url=delete_account_url submit_class="btn-danger" submit_label="Delete Account" %}
+{% endblock %}

@@ -24,20 +24,13 @@ def profile(request, username):
         HttpResponse: Renders the profile page with the user's profile and recommendations.
     """
     user = get_object_or_404(User.objects.select_related('profile'), username=username)
-  
     recommendations = Recommendation.objects.filter(user=user)
-    # Generate a dynamic delete URL for each recommendation
-    delete_recommendation_urls = {
-        recommendation.id: reverse('delete_recommendation', kwargs={'recommendation_id': recommendation.id})
-        for recommendation in recommendations
-    }
     delete_account_url = reverse("delete_account", kwargs={"username": username})
     return render(request, "profiles/profile.html", {
         "profile": user.profile,
         "recommendations": recommendations,
         "can_edit": request.user == user,
         "delete_account_url": delete_account_url,
-        "delete_recommendation_urls": delete_recommendation_urls,
     })
 
 

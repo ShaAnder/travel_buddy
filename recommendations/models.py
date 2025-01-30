@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 ### MODELS ###
 
@@ -79,6 +80,9 @@ class Recommendation(models.Model):
         total_score = sum(vote.vote for vote in votes)
         # Return the average score, rounded to 1 decimal place
         return round(total_score / votes.count(), 1)
+    
+    def delete_url(self):
+        return reverse("delete_recommendation", args=[self.id])
 
 class Comment(models.Model):
     """Comment model
@@ -112,6 +116,7 @@ class Comment(models.Model):
     approved = models.BooleanField(default=False)
     # created on date for accurate judging
     created_on = models.DateTimeField(auto_now_add=True)
+
 
 class Vote(models.Model):
     """Vote model
