@@ -75,7 +75,8 @@ def edit_recommendation(request, recommendation_id):
         if form.is_valid():
             updated_recommendation = form.save(commit=False)
             #bug it thinks that even when we change address it's the same address
-            #but functionality still works the same
+            #but functionality still works as intended
+            print(recommendation.latitude, recommendation.longitude)
             if updated_recommendation.address == recommendation.address:
                 address = updated_recommendation.address
                 lat, lng = get_lat_long(address, OPENCAGE_API)
