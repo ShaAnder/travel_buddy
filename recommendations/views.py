@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from . import models
 from . import forms
+from core.utils import get_lat_long
 
 
 def recommendations(request):
@@ -33,13 +34,19 @@ def add_recommendation(request):
         form = forms.RecommendationForm(request.POST)
         #if valid = make the rec
         if form.is_valid():
-            #save the form
             recommendation = form.save(commit=False)
-            #associate the rec to the user
+            # Get lat/long from the address
+            address = recommendation.address
+            lat, lng = get_lat_long(address, 'YOUR_OPENCAGE_API_KEY')
+            
+            # Save lat/long in the recommendation model
+            recommendation.lat = lat
+            recommendation.lng = lng
+
+            # Associate the rec to the user
             recommendation.user = request.user
-            #save rec
+            # Save the recommendation
             recommendation.save()
-            #redirect to user profile
             return redirect('profile', username=request.user.username)
     else:
         #else form not valid
