@@ -49,6 +49,7 @@ def add_recommendation(request):
     return render(request, 'recommendations/add_recommendation.html', {'form': form})
 
 
+
 def edit_recommendation(request, recommendation_id):
     """
     Handles the editing of a recommendation by the user.
@@ -68,18 +69,19 @@ def edit_recommendation(request, recommendation_id):
 
     if request.method == 'POST':
         form = forms.RecommendationForm(request.POST, instance=recommendation)
-        # Cache the old address before the form is processed
         old_address = recommendation.address
-        print(recommendation)
         if form.is_valid():
             updated_recommendation = form.save(commit=False)
-            print(updated_recommendation)
+            updated_address = updated_recommendation.address
+            
             # Check if the address has changed
-            if updated_recommendation.address != old_address:
-                print(f"Address changed: {updated_recommendation.address} != {recommendation.address}")
+            if updated_address != old_address:
+                print(f"Address changed: {updated_address} != {old_address}")
+                
                 # Use the new get_lat_long function for geocoding
                 address = updated_recommendation.address
                 lat, lng = utils.get_lat_long(address)
+                
                 if lat is not None and lng is not None:
                     updated_recommendation.latitude = lat
                     updated_recommendation.longitude = lng
@@ -90,10 +92,12 @@ def edit_recommendation(request, recommendation_id):
                     form.add_error('address', 'Unable to get latitude and longitude.')
             else:
                 print("Address not changed, keeping old latitude and longitude.")
+            
             # Save the updated recommendation
             updated_recommendation.save()
             print(f"Recommendation saved: {updated_recommendation.latitude}, {updated_recommendation.longitude}")
             return redirect('profile', username=request.user.username)
+    
     else:
         form = forms.RecommendationForm(instance=recommendation)
 
