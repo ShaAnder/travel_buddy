@@ -3,7 +3,8 @@
 {% block content %}
 <section>
   <div class="map-container">
-    <div id="map" class="map"></div>
+    <i class="location-toggle  bi bi-crosshair" onclick="toggleLocationModal()"></i>
+    <div id="map" class="map" style="height: 100%; width: 100%;"></div>
   </div>
   
   <!-- our modal for the location selector, we want the user to pick a location or use their own -->
@@ -17,18 +18,77 @@
             <div class="modal-body">
                 <p>Choose a city from the list or use your current location.</p>
                 
-                <select id="citySelect" class="form-select mb-3" onchange="changeCity()">
+                <select id="citySelect" class="form-select mb-3">
                     <option value="">Select a city</option>
                     {% for city in cities %}
                     <option value="{{ city.lat }},{{ city.lng }}">{{ city.name }}</option>
                     {% endfor %}
                 </select>
-
+                <!-- bug the modal isn't closing when we click buttons -->
+                <button type="submit" class="btn btn-primary w-100" onclick="confirmLocation()">Confirm Location</button>
+                <p>OR</p>
                 <button class="btn btn-primary w-100" onclick="getCurrentLocation()">Use My Location</button>
             </div>
         </div>
     </div>
 </div>
 </section>
+
+<script>
+
+    // function to init map (we need it in the file so that google can find it)
+    function initMap() {
+        const storedLocation = localStorage.getItem("userLocation");
+
+        if (storedLocation) {
+            const { lat: userLat, lng: userLng } = JSON.parse(storedLocation);
+
+            // Check if we got lat/lng and create map on user's location 
+            if (userLat && userLng) {
+                map = new google.maps.Map(document.getElementById("map"), {
+                    center: { lat: userLat, lng: userLng },
+                    zoom: 12
+                });
+
+                userMarker = new google.maps.Marker({
+                    position: { lat: userLat, lng: userLng },
+                    map: map,
+                    title: "You are here"
+                });
+            } else {
+                console.log("User location not found in localStorage");
+            }
+        }
+    }
+
+
+    
+    // Function to update the map when user confirms a new location
+    function updateMapLocation(newLat, newLng) {
+        if (map && userMarker) {
+            // Update map center to new location
+            map.setCenter({ lat: newLat, lng: newLng });
+
+            // Update marker position
+            userMarker.setPosition({ lat: newLat, lng: newLng });
+
+            // Optionally, store the new location in local storage
+            localStorage.setItem("userLocation", JSON.stringify({ lat: newLat, lng: newLng }));
+        } else {
+            console.log("Map or marker is not initialized.");
+        }
+    }
+
+    // Event listener for when the user confirms a location (for example, when the modal is submitted)
+    document.getElementById("confirmLocationBtn").addEventListener("click", function() {
+        const citySelect = document.getElementById("citySelect");
+        const selectedCity = citySelect.value.split(","); // Assuming the format "lat,lng"
+        const newLat = parseFloat(selectedCity[0]);
+        const newLng = parseFloat(selectedCity[1]);
+
+        // Update map with the new location
+        updateMapLocation(newLat, newLng);
+    });
+</script>
 
 {% endblock %}

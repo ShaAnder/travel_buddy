@@ -164,13 +164,31 @@ h3 {
     display: flex;
     align-items: center;
     justify-content: center;
-    top: 15px;
-    right: 15px;
-    color: var(--contrast-color);
+    top: 33px;
+    right: 33px;
+    color: var(--main-lightest);
     background-color: var(--main-darker);
     border-radius: 50%;
     cursor: pointer;
     z-index: 9999;
+    transition: background-color 0.3s;
+}
+
+.location-toggle {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 15px;
+    left:15px;
+    color: var(--main-lightest);
+    background-color: var(--main-darker);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 9998;
     transition: background-color 0.3s;
 }
   
@@ -240,10 +258,12 @@ h3 {
     margin: 0;
 }
 
-.map {
-    width: 100%;
-    height: auto;
-    background-color: white;
+#map {
+    position: absolute;
+    top: 0;      /* Move the map to the top */
+    left: 0;     /* Optionally move it to the left */
+    width: 100%; /* Ensure the map takes the full width of the container */
+    height: 100%;/* Ensure the map takes the full height of the container */
 }
 
 /*---------------------------------------------*/

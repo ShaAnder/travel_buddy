@@ -3,6 +3,7 @@ from django.contrib import messages
 from . import models
 from . import forms
 from . import utils
+from travel_buddy.settings import GOOGLE_API
 
 def recommendations(request):
     """
@@ -11,7 +12,7 @@ def recommendations(request):
     of interesting places to visit.
     """
     cities = utils.get_irish_cities()
-    return render(request, "recommendations/recommendations.html", {"cities": cities})
+    return render(request, "recommendations/recommendations.html", {"cities": cities, "google_maps_api_key": GOOGLE_API})
 
 def add_recommendation(request):
     """
