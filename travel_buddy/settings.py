@@ -26,7 +26,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY")
+
+# API Calls
 OPENCAGE_API = os.environ.get("OPENCAGE_API")
+GEONAME_API = os.environ.get("GEONAME_USERNAME")
 
 # Paths for our static, templates and other directories
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')

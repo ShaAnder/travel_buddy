@@ -5,7 +5,6 @@ from . import forms
 from core.utils import get_lat_long
 from travel_buddy.settings import OPENCAGE_API
 
-
 def recommendations(request):
     """
     View to return the recommendation page, currently just returns 
