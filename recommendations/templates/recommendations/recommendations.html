@@ -1,11 +1,34 @@
 {% extends "base.html" %}
 
 {% block content %}
-
 <section>
   <div class="map-container">
     <div id="map" class="map"></div>
   </div>
+  
+  <!-- our modal for the location selector, we want the user to pick a location or use their own -->
+  <div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="locationModalLabel">Select Your Location</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Choose a city from the list or use your current location.</p>
+                
+                <select id="citySelect" class="form-select mb-3" onchange="changeCity()">
+                    <option value="">Select a city</option>
+                    {% for city in cities %}
+                    <option value="{{ city.lat }},{{ city.lng }}">{{ city.name }}</option>
+                    {% endfor %}
+                </select>
+
+                <button class="btn btn-primary w-100" onclick="getCurrentLocation()">Use My Location</button>
+            </div>
+        </div>
+    </div>
+</div>
 </section>
 
 {% endblock %}

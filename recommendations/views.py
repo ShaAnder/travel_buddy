@@ -2,8 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from . import models
 from . import forms
-from core.utils import get_lat_long
-from travel_buddy.settings import OPENCAGE_API
+from . import utils
 
 def recommendations(request):
     """
@@ -33,7 +32,7 @@ def add_recommendation(request):
         if form.is_valid():
             recommendation = form.save(commit=False)
             address = recommendation.address
-            lat, lng = get_lat_long(address, OPENCAGE_API)
+            lat, lng = utils.get_lat_long(address)
             if lat is not None and lng is not None:
                 recommendation.latitude = lat
                 recommendation.longitude = lng
@@ -52,40 +51,48 @@ def add_recommendation(request):
 
 def edit_recommendation(request, recommendation_id):
     """
-    Handles the editing of an existing recommendation.
+    Handles the editing of a recommendation by the user.
     
     Args:
-        request: The HTTP request object containing user data and form submission.
-        recommendation_id (int): The ID of the recommendation to be edited.
-    
+        request: The HTTP request object.
+        recommendation_id: The ID of the recommendation being edited.
+
     Returns:
-        Redirects to the user's profile page after saving the updated recommendation.
-    
-    Description:
-        This view allows the logged-in user to edit their own recommendation. 
-        If the user is not the owner of the recommendation, they are redirected 
-        to their profile page.
+        A rendered template to edit the recommendation, or a redirect to the user's profile on success.
     """
     recommendation = get_object_or_404(models.Recommendation, id=recommendation_id)
+    
+    # Ensure that the logged-in user is the owner of the recommendation
     if recommendation.user != request.user:
         return render(request, "error/403.html", status=403)
+
     if request.method == 'POST':
         form = forms.RecommendationForm(request.POST, instance=recommendation)
+        # Cache the old address before the form is processed
+        old_address = recommendation.address
+        print(recommendation)
         if form.is_valid():
             updated_recommendation = form.save(commit=False)
-            #bug it thinks that even when we change address it's the same address
-            #but functionality still works as intended
-            print(recommendation.latitude, recommendation.longitude)
-            if updated_recommendation.address == recommendation.address:
+            print(updated_recommendation)
+            # Check if the address has changed
+            if updated_recommendation.address != old_address:
+                print(f"Address changed: {updated_recommendation.address} != {recommendation.address}")
+                # Use the new get_lat_long function for geocoding
                 address = updated_recommendation.address
-                lat, lng = get_lat_long(address, OPENCAGE_API)
-                updated_recommendation.lat = lat
-                updated_recommendation.lng = lng
+                lat, lng = utils.get_lat_long(address)
+                if lat is not None and lng is not None:
+                    updated_recommendation.latitude = lat
+                    updated_recommendation.longitude = lng
+                    print(f"Updated lat/lng: {lat}, {lng}")
+                else:
+                    # Handle failure in geocoding (e.g., invalid address)
+                    print("Geocoding failed. Address not found.")
+                    form.add_error('address', 'Unable to get latitude and longitude.')
             else:
-                # Handle the case where lat/lng is None (API issue)
-                print("no lat/lng")
-                form.add_error('address', 'Unable to get latitude and longitude.')
+                print("Address not changed, keeping old latitude and longitude.")
+            # Save the updated recommendation
             updated_recommendation.save()
+            print(f"Recommendation saved: {updated_recommendation.latitude}, {updated_recommendation.longitude}")
             return redirect('profile', username=request.user.username)
     else:
         form = forms.RecommendationForm(instance=recommendation)

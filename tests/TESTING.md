@@ -159,6 +159,8 @@ sadly bound to be present, all known bugs are listed below, for fixing purposes 
 
 ### Known Bugs
 
+Current bugs = Can't get a locations geolocation
+
 <br>
 
 

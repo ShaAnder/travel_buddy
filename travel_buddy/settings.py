@@ -28,8 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # API Calls
-OPENCAGE_API = os.environ.get("OPENCAGE_API")
-GEONAME_API = os.environ.get("GEONAME_USERNAME")
+GOOGLE_API = os.environ.get("GOOGLE_MAPS_API")
 
 # Paths for our static, templates and other directories
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
