@@ -10,8 +10,8 @@ def recommendations(request):
     recommendation page will later be used to populate live pings
     of interesting places to visit.
     """
-    return render(request, "recommendations/recommendations.html")
-
+    cities = utils.get_irish_cities()
+    return render(request, "recommendations/recommendations.html", {"cities": cities})
 
 def add_recommendation(request):
     """
@@ -47,7 +47,6 @@ def add_recommendation(request):
         form = forms.RecommendationForm()
 
     return render(request, 'recommendations/add_recommendation.html', {'form': form})
-
 
 
 def edit_recommendation(request, recommendation_id):
