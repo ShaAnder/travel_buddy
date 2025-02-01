@@ -53,7 +53,11 @@
                 userMarker = new google.maps.Marker({
                     position: { lat: userLat, lng: userLng },
                     map: map,
-                    title: "You are here"
+                    title: "You are here",
+                    icon: {
+                        url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png', // Custom icon URL
+
+                    }
                 });
             } else {
                 console.log("User location not found in localStorage");
@@ -62,7 +66,6 @@
     }
 
 
-    
     // Function to update the map when user confirms a new location
     function updateMapLocation(newLat, newLng) {
         if (map && userMarker) {
@@ -79,16 +82,6 @@
         }
     }
 
-    // Event listener for when the user confirms a location (for example, when the modal is submitted)
-    document.getElementById("confirmLocationBtn").addEventListener("click", function() {
-        const citySelect = document.getElementById("citySelect");
-        const selectedCity = citySelect.value.split(","); // Assuming the format "lat,lng"
-        const newLat = parseFloat(selectedCity[0]);
-        const newLng = parseFloat(selectedCity[1]);
-
-        // Update map with the new location
-        updateMapLocation(newLat, newLng);
-    });
 </script>
 
 {% endblock %}

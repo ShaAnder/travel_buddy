@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'core',
     'recommendations',
     'profiles.apps.ProfilesConfig',
+    'rest_framework',
 ]
 
 # Our login urls and site id, we need a site id for every project in our app

@@ -1,9 +1,23 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from rest_framework import viewsets
+from .serializers import RecommendationSerializer
 from . import models
 from . import forms
 from . import utils
 from travel_buddy.settings import GOOGLE_API
+
+### --- VIEWSET FOR API --- ###
+
+class RecommendationViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    A viewset for listing recommendations.
+    """
+    queryset = models.Recommendation.objects.all()
+    serializer_class = RecommendationSerializer
+
+
+### --- TRADITIONAL VIEWS --- ###
 
 def recommendations(request):
     """
@@ -129,3 +143,4 @@ def delete_recommendation(request, recommendation_id):
     recommendation.delete()
     messages.success(request, "Recommendation deleted successfully!")
     return redirect('profile', username=request.user.username)
+

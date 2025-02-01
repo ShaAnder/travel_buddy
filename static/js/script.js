@@ -144,3 +144,49 @@ document.addEventListener('DOMContentLoaded', () => {
     loadMapScript(initMap);  // Wait until Google Maps API is ready
 });
 
+
+// ADDING RECOMMENDATIONS TO MAP
+
+async function fetchRecommendations() {
+    try {
+        const response = await fetch('/api/recommendations/');
+        if (response.ok) {
+            console.log(response)
+            const recommendations = await response.json();
+            addMarkers(recommendations);
+        } else {
+            console.log("Failed to fetch recommendations.");
+        }
+    } catch (error) {
+        console.error("Error fetching recommendations:", error);
+    }
+}
+
+function addMarkers(recommendations) {
+    recommendations.forEach(recommendation => {
+        const { latitude, longitude, title } = recommendation;
+
+        // Filter out markers that are out of range
+        const distance = haversine(userMarker.position.lat(), userMarker.position.lng(), latitude, longitude);
+        if (distance <= 5) { // Example: Only show markers within 5 km range
+            const marker = new google.maps.Marker({
+                position: { lat: latitude, lng: longitude },
+                map: map,
+                title: title
+            });
+
+            // Optionally, add info windows or click events to markers
+            const infoWindow = new google.maps.InfoWindow({
+                content: `<h5>${title}</h5>`
+            });
+
+            marker.addListener("click", () => {
+                infoWindow.open(map, marker);
+            });
+        }
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    fetchRecommendations();
+});
