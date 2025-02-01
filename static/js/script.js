@@ -3,7 +3,11 @@ const headerToggleBtn = document.querySelector(".header-toggle");
 const header = document.querySelector("#header");
 const navLinks = document.querySelectorAll("#nav a");
 
+const distanceSlider = document.getElementById('distanceSlider');
+const distanceOutput = document.getElementById('distanceOutput');
+
 let locationModal
+let filterModal
 let map
 let userMarker
 let markers = []
@@ -60,6 +64,18 @@ function toggleLocationModal() {
         locationModal.hide();  // Close the modal if it's already open
     } else {
         locationModal.show();  // Open the modal if it's closed
+    }
+}
+
+function toggleFilterModal() {
+    if (!filterModal) {
+        filterModal = new bootstrap.Modal(document.getElementById('filterModal'));
+    }
+
+    if (filterModal._isShown) {
+        filterModal.hide();
+    } else {
+        filterModal.show()
     }
 }
 
@@ -172,6 +188,31 @@ async function fetchRecommendations(filterCriteria = null) {
     }
 }
 
+async function fetchCategories() {
+    try {
+        const response = await fetch('/api/categories/');
+        if (response.ok) {
+            const categories = await response.json();
+            populateCategoryFilter(categories);
+        } else {
+            console.log("Failed to fetch categories.");
+        }
+    } catch (error) {
+        console.error("Error fetching categories:", error);
+    }
+}
+
+function populateCategoryFilter(categories) {
+    const categorySelect = document.getElementById("categorySelect");
+    categorySelect.innerHTML = '<option value="">Select a category</option>'; // Reset options
+    categories.forEach(category => {
+        const option = document.createElement("option");
+        option.value = category.id;
+        option.textContent = category.name;
+        categorySelect.appendChild(option);
+    });
+}
+
 function filterRecommendations(recommendations, filterCriteria) {
     return recommendations.filter(recommendation => {
         const { latitude, longitude, category } = recommendation;
@@ -191,7 +232,6 @@ function filterRecommendations(recommendations, filterCriteria) {
         return isValid;
     });
 }
-
 // Function to clear existing markers
 function clearMarkers() {
     // Loop through existing markers and remove them from the map
@@ -230,4 +270,34 @@ function addMarkers(recommendations) {
 
 document.addEventListener("DOMContentLoaded", function() {
     fetchRecommendations();
+    fetchCategories();
+    
 });
+
+distanceSlider.addEventListener('input', function() {
+    distanceOutput.textContent = `${distanceSlider.value} km`;
+});
+
+// Apply Filters
+document.getElementById('filterForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const selectedCategory = document.getElementById('categorySelect').value;
+    const selectedDistance = distanceSlider.value;
+    
+    // Build the filter criteria object
+    const filterCriteria = {
+        category: selectedCategory,
+        distance: selectedDistance
+    };
+    
+    // Fetch recommendations and apply filters
+    fetchRecommendations(filterCriteria);
+
+    // Close the modal after applying filters
+    toggleFilterModal();
+
+    
+});
+
+

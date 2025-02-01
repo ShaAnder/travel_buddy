@@ -174,7 +174,7 @@ h3 {
     transition: background-color 0.3s;
 }
 
-.location-toggle {
+.modal-toggle {
     width: 40px;
     height: 40px;
     font-size: 20px;

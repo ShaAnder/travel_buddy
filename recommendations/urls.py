@@ -4,6 +4,7 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register(r'recommendations', RecommendationViewSet)
+router.register(r'categories', CategoryViewSet, basename='category')
 
 urlpatterns = [
     path("recommendations/", recommendations, name="recommendations"),

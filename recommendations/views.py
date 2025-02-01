@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from rest_framework import viewsets
-from .serializers import RecommendationSerializer
+from .serializers import *
 from . import models
 from . import forms
 from . import utils
@@ -16,6 +16,9 @@ class RecommendationViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Recommendation.objects.all()
     serializer_class = RecommendationSerializer
 
+class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = models.Category.objects.all()
+    serializer_class = CategorySerializer
 
 ### --- TRADITIONAL VIEWS --- ###
 

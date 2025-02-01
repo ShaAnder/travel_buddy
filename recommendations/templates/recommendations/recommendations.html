@@ -2,36 +2,72 @@
 
 {% block content %}
 <section>
-  <div class="map-container">
-    <i class="location-toggle  bi bi-crosshair" onclick="toggleLocationModal()"></i>
-    <div id="map" class="map" style="height: 100%; width: 100%;"></div>
-  </div>
-  
-  <!-- our modal for the location selector, we want the user to pick a location or use their own -->
-  <div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="locationModalLabel">Select Your Location</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Choose a city from the list or use your current location.</p>
-                
-                <select id="citySelect" class="form-select mb-3">
-                    <option value="">Select a city</option>
-                    {% for city in cities %}
-                    <option value="{{ city.lat }},{{ city.lng }}">{{ city.name }}</option>
-                    {% endfor %}
-                </select>
-                <!-- bug the modal isn't closing when we click buttons -->
-                <button type="submit" class="btn btn-primary w-100" onclick="confirmLocation()">Confirm Location</button>
-                <p>OR</p>
-                <button class="btn btn-primary w-100" onclick="getCurrentLocation()">Use My Location</button>
+    
+    <i class="modal-toggle bi bi-crosshair" onclick="toggleLocationModal()"></i>
+    <i class="modal-toggle bi bi-funnel" onclick="toggleFilterModal()" style="margin-top: 1rem;"></i>
+    <div class="map-container">
+        <!-- Filter Toggle Button -->
+        <div id="map" class="map" style="height: 100%; width: 100%;"></div>
+    </div>
+    <!-- our modal for the location selector, we want the user to pick a location or use their own -->
+
+    <div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="locationModalLabel">Select Your Location</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Choose a city from the list or use your current location.</p>
+                    
+                    <select id="citySelect" class="form-select mb-3">
+                        <option value="">Select a city</option>
+                        {% for city in cities %}
+                        <option value="{{ city.lat }},{{ city.lng }}">{{ city.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <!-- bug the modal isn't closing when we click buttons -->
+                    <button type="submit" class="btn btn-primary w-100" onclick="confirmLocation()">Confirm Location</button>
+                    <p>OR</p>
+                    <button class="btn btn-primary w-100" onclick="getCurrentLocation()">Use My Location</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+    <!-- Filter Modal -->
+    <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="filterModalLabel">Filter Recommendations</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="filterForm">
+                    <!-- Category Selector -->
+                        <div class="mb-3">
+                            <label for="categorySelect" class="form-label">Category</label>
+                            <select id="categorySelect" class="form-select">
+                                <option value="">Select a category</option>
+                            <!-- Categories will be populated dynamically -->
+                            </select>
+                        </div>
+        
+                        <!-- Distance Slider -->
+                        <div class="mb-3">
+                            <label for="distanceSlider" class="form-label">Distance (km)</label>
+                            <input type="range" id="distanceSlider" class="form-range" min="1" max="50" value="5">
+                            <output id="distanceOutput">5 km</output>
+                        </div>
+        
+                        <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
 <script>
