@@ -3,7 +3,10 @@ const headerToggleBtn = document.querySelector(".header-toggle");
 const header = document.querySelector("#header");
 const navLinks = document.querySelectorAll("#nav a");
 
-let locationModal, map, userMarker
+let locationModal
+let map
+let userMarker
+let markers = []
 
 // --- TOGGLE HEADER --- //
 
@@ -147,13 +150,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ADDING RECOMMENDATIONS TO MAP
 
-async function fetchRecommendations() {
+async function fetchRecommendations(filterCriteria = null) {
     try {
         const response = await fetch('/api/recommendations/');
         if (response.ok) {
-            console.log(response)
             const recommendations = await response.json();
-            addMarkers(recommendations);
+
+            // If filter criteria is provided, apply it
+            const filteredRecommendations = filterCriteria ? filterRecommendations(recommendations, filterCriteria) : recommendations;
+
+            // Clear the existing markers before adding new ones
+            clearMarkers();
+
+            // Add markers to the map
+            addMarkers(filteredRecommendations);
         } else {
             console.log("Failed to fetch recommendations.");
         }
@@ -162,30 +172,61 @@ async function fetchRecommendations() {
     }
 }
 
+function filterRecommendations(recommendations, filterCriteria) {
+    return recommendations.filter(recommendation => {
+        const { latitude, longitude, category } = recommendation;
+        let isValid = true;
+
+        // Filter by distance
+        const distance = haversine(userMarker.position.lat(), userMarker.position.lng(), latitude, longitude);
+        if (filterCriteria.distance && distance > filterCriteria.distance) {
+            isValid = false;
+        }
+
+        // Filter by category if specified
+        if (filterCriteria.category && category !== filterCriteria.category) {
+            isValid = false;
+        }
+
+        return isValid;
+    });
+}
+
+// Function to clear existing markers
+function clearMarkers() {
+    // Loop through existing markers and remove them from the map
+    markers.forEach(marker => {
+        marker.setMap(null);
+    });
+    markers = []; // Clear the markers array
+}
+
+// Function to add markers to the map
 function addMarkers(recommendations) {
     recommendations.forEach(recommendation => {
         const { latitude, longitude, title } = recommendation;
 
-        // Filter out markers that are out of range
-        const distance = haversine(userMarker.position.lat(), userMarker.position.lng(), latitude, longitude);
-        if (distance <= 5) { // Example: Only show markers within 5 km range
-            const marker = new google.maps.Marker({
-                position: { lat: latitude, lng: longitude },
-                map: map,
-                title: title
-            });
+        // Create marker for each recommendation
+        const marker = new google.maps.Marker({
+            position: { lat: latitude, lng: longitude },
+            map: map,
+            title: title
+        });
 
-            // Optionally, add info windows or click events to markers
-            const infoWindow = new google.maps.InfoWindow({
-                content: `<h5>${title}</h5>`
-            });
+        // Optionally, add info windows or click events to markers
+        const infoWindow = new google.maps.InfoWindow({
+            content: `<h5>${title}</h5>`
+        });
 
-            marker.addListener("click", () => {
-                infoWindow.open(map, marker);
-            });
-        }
+        marker.addListener("click", () => {
+            infoWindow.open(map, marker);
+        });
+
+        // Add marker to the markers array for future removal
+        markers.push(marker);
     });
 }
+
 
 document.addEventListener("DOMContentLoaded", function() {
     fetchRecommendations();
