@@ -158,7 +158,7 @@ h3 {
   
 /* HEADER TOGGLE BUTTON */
   
-.toggle-header-btn {
+.toggle-btn {
     width: 50px;
     height: 50px;
     font-size: 25px;
@@ -176,14 +176,14 @@ h3 {
     transition: 0.3s;
 }
 
-.toggle-header-btn:hover {
+.toggle-btn:hover {
     color:var(--main-contrast)
 }
 
-.toggle-header-right {
+.toggle-btn-right {
     position: fixed;
     display: flex;
-    top: 10vh;
+    top: 90vh;
     left: 92%;
 }
   
@@ -455,6 +455,10 @@ h3 {
         left: -300px;
     }
 
+    .toggle-btn-right {
+        left: 93.5%;
+    }
+
     #home-page {
         flex-direction: column;
     }
@@ -491,6 +495,10 @@ h3 {
         max-width: 350px; /* Ensure content isn't too wide on mobile */
         width: 100%;
     }
+
+    .toggle-btn-right {
+        left: 91%;
+    }
 }
 
 /* specifically for portfolio filters as on 450 still sits nicely */
@@ -508,6 +516,10 @@ h3 {
 
     .nav-links a {
         padding-top: 5%;
+    }
+
+    .toggle-btn-right {
+        left: 83%;
     }
 
 }
