@@ -166,7 +166,6 @@ h3 {
     display: flex;
     align-items: center;
     justify-content: center;
-    top: 50px;
     left:5px;
     color: var(--main-lightest);
     background-color: var(--main-darker);
