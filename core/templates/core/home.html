@@ -5,7 +5,7 @@
 {% block content %}
 <section id="splash-screen">
     <div class="splash-screen-container text-center">
-        <h1 class="mt-5">
+        <h1 class="splash-logo mt-5">
             <span id="travel" style="opacity: 0;">Travel</span>
             <span id="buddy" style="opacity: 0;">Buddy</span>
         </h1>
@@ -20,7 +20,7 @@
 <!-- Your Home Page -->
 <section id="home-page" class="d-flex">
     <!-- Left Side: Main background with Travel Buddy text and buttons -->
-    <div class="left-side d-flex justify-content-center align-items-center" style="flex: 1; background-color: #f8f9fa;">
+    <div class="left-side">
         <div class="content text-center">
             <!-- Travel Buddy Text -->
             <h1 class="mt-5 mb-4">
@@ -41,10 +41,9 @@
     </div>
 
     <!-- Right Side: Scenic Slideshow (Carousel) -->
-    <div class="right-side" style="flex: 1; background-color: #222; overflow: hidden; position: relative;">
-        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000" data-bs-pause="false" data-bs-wrap="true">
+    <div class="right-side">
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000" data-bs-pause="false" data-bs-wrap="true">
             <div class="carousel-inner">
-                <!-- Loop through the list of image paths passed from the view -->
                 {% for image in image_paths %}
                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
                         <img src="{% static image %}" class="d-block w-100" alt="Scenic view">
@@ -54,6 +53,5 @@
         </div>
     </div>
 </section>
-
 
 {% endblock %}
