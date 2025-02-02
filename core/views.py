@@ -38,19 +38,6 @@ def about(request):
     return render(request, "core/about.html", {'show_navbar': True})
 
 
-def policy(request):
-    """
-    Render the Policy page.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-
-    Returns:
-        HttpResponse: The rendered Policy page template with the navbar shown.
-    """
-    return render(request, "core/policy.html", {'show_navbar': True})
-
-
 # ERROR VIEWS #
 
 

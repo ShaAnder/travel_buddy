@@ -37,7 +37,6 @@
             <ul>
                 <li><a href="{{ home_url }}"><i class="bi bi-house navicon"></i> Home</a></li>
                 <li><a href="{{ about_url }}"><i class="bi bi-info-circle navicon"></i> About Us</a></li>
-                <li><a href="{% url 'policy' %}"><i class="bi bi-shield-lock navicon"></i> Privacy Policy</a></li>
                 <li><a href="{% url 'recommendations' %}"><i class="bi bi-map navicon"></i> Recommendations</a></li>
                 
                 {% if user.is_authenticated %}
