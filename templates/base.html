@@ -43,7 +43,7 @@
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'add_recommendation' %}"><i class="bi bi-plus-square navicon"></i>Add Rec</a></li>
                     <li><a href="{% url 'profile' username=user.username %}"><i class="bi bi-person-circle navicon"></i> Your Profile</a></li>
-                    <li><a href="{% url 'account_logout' %}"><i class="bi bi-box-arrow-right navicon"></i>Logout</a></li>
+                    <li><a href="{% url 'logout' %}"><i class="bi bi-box-arrow-right navicon"></i>Logout</a></li>
                 {% else %}
                     <li><a href="{% url 'account_login' %}"><i class="bi bi-box-arrow-in-right navicon"></i>Login</a></li>
                     <li><a href="{% url 'account_signup' %}"><i class="bi bi-person-check navicon"></i></i>Signup</a></li>

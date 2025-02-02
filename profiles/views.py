@@ -109,4 +109,4 @@ def logout(request):
         HttpResponse: Redirects the user to the recommendations page after logout.
     """
     auth_logout(request)
-    return redirect('recommendations')
+    return redirect('home')

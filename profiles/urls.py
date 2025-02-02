@@ -13,5 +13,8 @@ urlpatterns = [
     path('accounts/signup/', SignupView.as_view(template_name="allauth/account/signup.html"), name="account_signup"),
     # Password Reset
     path('accounts/password/reset/', PasswordResetView.as_view(template_name="allauth/account/password_reset.html"), name="account_reset_password"),
-    path('accounts/', include('allauth.urls')),  # Include allauth URLs
+    # logout
+    path("logout/", views.logout, name="logout"),
+    # Include allauth URLs
+    path('accounts/', include('allauth.urls')),  
 ]
