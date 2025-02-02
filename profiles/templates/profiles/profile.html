@@ -2,52 +2,75 @@
 {% load static %}
 
 {% block content %}
-    <h2>{{ profile.user.username }}'s Profile</h2>
-    <p>Bio: {{ profile.bio }}</p>
-    <p>Location: {{ profile.location }}</p>
-
-    {% if profile.avatar %}
-        <img src="{{ profile.avatar.url }}" 
-             alt="{{ profile.user.username }}'s avatar" 
-             class="profile-avatar">
-    {% else %}
-        <img src="{% static 'images/default_avatar.png' %}" 
-             alt="Default avatar" 
-             class="profile-avatar">
-    {% endif %}
-
-    {% if user.is_authenticated %}
-        {% if user == profile.user %}
-            <!-- Show the edit profile button only if the logged-in user is the profile owner -->
-            <a href="{% url 'edit_profile' username=request.user.username %}" 
-               class="btn btn-primary">
-               Edit Profile
-            </a>
-            <a href="{% url 'delete_account' username=request.user.username %}" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
-                Delete Account
-            </a>
-        {% endif %}
-    {% endif %}
-
-    <!-- Display Recommendations -->
-    <h3>Recommendations</h3>
-    {% for recommendation in recommendations %}
-        <div class="recommendation">
-            <strong>{{ recommendation.title }}</strong><br>
-            {{ recommendation.description }}<br>
-            Location: {{ recommendation.address }}<br>
-            {% if user == profile.user %}
-                <a href="{% url 'edit_recommendation' recommendation_id=recommendation.id %}" class="btn btn-primary">Edit</a>
-                <form action="{{ recommendation.delete_url }}" method="POST" class="d-inline" onsubmit="return confirmDelete();">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">
-                        Delete
-                    </button>
-                </form>
+<div class="container mt-4 col-lg-12">
+    <!-- Username -->
+    <h2 class="text-white text-center profile-name text-uppercase">{{ profile.user.username }}</h2>
+    
+    <!-- Profile Info -->
+    <div class="row my-4">
+        <div class="col-lg-4 text-center profile-avatar-container">
+            {% if profile.avatar %}
+                <img src="{{ profile.avatar.url }}" alt="{{ profile.user.username }}'s avatar" class="img-fluid profile-avatar">
+            {% else %}
+                <img src="{% static 'images/default_avatar.png' %}" alt="Default avatar" class="img-fluid profile-avatar">
             {% endif %}
         </div>
-    {% endfor %}
+        <div class="col-lg-8 text-white bio">
+            <p><strong class="details-header">Location:</strong> {{ profile.location }}</p>
+            <p><strong class="details-header">Bio:</strong> {{ profile.bio }}</p>
+        </div>
+    </div>
+    {% if user.is_authenticated and user == profile.user %}
+    <div class="profile-buttons" style="height:45px">
+        <a href="{% url 'edit_profile' username=request.user.username %}" class="btn btn-primary profile-edit-button">Edit Profile</a>
+        <a href="{% url 'delete_account' username=request.user.username %}" class="btn btn-danger profile-delete-button" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">Delete Account</a>
+    </div>
+    {% else %}
+    <div style="height:45px">
+        
+    </div>
+    {% endif %}
+    
+    <!-- Recommendations -->
+    <h3 class="mt-4 text-white">Recommendations</h3>
+    <div class="accordion" id="recommendationAccordion">
+        {% for recommendation in recommendations %}
+        <div class="accordion-item">
+                <h2 class="accordion-header" id="heading{{ recommendation.id }}">
+                    <button class="accordion-button collapsed d-flex" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ recommendation.id }}" aria-expanded="false" aria-controls="collapse{{ recommendation.id }}">
+                        <span>{{ recommendation.title }}</span>
+                    </button>
+                </h2>
+            <div id="collapse{{ recommendation.id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ recommendation.id }}" data-bs-parent="#recommendationAccordion">
+                <div class="accordion-body text-white">
+                    <div>
+                        <strong class="accordion-title">Location:</strong>
+                        <p>{{ recommendation.address }}</p>
+                    </div>
+                    <div>
+                        <strong class="accordion-title">Description:</strong>
+                        <p>{{ recommendation.description }}</p>
+                    </div>
+                    {% if user == profile.user %}
+                    <div class="recommendation-buttons d-flex mt-3">
+                        <div class="edit-button">
+                            <a href="{% url 'edit_recommendation' recommendation_id=recommendation.id %}" class="btn btn-primary">Edit Recommendation</a>
+                        </div>
+                        <div class="delete-button">
+                            <a href="{% url 'delete_recommendation' recommendation_id=recommendation.id %}" class="btn btn-danger btn-sm">Delete</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 
-    <!-- Account Deletion Confirmation Modal -->
-    {% include "modals/modal.html" with modal_id="deleteAccountModal" title="Confirm Account Deletion" message="This action is irreversible. Please confirm." context_type="account_deletion" action_url=delete_account_url submit_class="btn-danger" submit_label="Delete Account" %}
+<!-- Account Deletion Confirmation Modal -->
+{% include "modals/modal.html" with modal_id="deleteAccountModal" title="Confirm Account Deletion" message="This action is irreversible. Please confirm." context_type="account_deletion" action_url=delete_account_url submit_class="btn-danger" submit_label="Delete Account" %}
+
 {% endblock %}
+
+

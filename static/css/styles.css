@@ -24,7 +24,7 @@ body {
     margin: 0;
     padding: 0;
 
-    background-color: var(--main-darkest);
+    background-color: var(--main-darker);
 
 }
 
@@ -35,6 +35,7 @@ body {
 section {
     height: 100vh;
     padding: 1rem;
+
 }
 
 .text-center {
@@ -565,7 +566,7 @@ input[type="text"]:not(:placeholder-shown), input[type="password"]:not(:placehol
 }
 
 /*---------------------------------------------*/
-/*  Signip
+/*  Signup
 /*---------------------------------------------*/
 
 #signup-page {
@@ -598,6 +599,143 @@ input[type="text"]:not(:placeholder-shown), input[type="password"]:not(:placehol
 /* Ensure input fields have uniform styling */
 .signup-container .signup-group input {
     border-radius: 20px !important;
+}
+
+/*---------------------------------------------*/
+/*  Profile
+/*---------------------------------------------*/
+
+/* Profile Name Styling */
+.profile-name {
+    text-align: left;
+    font-size: 3rem; /* Increase the size as needed */
+}
+
+/* Header styling for location and bio */
+.details-header {
+    font-size: 1.5rem; /* Increase size for headers */
+    font-weight: bold;
+}
+
+.details-header p {
+    font-size: 1rem;
+}
+
+/* Avatar styling - Square and larger */
+.profile-avatar {
+    border-radius: 10px; /* Optional, for slight rounded corners */
+    width: 400px; /* Set to 300px */
+    height: 400px; /* Set to 300px */
+    object-fit: cover; /* Ensures the image fills the square without distortion */
+}
+
+/* Profile container styling */
+.profile-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center; 
+
+    margin-left: 0!important;
+    margin-right: 0;
+}
+
+/* Details container to match the height of the profile image and width 100% */
+.profile-container  {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    height: 400px; /* Set height to 400px */
+    width: 100%; /* Ensure the details container is 100% width */
+}
+
+.bio {
+    padding: 0;
+}
+
+/* Buttons - Edit and Delete side by side */
+.profile-buttons {
+    display: flex;
+    gap: 1rem; /* Space between the buttons */
+    justify-content: left; /* Centers the buttons */
+    width: 100%; /* Make buttons span full width */
+    
+}
+
+.profile-edit-button, .profile-delete-button {
+    width: 150px; /* Adjust the width to be smaller */
+    padding: 0.5rem;
+    text-align: center; /* Center the text in the buttons */
+}
+
+/* Ensure buttons at bottom of bio section */
+.profile-buttons-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-top: auto; /* Pushes buttons to the bottom */
+}
+
+/* Accordion Header */
+.accordion-header {
+    background-color: var(--main-darkest); /* Darkest background for the header */
+    color: white; /* Ensure text stands out */
+}
+
+/* Accordion Body */
+.accordion-body {
+    background-color: var(--main-darker); /* Darker background for the body */
+    color: white; /* Ensure text stands out */
+}
+
+/* Optional: Additional styling for the accordion button (for contrast) */
+.accordion-button {
+    background-color: var(--main-darkest); /* Darkest color for the button */
+    color: white;
+}
+
+.accordion-button:focus {
+    box-shadow: none; /* Remove focus shadow to keep the style clean */
+}
+
+.accordion-button.collapsed {
+    background-color: var(--main-darker); /* Ensure collapsed button also matches */
+}
+
+/* Accordion header button container */
+.accordion-item .accordion-header .accordion-buttons {
+    display: flex;
+    justify-content: flex-end; /* Align delete button to the right */
+    width: 100%;
+}
+
+/* Accordion item buttons - Delete on the right */
+.accordion-item .accordion-header .accordion-buttons a {
+    width: auto; /* Allow button to take its natural width */
+    padding: 0.5rem 1rem;
+}
+
+/* Accordion body title styles */
+.accordion-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+/* Edit button at the bottom of the accordion body */
+.accordion-body .text-center.mt-3 {
+    margin-top: 1.5rem;
+}
+
+.recommendation-buttons {
+    display: flex;
+    justify-content: space-between; /* Space the buttons apart */
+    gap: 1rem; /* Adds space between the buttons */
+    width: 100%;
+}
+
+.recommendation-buttons button {
+    width: 100px;
 }
 
 
