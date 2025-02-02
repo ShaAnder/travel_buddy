@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="container">
-        <h2>Edit Recommendation: {{ recommendation.title }}</h2>
+        <h2 class="recommendation-title">Edit Recommendation: {{ recommendation.title }}</h2>
         <div class="form-wrapper">
             <form method="POST">
                 {% csrf_token %}

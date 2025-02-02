@@ -754,6 +754,12 @@ input[type="text"]:not(:placeholder-shown), input[type="password"]:not(:placehol
 /*  EDIT PROFILE
 /*---------------------------------------------*/
 
+.recommendation-title {
+    color: white;
+    text-align: center;
+    margin-top: 2rem;
+}
+
 .profile-edit-container {
     display: flex;
     flex-direction: column;
@@ -1115,3 +1121,4 @@ h1 {
         width: 100%;
     }
 }
+
