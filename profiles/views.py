@@ -98,51 +98,6 @@ def delete_account(request, username=None):
 
 # ALL AUTH ACCOUNT MANAGEMENT VIEWS #
 
-
-def login(request):
-    """
-    Login view for user authentication.
-
-    Args:
-        request (HttpRequest): The request object for logging the user in.
-
-    Returns:
-        HttpResponse: Renders the login page or redirects to the next page after login.
-    """
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            auth_login(request, form.get_user())
-            next_url = request.GET.get('next', 'recommendations')  # Redirect to 'next' if it exists
-            return redirect(next_url)
-    else:
-        form = LoginForm()
-
-    return render(request, 'account/login.html', {'form': form})
-
-
-def signup(request):
-    """
-    Signup view for creating a new user.
-
-    Args:
-        request (HttpRequest): The request object for signing up a new user.
-
-    Returns:
-        HttpResponse: Renders the signup page or redirects to recommendations after signup.
-    """
-    if request.method == 'POST':
-        form = SignupForm(request.POST)
-        if form.is_valid():
-            new_user = form.save()
-            auth_login(request, new_user)
-            return redirect('recommendations')
-    else:
-        form = SignupForm()
-
-    return render(request, 'account/signup.html', {'form': form})
-
-
 def logout(request):
     """
     Logout view to log out the current user and redirect to recommendations.

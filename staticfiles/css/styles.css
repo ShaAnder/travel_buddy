@@ -1,0 +1,518 @@
+/* Font Imports */
+@import url("https://fonts.googleapis.com/css2?family=Bonheur+Royale&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+/* root variable color scheme*/
+:root {
+    /* colors */
+    --main-lightest: #ffffff;
+    --main-light: #b8b8b8;
+    --main-darker: #2c2c2c;
+    --main-darkest: #10161d;
+    --main-contrast: #1666ce;
+
+    /* fonts */
+    --default-font: "Roboto", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --heading-font: "Raleway", sans-serif;
+    --nav-font: "Poppins", sans-serif;
+    --quote-font: "Bonheur Royale", sans-serif;
+}
+
+/* reset all margins and padding*/
+body {
+    margin: 0;
+    padding: 0;
+
+    background-color: var(--main-darkest);
+
+}
+
+/*---------------------------------------------*/
+/*  DEFAULT / GENERIC STYLING
+/*---------------------------------------------*/
+
+section {
+    height: 100vh;
+    padding: 1rem;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.section-title {
+    padding-bottom: 0;
+}
+
+.section-title h1:after {
+    content: "";
+    position: relative;
+    display: block;
+    border-radius: 25px;
+    width: 50px;
+    height: 5px;
+    background: var(--main-contrast);
+}
+
+.section-title p {
+    font-size: 20px;
+}
+
+strong {
+    font-weight: 500;
+    font-size: 1.05rem;
+}
+
+p {
+    font-size: 1rem;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+/*---------------------------------------------*/
+/*  HEADER
+/*---------------------------------------------*/
+
+/* toggle mobile nav bar off until we want to use it */
+.mobile-nav-toggle {
+    display: none;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    width: 300px;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    font-family: var(--heading-font);
+    color: var(--main-lightest);
+    background-color: var(--main-darkest);
+    z-index: 9999;
+    transition: ease(0.3s);
+    justify-content: center;
+}
+  
+.header-image-container {
+    width: 250px;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+}
+
+.header-image{
+
+    width: 200px;
+    border-radius: 50%;
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    transition: ease 0.3s;
+}
+  
+/* NAV LINKS */
+
+.nav-links {
+    margin-top: 1rem;
+    flex-grow: 1;
+}
+  
+.nav-links ul {
+    list-style: none;
+}
+  
+.nav-links a {
+    padding: 15px 10px;
+    width: 100%;
+    font-family: var(--nav-font);
+    font-size: 20px;
+    font-weight: 400;
+    display: flex;
+    color: var(--main-light);
+    text-decoration: none;
+    transition: 0.3s;
+}
+  
+.nav-links a .navicon {
+    margin-right: 1rem;
+    font-size: 20px;
+    align-items: center;
+}
+  
+.nav-links a:hover .navicon {
+    color: var(--main-contrast);
+}
+  
+.nav-links a:hover {
+    color: white;
+}
+  
+/* HEADER TOGGLE BUTTON */
+  
+.toggle-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 25px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left:5px;
+    color: var(--main-lightest);
+    background-color: var(--main-darker);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 9998;
+    transition: 0.3s;
+}
+
+.toggle-btn:hover {
+    color:var(--main-contrast)
+}
+
+.toggle-btn-right {
+    position: fixed;
+    display: flex;
+    top: 90vh;
+    left: 92%;
+}
+  
+/* moves header back left when it's being shown */
+.header.header-show {
+    left: 0;
+}
+
+/* HEADER SOCIAL LINKS */
+  
+.header .social-links {
+    margin-top: auto; 
+    margin: 0px 0 20px 0;
+}
+  
+.header .social-links i {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+.header .social-links a {
+    margin: 10px 2px;
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 18px;
+    background: color-mix(in srgb, var(--main-lightest), transparent 90%);
+    color: var(--default-color);
+    text-decoration: none;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.header .social-links a:hover {
+    background: var(--main-contrast);
+}
+
+.header .social-links p {
+    margin-bottom: 0;
+}
+
+#footer {
+    text-align: center;
+}
+
+/*---------------------------------------------*/
+/*  MAIN BODY
+/*---------------------------------------------*/
+
+.main {
+    display: block;
+    /* we use this here to isolate the main unicode settings from header */
+    unicode-bidi: isolate;
+  }
+
+/*---------------------------------------------*/
+/* SPLASH SCREEN
+/*---------------------------------------------*/
+
+.splash-screen-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    top: 50%;
+}
+
+.splash-screen-container h1 {
+    margin: 0!important;
+}
+
+#travel {
+    color:var(--main-contrast);
+    animation: fadeInLeft 1s ease-out forwards;
+}
+
+#buddy {
+    color: var(--main-lightest);
+    animation: fadeInRight 1s ease-out forwards;
+    animation-delay: 0.5s; 
+}
+
+.lead {
+    animation: fadeInBottom 2s ease-out forwards;
+}
+
+@keyframes fadeInLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInBottom {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.loader-container {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+.loader {
+    display: flex;
+    justify-content: center;
+    height: 30px;
+    aspect-ratio: 2.5;
+    --_g: no-repeat radial-gradient(farthest-side,#ffffff 90%,#0000);
+    
+    background:var(--_g), var(--_g), var(--_g), var(--_g);
+    background-size: 20% 50%;
+    animation: l43 1s infinite linear; 
+  }
+
+@keyframes l43 {
+    0%     {background-position: calc(0*100%/3) 50% ,calc(1*100%/3) 50% ,calc(2*100%/3) 50% ,calc(3*100%/3) 50% }
+    16.67% {background-position: calc(0*100%/3) 0   ,calc(1*100%/3) 50% ,calc(2*100%/3) 50% ,calc(3*100%/3) 50% }
+    33.33% {background-position: calc(0*100%/3) 100%,calc(1*100%/3) 0   ,calc(2*100%/3) 50% ,calc(3*100%/3) 50% }
+    50%    {background-position: calc(0*100%/3) 50% ,calc(1*100%/3) 100%,calc(2*100%/3) 0   ,calc(3*100%/3) 50% }
+    66.67% {background-position: calc(0*100%/3) 50% ,calc(1*100%/3) 50% ,calc(2*100%/3) 100%,calc(3*100%/3) 0   }
+    83.33% {background-position: calc(0*100%/3) 50% ,calc(1*100%/3) 50% ,calc(2*100%/3) 50% ,calc(3*100%/3) 100%}
+    100%   {background-position: calc(0*100%/3) 50% ,calc(1*100%/3) 50% ,calc(2*100%/3) 50% ,calc(3*100%/3) 50% }
+  } /* HTML: <div class="loader"></div> */
+
+
+@keyframes fadeInLoader {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Fade-out animation for splash screen */
+#splash-screen {
+    transition: opacity 1s ease-in-out;
+}
+
+/*---------------------------------------------*/
+/* HOME
+/*---------------------------------------------*/
+
+/* Style for the overall layout */
+#home-page {
+    height: 100vh;
+}
+
+.left-side {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--main-darkest)!important;
+}
+
+.right-side {
+    flex: 1;
+    background-color: #222;
+    overflow: hidden; /* Prevent images from overflowing */
+    position: relative;
+}
+
+.carousel-item {
+    height: 100vh; /* Ensure the carousel takes up the full height */
+}
+
+.carousel-item img {
+    object-fit: cover;  /* Ensures the image fills the container */
+    object-position: center center;  /* Ensures the image is centered */
+    width: 100%;
+    height: 100%;
+}
+
+.content {
+    text-align: center;
+    max-width: 400px;
+    margin: 0 20px;
+}
+
+.content img {
+    width: 200px; /* Adjust the logo size as needed */
+}
+
+.buttons .btn {
+    width: 100%;
+}
+
+.lead {
+    margin: 20px 0;
+}
+
+
+/*---------------------------------------------*/
+/*  MAP
+/*---------------------------------------------*/
+
+
+
+#map {
+    position: absolute;
+    top: 0;      /* Move the map to the top */
+    left: 0;     /* Optionally move it to the left */
+    width: 100%; /* Ensure the map takes the full width of the container */
+    height: 100%;/* Ensure the map takes the full height of the container */
+}
+
+
+
+/*---------------------------------------------*/
+/*  MEDIA QUERIES
+/*---------------------------------------------*/
+
+@media (max-width: 1440px) {
+    section {
+        height: 100vh;
+    }
+}
+
+@media (min-width: 1200px) {
+    /* 1200 px or higher header populates left side 
+    and main container / footer pushed left */
+    .header ~ main,
+    .header ~ #footer {
+        margin-left: 300px;
+    }
+}
+
+@media (max-width: 1199px) {
+    /*hide header on anything under 1199 px*/
+    .header {
+        left: -300px;
+    }
+
+    .toggle-btn-right {
+        left: 93.5%;
+    }
+
+    #home-page {
+        flex-direction: column;
+    }
+    .left-side {
+        padding: 20px;
+        max-width: 100%;
+    }
+    .right-side {
+        display: none; /* Hide the carousel on tablet and smaller screens */
+    }
+}
+
+@media only screen and (max-width: 768px) {
+.portfolio-content {
+    display: flex !important;
+    justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    section {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    } 
+
+    .splash-logo {
+        font-size: 2rem;
+    }
+
+    .left-side {
+        max-width: 100%;
+    }
+    .content {
+        max-width: 350px; /* Ensure content isn't too wide on mobile */
+        width: 100%;
+    }
+
+    .toggle-btn-right {
+        left: 91%;
+    }
+}
+
+/* specifically for portfolio filters as on 450 still sits nicely */
+@media (max-width: 575px) {
+}
+
+@media (max-width: 450px) {
+    h1 {
+        font-size: 40px;
+    }
+
+    h3 {
+        font-size: 20px;
+    }
+
+    .nav-links a {
+        padding-top: 5%;
+    }
+
+    .toggle-btn-right {
+        left: 83%;
+    }
+
+}

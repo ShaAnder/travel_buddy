@@ -108,7 +108,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                #custom processor for nav visibility
                 'core.context_processors.navbar_visibility',
             ],
         },
@@ -181,7 +180,7 @@ ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = 'recommended'
 
 #also we will use these additional defualts
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'http'
-ACCOUNT_EMAIL_SUBJECT_PREFIX = "[Travel Buddy] "
+ACCOUNT_EMAIL_SUBJECT_PREFIX = "[Travel Buddy]"
 
 ### --- Internationalization --- ###
 

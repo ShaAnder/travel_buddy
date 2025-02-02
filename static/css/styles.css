@@ -427,6 +427,144 @@ h3 {
     height: 100%;/* Ensure the map takes the full height of the container */
 }
 
+/*---------------------------------------------*/
+/*  FORMS
+/*---------------------------------------------*/
+
+/*---------------------------------------------*/
+/*  Login
+/*---------------------------------------------*/
+
+#login-page {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    height: 100vh;
+    background: url('../images/splash_screen/splash-2.jpg') no-repeat center center/cover;
+    padding:0;
+}
+
+
+.login-container {
+    width: 33.33%; 
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--main-darkest); 
+    padding: 20px;
+
+}
+
+/* Override Bootstrap input-group styles */
+.login-container .input-group > * {
+    margin-left: 0 !important;  /* Remove unwanted margin */
+    border-radius: 5px !important; /* Restore rounded corners */
+}
+
+/* Ensure input fields have uniform styling */
+.login-container .input-group input {
+    border-radius: 20px !important;
+}
+
+
+.form-wrapper {
+    width: 100%;
+    max-width: 400px; 
+    background-color: #fff;
+    padding: 30px;
+    box-shadow: none;
+    border-radius: 50%;
+
+}
+
+.form-wrapper {
+    width: 100%;
+    text-align: left;
+    background-color: transparent;
+    font-size: 1.5rem;
+    color: var(--main-lightest);
+
+  }
+
+.form-group {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.input-group {
+    position: relative;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+}
+
+.input-group i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 10px 20px;
+    padding-left: 40px; 
+    border: 1px solid #ccc;
+    border-radius: 20px;
+
+    font-size: 1rem; 
+    color: #333; 
+
+}
+
+input[type="text"]::placeholder, input[type="password"]::placeholder {
+    font-size: 1rem; 
+    color: #aaa; 
+}
+
+input[type="text"]:not(:placeholder-shown), input[type="password"]:not(:placeholder-shown) {
+    font-size: 1rem; 
+    color: #333; 
+}
+
+.error-messages {
+    margin-top: 10px;
+    color: #e74c3c;
+    font-size: 1rem;
+}
+
+/* Signup button - Bottom left of the page */
+.form-actions .btn {
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    background-color: var(--main-contrast);
+  }
+    
+  /* Arrow button - take user to recommendations */
+  .arrow-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 25px;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left:1%;
+    bottom: 2%;
+    color: var(--main-lightest);
+    background-color: var(--main-darker);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 9998;
+    transition: 0.3s;
+  }
+  
+  .arrow-btn i {
+    font-size: 1.2em;
+  }
 
 
 /*---------------------------------------------*/
@@ -445,6 +583,10 @@ h3 {
     .header ~ main,
     .header ~ #footer {
         margin-left: 300px;
+    }
+
+    .login-container {
+        width: 40%; /* Slightly wider for medium screens */
     }
 }
 
@@ -477,6 +619,12 @@ h3 {
     }
 }
 
+@media (max-width: 992px) {
+    .login-container {
+        width: 50%; /* Take more space on smaller desktops */
+    }
+}
+
 @media (max-width: 768px) {
     section {
         padding-left: 1rem;
@@ -498,7 +646,39 @@ h3 {
     .toggle-btn-right {
         left: 91%;
     }
+
+    #login-page {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-position: center;
+    }
+
+    .login-container {
+        width: 100%;
+        height: 100%;
+        padding: 40px 20px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .form-wrapper {
+        text-align: center;
+        font-size: 1.2rem;
+        max-width: 90%;
+    }
+
+    .form-actions .btn {
+        width: 100%;
+    }
+
+    .arrow-btn {
+        right: auto;
+        left: 5%;
+        bottom: 5%;
+    }
 }
+
 
 /* specifically for portfolio filters as on 450 still sits nicely */
 @media (max-width: 575px) {
@@ -521,4 +701,31 @@ h3 {
         left: 83%;
     }
 
+    #login-page {
+        background: var(--main-darkest); /* Remove background image */
+    }
+
+    .login-container {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--main-darkest);
+    }
+
+    .form-wrapper {
+        max-width: 100%;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .form-actions .btn {
+        width: 100%;
+    }
+
+    .arrow-btn {
+        right: 5%;
+        bottom: 5%;
+    }
 }

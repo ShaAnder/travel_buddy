@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block header %}
+<!-- No navbar content, so the navbar is hidden -->
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <!-- Header -->
+    <div class="header">Sign Up</div>
+
+    <!-- Form -->
+    <form method="POST" action="{% url 'account_signup' %}">
+        {% csrf_token %}
+        <div class="form">
+            {{ form.as_p }}  <!-- This renders each form field wrapped in <p> tags -->
+        </div>
+        <button type="submit" class="btn">Register</button>
+    </form>
+</div>
+
+{% endblock %}

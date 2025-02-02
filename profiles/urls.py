@@ -1,5 +1,6 @@
 from django.urls import path, include
-from . import views
+from allauth.account.views import LoginView, SignupView, PasswordResetView
+from . import views 
 
 urlpatterns = [
     # Profile URL patterns
@@ -7,8 +8,10 @@ urlpatterns = [
     path('profile/<str:username>/edit/', views.edit_profile, name='edit_profile'),
     path('profile/<str:username>/delete_profile/', views.delete_account, name='delete_account'),
     # Account URL patterns
-    path('account/login/', views.login, name='account_login'),
-    path('account/signup/', views.signup, name='account_signup'),
-    path('accounts/', include('allauth.urls')),
-    path('account/logout/', views.logout, name='account_logout')
+    path('accounts/login/', LoginView.as_view(template_name="allauth/account/login.html"), name="account_login"),
+    # Signup
+    path('accounts/signup/', SignupView.as_view(template_name="allauth/account/signup.html"), name="account_signup"),
+    # Password Reset
+    path('accounts/password/reset/', PasswordResetView.as_view(template_name="allauth/account/password_reset.html"), name="account_reset_password"),
+    path('accounts/', include('allauth.urls')),  # Include allauth URLs
 ]
