@@ -1,50 +1,61 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="container">
-        <div class="profile-edit-container">
-            <div class="form-wrapper">
-                <h1>Edit Profile</h1>
-                <form method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-
-                    <!-- Bio field -->
-                    <div class="form-group">
-                        <label for="id_bio">Bio:</label>
-                        {{ form.bio }}
-                    </div>
-
-                    <!-- Location field -->
-                    <div class="form-group">
-                        <label for="id_location">Location:</label>
-                        {{ form.location }}
-                    </div>
-
-                    <!-- Avatar field -->
-                    <div class="form-group">
-                        <label for="id_avatar">Avatar (optional, .jpg, .jpeg, .png):</label>
-                        {{ form.avatar }}
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">
-                            Save Changes
-                        </button>
-                    </div>
-                    
-                    {% if form.errors %}
-                        <div class="alert alert-danger">
-                            <ul>
-                                {% for field in form %}
-                                    {% for error in field.errors %}
-                                        <li>{{ error }}</li> 
-                                    {% endfor %}
-                                {% endfor %}
-                            </ul>
+    <div class="profile-edit-container container">
+        <div class="form-wrapper row">
+            <h1>Edit Profile</h1>
+            
+            <form method="POST" enctype="multipart/form-data" class="col-12">
+                {% csrf_token %}
+                
+                <div class="row">
+                    <!-- Avatar field (300px wide) -->
+                    <div class="col-md-3 avatar-container">
+                        <div class="form-group">
+                            <label for="id_avatar">Avatar:</label>
+                            <div class="avatar-image">
+                                {% if user.profile.avatar %}
+                                    <img id="avatar-img" src="{{ user.profile.avatar.url }}" alt="Avatar" class="avatar-img" onclick="document.getElementById('id_avatar').click();" />
+                                {% else %}
+                                    <img id="avatar-img" src="/path/to/default-avatar.jpg" alt="Default Avatar" class="avatar-img" onclick="document.getElementById('id_avatar').click();" />
+                                {% endif %}
+                            </div>
+                            <input type="file" id="id_avatar" name="avatar" style="display: none;" accept=".jpg, .jpeg, .png" onchange="previewAvatar(event)">
                         </div>
-                    {% endif %}
-                </form>
-            </div>
+                    </div>
+
+                    <!-- Bio and Location fields -->
+                    <div class="col-md-9 bio-container">
+                        <div class="form-group">
+                            <label for="id_bio">Bio:</label>
+                            {{ form.bio }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id_location">Location:</label>
+                            {{ form.location }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        Save Changes
+                    </button>
+                </div>
+
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <ul>
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li> 
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </form>
         </div>
     </div>
 {% endblock %}
