@@ -6,18 +6,67 @@
 
 {% block content %}
 
-<div class="container">
-    <!-- Header -->
-    <div class="header">Sign Up</div>
-
-    <!-- Form -->
-    <form method="POST" action="{% url 'account_signup' %}">
-        {% csrf_token %}
-        <div class="form">
-            {{ form.as_p }}  <!-- This renders each form field wrapped in <p> tags -->
+<section id="signup-page">
+    <div class="signup-container">
+        <div class="form-wrapper">
+            <!-- Header -->
+            <h1>Sign Up</h2>
+            <!-- Signup Form -->
+            <form method="POST" action="{% url 'account_signup' %}">
+                {% csrf_token %}
+                <!-- Username Field -->
+                <div class="form-group">
+                    <label for="id_username">Username</label>
+                    <div class="input-group">
+                        <input type="text" id="id_username" name="username" placeholder="Enter your username" required>
+                    </div>
+                </div>
+                <!-- Email Field -->
+                <div class="form-group">
+                    <label for="id_email">Email</label>
+                    <div class="input-group">
+                        <input type="email" id="id_email" name="email" placeholder="Enter your email" required>
+                    </div>
+                </div>
+                <!-- Password Field -->
+                <div class="form-group">
+                    <label for="id_password1">Password</label>
+                    <div class="input-group">
+                        <input type="password" id="id_password1" name="password1" placeholder="Create a password" required>
+                    </div>
+                </div>
+                <!-- Confirm Password Field -->
+                <div class="form-group">
+                    <label for="id_password2">Confirm Password</label>
+                    <div class="input-group">
+                        <input type="password" id="id_password2" name="password2" placeholder="Confirm your password" required>
+                    </div>
+                </div>
+                <!-- Error Messages -->
+                {% if form.errors %}
+                <div class="error-messages">
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <!-- Signup Button -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Sign In</button>
+                </div>
+            </form>
+            <!-- Login Redirect -->
+            <p>
+                Already have an account? 
+                <a href="{% url 'account_login' %}" class="link">Log in</a>
+            </p>
         </div>
-        <button type="submit" class="btn">Register</button>
-    </form>
-</div>
+        <!-- Arrow button to go back to recommendations -->
+        <a href="{% url 'recommendations' %}" class="arrow-btn">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+    </div>
 
 {% endblock %}
