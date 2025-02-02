@@ -1,13 +1,59 @@
 <!-- templates/home.html -->
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
-<!-- main home section, this will contain our welcome message 
-our buttons to get locations as well as a login / logout option-->
-<section class="home" id="section-home">
-    <div class="container">
-        <h1>Welcome to Travel Buddy</h1>
-        <p>Get started by setting your location!</p>
+<section id="splash-screen">
+    <div class="splash-screen-container text-center">
+        <h1 class="mt-5">
+            <span id="travel" style="opacity: 0;">Travel</span>
+            <span id="buddy" style="opacity: 0;">Buddy</span>
+        </h1>
+        <p class="lead" style="opacity: 0; color:white">Explore, share, and discover new places.</p>
+
+        <div class="loader-container">
+            <div class="loader"></div>
+        </div>
     </div>
 </section>
+
+<!-- Your Home Page -->
+<section id="home-page" class="d-flex">
+    <!-- Left Side: Main background with Travel Buddy text and buttons -->
+    <div class="left-side d-flex justify-content-center align-items-center" style="flex: 1; background-color: #f8f9fa;">
+        <div class="content text-center">
+            <!-- Travel Buddy Text -->
+            <h1 class="mt-5 mb-4">
+                <span id="travel">Travel</span>
+                <span id="buddy">Buddy</span>
+            </h1>
+            
+            <!-- Buttons -->
+            <div class="buttons mb-4">
+                <a href="{% url 'account_login' %}" class="btn btn-primary mb-4" style="background-color: #1666ce;">Sign In</a>
+                <a href="{% url 'account_signup' %}" class="btn btn-secondary mb-4" style="background-color: #fff; color: black">Sign Up</a>
+            </div>
+            
+            <!-- Adventure Text -->
+            <p class="lead mb-3" style="color:white;">Feeling adventurous?</p>
+            <a href="{% url 'recommendations' %}" class="btn btn-success" style="position: relative; z-index: 9999;">Go to Recommendations</a>
+        </div>
+    </div>
+
+    <!-- Right Side: Scenic Slideshow (Carousel) -->
+    <div class="right-side" style="flex: 1; background-color: #222; overflow: hidden; position: relative;">
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000" data-bs-pause="false" data-bs-wrap="true">
+            <div class="carousel-inner">
+                <!-- Loop through the list of image paths passed from the view -->
+                {% for image in image_paths %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <img src="{% static image %}" class="d-block w-100" alt="Scenic view">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+
 {% endblock %}

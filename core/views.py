@@ -21,7 +21,8 @@ def home(request):
     Returns:
         HttpResponse: The rendered homepage template with the navbar hidden.
     """
-    return render(request, "core/home.html", {'show_navbar': False})
+    image_paths = [f'images/splash_screen/splash-{i}.jpg' for i in range(1, 8)]
+    return render(request, "core/home.html", {'show_navbar': False , 'image_paths': image_paths})
 
 
 def about(request):
