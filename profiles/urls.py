@@ -1,6 +1,14 @@
+"""
+Define URL patterns for user account and profile management.
+
+This module specifies the URL configurations for managing user profiles
+and account-related actions (login, signup, password reset, logout) in
+the application. It includes paths for viewing, editing, and deleting
+profiles, as well as handling authentication through Django Allauth.
+"""
 from django.urls import path, include
 from allauth.account.views import LoginView, SignupView, PasswordResetView
-from . import views 
+from . import views
 
 urlpatterns = [
     # Profile URL patterns

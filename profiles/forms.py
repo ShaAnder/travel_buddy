@@ -1,17 +1,27 @@
+"""
+Define the ProfileForm for user profile editing.
+
+This module contains the ProfileForm class, which allows users to edit
+their profile details, including bio, location, and avatar, with built-in
+validation constraints.
+"""
 from django import forms
 from .models import Profile
+
 
 class ProfileForm(forms.ModelForm):
     """
     Form to handle profile editing.
 
     Args:
-        forms (django.forms.ModelForm): A base class for creating model-based forms.
+        forms (django.forms.ModelForm):
+        A base class for creating model-based forms.
 
     Description:
         This form is used to edit a user's profile, allowing them to update
         their bio, location, and avatar. Constraints are added for validation.
     """
+
     class Meta:
         """
         Metadata for the ProfileForm class.
@@ -19,9 +29,10 @@ class ProfileForm(forms.ModelForm):
         Specifies the model to be used (Profile) and the fields that
         should be included in the form (bio, location, avatar).
         """
+
         model = Profile
         fields = ['bio', 'location', 'avatar']
-    
+
     def __init__(self, *args, **kwargs):
         """
         Initialize the form and update the avatar field to accept image files.
@@ -35,7 +46,7 @@ class ProfileForm(forms.ModelForm):
 
     def clean_bio(self):
         """
-        Validates the bio field to ensure it's not too long.
+        Validate the bio field to ensure it's not too long.
 
         Max length constraint is set to 500 characters.
 
@@ -52,14 +63,14 @@ class ProfileForm(forms.ModelForm):
 
     def clean_avatar(self):
         """
-        Validates the avatar field to ensure it has a valid file type.
-    
+        Validate the avatar field to ensure it has a valid file type.
+
         Args:
             avatar: The uploaded avatar image.
-    
+
         Returns:
             avatar: The cleaned avatar image.
-    
+
         Raises:
             ValidationError: If the avatar file type is invalid.
         """
@@ -70,13 +81,12 @@ class ProfileForm(forms.ModelForm):
             extension = None  # Default to None
 
             if hasattr(avatar, "public_id") and "." in avatar.public_id:
-                extension = avatar.public_id.split(".")[-1].lower()  # Extract from public_id
+                extension = avatar.public_id.split(".")[-1].lower()
             elif hasattr(avatar, "url") and "." in avatar.url:
-                extension = avatar.url.split("?")[0].split(".")[-1].lower()  # Extract from URL
+                extension = avatar.url.split("?")[0].split(".")[-1].lower()
 
-            # This is a separate check for allowed extensions after getting the extension
             if extension and f".{extension}" not in allowed_extensions:
                 raise forms.ValidationError(
-                    "Invalid file type for avatar. Allowed types: .jpg, .jpeg, .png."
+                    "Invalid file type. Allowed types: .jpg, .jpeg, .png."
                 )
         return avatar

@@ -22,7 +22,10 @@ def home(request):
         HttpResponse: The rendered homepage template with the navbar hidden.
     """
     image_paths = [f'images/splash_screen/splash-{i}.jpg' for i in range(1, 8)]
-    return render(request, "core/home.html", {'show_navbar': False , 'image_paths': image_paths})
+    return render(
+        request,
+        "core/home.html", {'show_navbar': False, 'image_paths': image_paths}
+        )
 
 
 def about(request):
@@ -43,23 +46,8 @@ def about(request):
 
 def custom_403_view(request, exception):
     """
-    Custom handler for 403 Forbidden errors.
+    Return 403 forbidden error page.
+
     Renders the 403 error page from 'core/templates/error/403.html'.
     """
     return render(request, 'error/403.html', status=403)
-
-
-def custom_404_view(request, exception):
-    """
-    Custom handler for 404 Not Found errors.
-    Renders the 404 error page from 'core/templates/error/404.html'.
-    """
-    return render(request, 'error/404.html', status=404)
-
-
-def custom_500_view(request):
-    """
-    Custom handler for 500 Internal Server errors.
-    Renders the 500 error page from 'core/templates/error/500.html'.
-    """
-    return render(request, 'error/500.html', status=500)

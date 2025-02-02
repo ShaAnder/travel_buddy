@@ -1,4 +1,10 @@
-# IMPORTS
+"""
+Handle user profile creation and saving using signals.
+
+This module listens for the `post_save` signal of the `User` model to
+automatically create or save the associated `Profile` instance. It uses
+logging to track profile creation and saving actions.
+"""
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.dispatch import receiver
@@ -7,6 +13,7 @@ import logging
 
 # Initialize logger for this module
 logger = logging.getLogger(__name__)
+
 
 @receiver(post_save, sender=User)
 def manage_user_profile(sender, instance, created, **kwargs):
@@ -20,10 +27,11 @@ def manage_user_profile(sender, instance, created, **kwargs):
         **kwargs (dict): Additional keyword arguments (not used here).
 
     Description:
-        This signal is triggered when a User instance is saved. If the user is newly
-        created, it creates a corresponding Profile instance. If the user already has
-        a profile, it saves the profile instance.
-        
+        This signal is triggered when a User instance is saved.
+        If the user is newly created, it creates a corresponding
+        Profile instance. If the user already has a profile, it
+        saves the profile instance.
+
         This function uses logging to track profile creation and saving.
     """
     if created:

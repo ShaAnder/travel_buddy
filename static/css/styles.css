@@ -270,12 +270,12 @@ h3 {
     margin: 0!important;
 }
 
-#travel {
+.travel {
     color:var(--main-contrast);
     animation: fadeInLeft 1s ease-out forwards;
 }
 
-#buddy {
+.buddy {
     color: var(--main-lightest);
     animation: fadeInRight 1s ease-out forwards;
     animation-delay: 0.5s; 

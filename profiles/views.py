@@ -1,11 +1,17 @@
-# IMPORTS #
+"""
+Define views for user account and profile management.
+
+This module handles views for displaying and editing user profiles,
+deleting user accounts, and logging out users. It includes profile-related
+actions such as viewing recommendations, updating profile information,
+and handling account deletion with confirmation.
+"""
 from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.contrib.auth import login as auth_login, logout as auth_logout, authenticate
+from django.contrib.auth import logout as auth_logout, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from allauth.account.forms import LoginForm, SignupForm
 from recommendations.models import Recommendation
 from .import forms
 
@@ -21,7 +27,7 @@ def profile(request, username):
         username (str): The username of the user whose profile is being viewed.
 
     Returns:
-        HttpResponse: Renders the profile page with the user's profile and recommendations.
+        HttpResponse: Render profile page with the user's details
     """
     user = get_object_or_404(User.objects.select_related('profile'), username=username)
     recommendations = Recommendation.objects.filter(user=user)
@@ -67,12 +73,12 @@ def edit_profile(request, username=None):
 def delete_account(request, username=None):
     """
     View to delete a user's account after confirmation.
-    
+
     Args:
         request (HttpRequest): The request object.
-        
+
     Returns:
-        HttpResponse: Redirects to a confirmation page or logs the user out after account deletion.
+        HttpResponse: Redirects and logs the user out after account deletion.
     """
     if username and request.user.username != username:
         return render(request, "error/403.html", status=403)
@@ -80,18 +86,16 @@ def delete_account(request, username=None):
     if request.method == "POST":
         password = request.POST.get('password')
 
-        # Authenticate the user with the provided password
         user = authenticate(username=request.user.username, password=password)
-        if user is not None:
-            # Password is correct, proceed with deletion
-            user.profile.delete()  # Optional: delete user profile first
-            user.delete()  # Delete the user account
+        if user is not None:           
+            user.profile.delete()
+            user.delete()
             messages.success(request, "Your account has been deleted successfully.")
-            logout(request)  # Log out the user after account deletion
-            return redirect('home')  # Redirect to the home page or wherever you want
+            logout(request)
+            return redirect('home')
         else:
             messages.error(request, "Incorrect password. Please try again.")
-            return redirect('profile', username=request.user.username)  # Redirect back to the profile page
+            return redirect('profile', username=request.user.username)
 
     return redirect('profile', username=request.user.username)
 

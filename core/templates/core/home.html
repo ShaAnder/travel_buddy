@@ -1,7 +1,5 @@
-<!-- templates/home.html -->
-{% extends "base.html" %}
 {% load static %}
-
+{% extends "base.html" %}
 {% block content %}
 <section id="splash-screen">
     <div class="splash-screen-container text-center">
@@ -16,7 +14,6 @@
         </div>
     </div>
 </section>
-
 <!-- Your Home Page -->
 <section id="home-page" class="d-flex">
     <!-- Left Side: Main background with Travel Buddy text and buttons -->
@@ -24,10 +21,9 @@
         <div class="content text-center">
             <!-- Travel Buddy Text -->
             <h1 class="mt-5 mb-4">
-                <span id="travel">Travel</span>
-                <span id="buddy">Buddy</span>
-            </h1>
-            
+                <span class="travel">Travel</span>
+                <span class="buddy">Buddy</span>
+            </h1>          
             <!-- Buttons -->
             <div class="buttons mb-4">
                 <a href="{% url 'account_login' %}" class="btn btn-primary mb-4" style="background-color: #1666ce;">Sign In</a>
