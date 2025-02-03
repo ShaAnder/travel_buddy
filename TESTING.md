@@ -1,6 +1,6 @@
 # Testing
 
-The deployed project live link is [Travel Buddy]()
+The deployed project live link is [Travel Buddy](https://travel-buddy-pp4-f336df297d97.herokuapp.com)
 This application was extensively tested via automatic and manual tests these are detailed below 
 
 
@@ -11,73 +11,15 @@ aspects of the code base i decided to opt for a non standard structure and creat
 Inside this folder you will find the test files, the testing.md as well as the validation images which
 can be seen later in this document.
 
-
-## Automatic Testing
-As the name implies this is testing that was done automatically via the inbuilt django tests or 
-the code validation websites. I'll break the two of these up into subcategories.
-
-### Automatic tests
-
-
-### Validation
-
-#### PEP8 Python Validation
-
-<details>
-<summary><strong style="color:yellow"></strong></summary>
-
-</details>
-
-<details>
-<summary><strong style="color:yellow"></strong></summary>
-
-</details>
-
-<details>
-<summary><strong style="color:yellow"></strong></summary>
-
-</details>
-
-<details>
-<summary><strong style="color:yellow"></strong></summary>
-
-</details>
-
-#### JS validation
-
-
-
-#### HTML CSS Validation
-
-
-<details>
-<summary><strong style="color:green"></strong></summary>
-
-</details>
-
-<details>
-<summary><strong style="color:green"></strong></summary>
-
-</details>
-
-<details>
-<summary><strong style="color:green"></strong></summary>
-
-</details>
-
-<details>
-<summary><strong style="color:green"></strong></summary>
-
-</details>
-
 ## Manual Testing
-Manual testing was undertaken in a variety of ways, these included firstly building tests
-to test each part of the code base. These are detailed more in the test.py files, as well as
-this we tested the responsive design on browsers for clipping or design errors and finally
-ran through a batter of manual tests and expected behaviour tests. These are detailed below
+Manual testing was undertaken in a variety of ways, these included firstly building tests to test each part of the code base. These are detailed more in the test.py files, as well as this we tested the responsive design on browsers for clipping or design errors and finally ran through a batter of manual tests and expected behaviour tests. These are detailed below
+
+As each section or Function/Model was built during this project, I was testing for functionality and styling issues that may have arisen (see table below), which were corrected or fixed before continuing. I also had friends test the site by signing up, adding and recommendations using various devices on varying platforms (IOS, Android, Mobile, Tablet etc) and reporting back any issues they encountered with functionality or styling. Anyone who wishes to try out nad test the site and give feedback is welcome to do so!
 
 ### Manually built tests
-The manually built tests were designed to do the following:
+Throughout development i continously built manual test case code to check functions, models views ect worked correctly, while I won't include them in this project, they helped me with a lot of debugging issues especially with account creation and stopping foreign crud operations
+
+As well as this I also used a lot of inline debugging from print statements to try/except block and line by line testing.
 
 ### Browser Tests
 The game was tested on a variety of browsers:
@@ -90,15 +32,85 @@ The game was tested on a variety of browsers:
 
 Result:
 
+*For any Fails, there is a more detailed description below the table*
 
-### Expected Behaviours
+#### ADMIN
 
-| **Feature**              | **Action**                                                                | **Expected Result**                         | **Actual Result** |
-| ------------------------ | ------------------------------------------------------------------------- | ------------------------------------------- | ----------------- |
-|
+| TEST | OUTCOME | PASS/FAIL|
+|:---:|:---:|:---:|
+| Create Recommendation | Recommendation successfully displayed | Pass |
+| Recommendation Displays on map | Recommendations displayed on map with no issue | Pass |
+| Filter Recommendations | On some devices / platforms recommendations failed to filter correctly (*) | Fail |
+| Delete recommendations | Recommendation deleted successfully | Pass |
+| Edit Recommendaitons | Recommendation edited successfully | Pass |
+| Users Must verify emails | Users cannot engage with signin unless verifying | Pass |
+| User editing data | Defensive programming in place to stop a user performing crud on other users data | Pass |
+
+(*) - This bug arises due to the category filter not receiving the api call correctly, while i have not figured out how to replicate it yet i know it's an issue with OLDER versions of the django rest framework. It works most times but sometimes because a category fails to populate / be captured on recommendation creation we get this bug.
+
+#### User
+
+| TEST | OUTCOME | PASS/FAIL|
+|:---:|:---:|:---:|
+| Create Account | Created successfully | Pass |
+| User can view pages without signup | Viewed pages without being authenticated | Pass |
+| Login | Login Successful | Pass |
+| Logout | Logout Successful | Pass |
+| View recommendations | Recommendation page loads successfully | Pass |
+| Add Recommendations | Can add recommendations and view them on map (edit and delete on profile) | Pass |
+| View edit and delete profile | User can view, edit and close their accounts | Pass |
+| Filter Recommendations by category | Sometimes filtering fails to trigger due to rest framework (*) | Open |
+| Defensive programming, user cannot access protected pages| 4-4 page triggers preventing user from accessing | Pass |
+
+(*) Biggest app issue atm, django rest framework is not working as intended, this is largely in part due to my limited knowledge with serializers.
+
+## Automatic Testing
+As the name implies this is testing that was done automatically via the inbuilt django tests or 
+the code validation websites. I'll break the two of these up into subcategories.
+
+### Lighthouse
+
+Sadly best practices and performance is low with this project, this is due to how i had to break a lot of rules to get the app to run, 
+for example HTML validators will ALL throw a fit if you include {{}} in your tages, for performance i think this is due to the main component being a live constantly updated map
+
+Mobile
+
+![Lighthouse Mobile Score](documentation/images/lighthouse_mobile.png)
+
+Desktop
+
+![Lighthouse Desktop Score](documentation/images/lighthouse_desktop.png)
+
+## Validation Testing
+
+As for validation files, I thoroughly tested every pages validation, and to save some of the hassle of multiple screenshots i'll summarize it instead.
+
+#### HTML & CSS
+
+For HTML and CSS:
+
+- Html errors only included the validator complaining about having no <head> tags or the use of {{}} in the page, this is due to django and how it generates templates, any preventable erros were fixed in testing
+- As for CSS there was one error in 1200 lines of code, this was a to gradient i tried using on a background color tag, it actually worked but the validator was not happy.
+
+#### Python Testing
+
+Python pep8 validation was done via [Code Institute's Python Linter](https://pep8ci.herokuapp.com/)
+
+The only errors recieved here were where some lines of text exceeded the limit of 79 characters.
+
+Python Files Tested:
+
+- models
+- forms
+- views
+- urls
+
+#### Javascrip Testing
+
+For javascript i ended up using a few different script checkers, aside from some missing ";" tags the only problems were that i was using ES6 specific synatax / arrow functions ect, which obviously older browsers do not support. 
 
 
-### EXTRA TESTS
+## EXTRA TESTS
 
 
 #### Testing logged out view
@@ -153,101 +165,12 @@ raised.
 
 Following this i tested sending multiple emails to various accounts to full successes all around
 
-## BUG Fixing
-As this was built as a small scale project and django is still relativly fresh to me there was
-sadly bound to be present, all known bugs are listed below, for fixing purposes at a later date
+## Known Bugs
+At different points throughout this project, I encountered various bugs involving the styling. These usually appeared after adding a new section or template page. These were all fixed using Bootstrap classes or custom CSS to override any issues caused by Bootstrap itself.
 
-### Known Bugs
+Towards the end of completion, I had issues with heroku not taking the google app api, I had to change my script load order to get this fixed
 
-
-<br>
+The current two biggest issues are the aforementioned filtering bug nad sometimes the cities will not show due to googles pagination, which we need to work on in the future
 
 
 ### [BACK TO README](https://github.com/shaAnder/travel_buddy/blob/main/README.md)
-
-# Testing
-
-As each section or Function/Model was built during this project, I was testing for functionality and styling issues that may have arisen (see table below), which were corrected or fixed before continuing. I also had friends test the site by signing up, adding and deleting comments using various devices on varying platforms (IOS, Android, Mobile, Tablet etc) and reporting back any issues they encountered with functionality or styling.
-
-## Manual Testing
-
-*For any Fails, there is a more detailed description below the table*
-
-ADMIN
-| TEST | OUTCOME | PASS/FAIL|
-|:---:|:---:|:---:|
-| Create Blog Post | Post successfully created and displayed | Pass |
-| Edit Blog Post | Error thrown when editing post title & slug (*) | FAIL |
-| Edit Blog Post (after fix) | Post content and category updated successfully | Pass |
-| Delete User Comments | Comment deleted successfully | Pass |
-| Delete Blog Post | Post deleted successfully | Pass |
-| Create 7 Test Posts to check Pagination | Next/Previous Page Appears at bottom of screen | Pass |
-
-(*) - While testing the ability to edit posts (Limited to Admin only), I had a problem when editing the title and slug of the post. This was due to the URL not being able to find the original slug of the post (because it had been changed during the edit) to route it after the editing was complete. At this stage, I felt the easiest fix was to remove the ability to edit the post title and slug in the browser, but this functionality is still available via the django admin panel.
-
-## User
-
-| TEST | OUTCOME | PASS/FAIL|
-|:---:|:---:|:---:|
-| Create Account | Created successfully | Pass |
-| Error Check - Error page when signing up with email address | Unable to replicate(*) | Closed |
-| Login | Login Successful | Pass |
-| Logout | Logout Successful | Pass |
-| Read Full Blog Post | PostDetail page loaded successfully | Pass |
-| Add Comment under Blogpost | Comment Added Successfully | Pass |
-| Delete Comment | Comment Deleted | Pass |
-| Filter Posts by category | Posts marked as selected category displayed successfully | Pass |
-| Create User Account to check access to restricted pages (add_post, add_category)| Page displayed correct error message, with no access to restricted content | Pass |
-
-(*) See Bugs below
-
-## Bugs
-
-One of my users reported that they were unable to sign up when including an email address (although the inclusion of an email address is not required), but myself and others were unable to replicate this issue so the bug was marked as closed.
-
-At different points throughout this project, I encountered various bugs involving the styling. These usually appeared after adding a new section or template page. These were all fixed using Bootstrap classes or custom CSS to override any issues caused by Bootstrap itself.
-
-Towards the end of completion, I had an issue with the database, where I had made a change to the Post Model, but hadn't migrated the changes after undoing the changes in the code relating to that change. This required me to reset the database, which was done with help from Rebecca via the Code Institute's Tutor Support. The changes related to the Category Model and the choices available when creating an account.
-
-To enable me to reset the database, I first had to comment out the code (related to "choices" in the model) to stop the code being run and causing an error. Once this was done, the database was reset, seemingly without issue.
-
-Then I had a problem with the "Create a Post" page. When adding a new blog post via the browser, the images were not being sent to cloudinary for cloud storage, and the ElephantSQL cloud database was also not recieving any data. This was a very simple fix as I needed to add ```enctype="multipart/form-data"``` into the form element.
-
-## Lighthouse
-
-The performance scores appear to be low, and I believe this is due to the images uploaded for each blog post being hosted on a third-party cloud-based platform.
-
-Mobile
-
-![Lighthouse Mobile Score](documentation/images/lighthouse_mobile.png)
-
-Desktop
-
-![Lighthouse Desktop Score](documentation/images/lighthouse_desktop.png)
-
-## Validation Testing
-
-### HTML & CSS
-
-HTML & CSS testing was completed using [W3 Validator](https://validator.w3.org/)
-
-When validating the code, I had the error shown below. this was fixed by removing the button and using Bootstrap styles to display the link as a button instead
-
-![HTML Validation - Descendant Error](documentation/testing_documentation/validation/base.html_button_descendant.png)
-
-Fixed:
-
-![HTML Validation Complete- base.html](documentation/testing_documentation/validation/index.html_validation_complete.png)
-
-## Python Testing
-
-Python pep8 validation was done via [Code Institute's Python Linter](https://pep8ci.herokuapp.com/)
-
-The only errors recieved here were where some lines of text exceeded the limit of 79 characters, but these have now been rectified.
-
-Python Files Tested:
-
-- models
-- forms
-- views
-- urls
