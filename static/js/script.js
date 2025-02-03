@@ -280,29 +280,47 @@ const clearMarkers = () => {
     markers = []; // Clear the markers array
 };
 
-// Function to add markers to the map
-
+/**
+ * Adds markers to the map for each recommendation, hiding markers beyond a certain distance.
+ * Also, populates the info window with additional details.
+ * @param {Array} recommendations List of recommendations to create markers for.
+ */
 const addMarkers = (recommendations) => {
-    recommendations.forEach(recommendation => {
-        const { latitude, longitude, title } = recommendation;
+    // Maximum distance (in km) to show markers by default
+    const maxDistance = 30; 
 
-        // Create marker for each recommendation
+    recommendations.forEach(recommendation => {
+        const { latitude, longitude, title, description, address } = recommendation;
+
+        // Calculate the distance from the user's location
+        const distance = haversine(userMarker.position.lat(), userMarker.position.lng(), latitude, longitude);
+
+        // Skip markers that are beyond the maximum distance
+        if (distance > maxDistance) return;
+
+        // Create the marker
         const marker = new google.maps.Marker({
             position: { lat: latitude, lng: longitude },
             map: map,
-            title: title
+            title: title,
         });
 
-        // Optionally, add info windows or click events to markers
+        // Create the content for the info window with additional details
+        const infoContent = `
+            <h5>${title}</h5>
+            <p>${description}</p>
+            <p><strong>Address:</strong> ${address}</p>
+            <p><a href="https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}" target="_blank">Get Directions</a></p>
+        `;
+
         const infoWindow = new google.maps.InfoWindow({
-            content: `<h5>${title}</h5>`
+            content: infoContent
         });
 
         marker.addListener("click", () => {
             infoWindow.open(map, marker);
         });
 
-        // Add marker to the markers array for future removal
         markers.push(marker);
     });
 };
