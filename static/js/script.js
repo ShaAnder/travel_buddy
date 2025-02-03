@@ -15,6 +15,45 @@ let map;
 let userMarker;
 let markers = [];
 
+/**
+ * Initialize the map and set the user's initial location.
+ */
+function initMap() {
+    // Default location (e.g., New York)
+    const initialLocation = { lat: 40.7128, lng: -74.0060 };
+
+    // Initialize map
+    map = new google.maps.Map(document.getElementById("map"), {
+        center: initialLocation,
+        zoom: 12,
+    });
+
+    // Create a marker at the initial location
+    userMarker = new google.maps.Marker({
+        position: initialLocation,
+        map: map,
+        title: "You are here",
+        icon: {
+            url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"  // Set the marker icon to a blue dot
+        }
+    });
+
+    // Call update function if needed (e.g., getting user location from storage)
+    updateMapLocationFromLocalStorage();
+}
+
+/**
+ * Updates the map's location based on stored user data.
+ */
+function updateMapLocationFromLocalStorage() {
+    const storedLocation = localStorage.getItem("userLocation");
+    if (storedLocation) {
+        const { lat, lng } = JSON.parse(storedLocation);
+        map.setCenter({ lat, lng });
+        userMarker.setPosition({ lat, lng });
+    }
+}
+
 // --- TOGGLE HEADER --- //
 
 // Toggle the header visibility and icon state when clicked
@@ -152,8 +191,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadMapScript(initMap);  // Wait until Google Maps API is ready
 });
 
-// ADDING RECOMMENDATIONS TO MAP
-
 // Fetch recommendations from the server, apply filters if any
 const fetchRecommendations = async (filterCriteria = null) => {
     try {
@@ -192,17 +229,26 @@ const fetchCategories = async () => {
     }
 };
 
-// Populate category filter dropdown with fetched categories
+// Modify this function to ensure the element exists
 const populateCategoryFilter = (categories) => {
-    const categorySelect = document.getElementById("categorySelect");
-    categorySelect.innerHTML = '<option value="">Select a category</option>'; // Reset options
-    categories.forEach(category => {
-        const option = document.createElement("option");
-        option.value = category.id;
-        option.textContent = category.name;
-        categorySelect.appendChild(option);
-    });
+    const categorySelect = document.getElementById('categorySelect');
+    
+    if (categorySelect) {
+        // Clear existing options
+        categorySelect.innerHTML = '';
+
+        // Populate the select dropdown with categories
+        categories.forEach((category) => {
+            const option = document.createElement('option');
+            option.value = category.id;
+            option.textContent = category.name;
+            categorySelect.appendChild(option);
+        });
+    } else {
+        console.error('Category select element not found!');
+    }
 };
+
 
 // Filter recommendations based on selected criteria (distance, category)
 const filterRecommendations = (recommendations, filterCriteria) => {
@@ -235,6 +281,7 @@ const clearMarkers = () => {
 };
 
 // Function to add markers to the map
+
 const addMarkers = (recommendations) => {
     recommendations.forEach(recommendation => {
         const { latitude, longitude, title } = recommendation;
@@ -267,26 +314,108 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Update the distance output as the slider changes
-distanceSlider.addEventListener('input', () => {
-    distanceOutput.textContent = `${distanceSlider.value} km`;
+document.addEventListener("DOMContentLoaded", function() {
+    const distanceSlider = document.getElementById('distanceSlider');
+    const distanceOutput = document.getElementById('distanceOutput');
+
+    // Check if both elements exist before trying to add event listener
+    if (distanceSlider && distanceOutput) {
+        distanceSlider.addEventListener('input', () => {
+            distanceOutput.textContent = `${distanceSlider.value} km`;
+        });
+    } else {
+        console.log("Required elements (distanceSlider or distanceOutput) not found!");
+    }
 });
 
 // Apply Filters on filter form submission
-document.getElementById('filterForm').addEventListener('submit', (event) => {
-    event.preventDefault();
+document.addEventListener("DOMContentLoaded", function() {
+    const filterForm = document.getElementById('filterForm');
 
-    const selectedCategory = document.getElementById('categorySelect').value;
-    const selectedDistance = distanceSlider.value;
+    // Check if the filter form exists before adding the event listener
+    if (filterForm) {
+        filterForm.addEventListener('submit', (event) => {
+            event.preventDefault();
 
-    // Build the filter criteria object
-    const filterCriteria = {
-        category: selectedCategory,
-        distance: selectedDistance
-    };
+            const selectedCategory = document.getElementById('categorySelect').value;
+            const selectedDistance = distanceSlider.value;
 
-    // Fetch recommendations and apply filters
-    fetchRecommendations(filterCriteria);
+            // Build the filter criteria object
+            const filterCriteria = {
+                category: selectedCategory,
+                distance: selectedDistance
+            };
 
-    // Close the modal after applying filters
-    toggleFilterModal();
+            // Fetch recommendations and apply filters
+            fetchRecommendations(filterCriteria);
+
+            // Close the modal after applying filters
+            toggleFilterModal();
+        });
+    } else {
+        console.log("Filter form not found!");
+    }
 });
+
+/**
+ * Haversine function to calculate distance between two points on the Earth.
+ * @param {number} lat1 Latitude of first point.
+ * @param {number} lon1 Longitude of first point.
+ * @param {number} lat2 Latitude of second point.
+ * @param {number} lon2 Longitude of second point.
+ * @returns {number} Distance in kilometers.
+ */
+function haversine(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Earth's radius in kilometers
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+}
+
+/**
+ * Converts degrees to radians.
+ * @param {number} degrees Angle in degrees.
+ * @returns {number} Angle in radians.
+ */
+function toRad(degrees) {
+    return degrees * Math.PI / 180;
+}
+
+/**
+ * Handles the splash screen timeout logic.
+ */
+function handleSplashScreen() {
+    const splashScreen = document.getElementById('splash-screen');
+    const homePage = document.getElementById('home-page');
+    const travelText = document.getElementById('travel');
+    const buddyText = document.getElementById('buddy');
+    const leadText = document.querySelector('.lead');
+    
+    // Fade in Travel Buddy text
+    setTimeout(() => {
+        travelText.style.transition = "opacity 2s ease-in-out";
+        buddyText.style.transition = "opacity 2s ease-in-out";
+        leadText.style.transition = "opacity 2s ease-in-out";
+        
+        travelText.style.opacity = 1;
+        buddyText.style.opacity = 1;
+        leadText.style.opacity = 1;
+    }, 500);
+
+    // Show loader
+    setTimeout(() => {
+        splashScreen.style.transition = "opacity 1s ease-in-out";
+        splashScreen.style.opacity = 0;
+
+        // After splash fades out, hide it and show home page
+        setTimeout(() => {
+            splashScreen.style.display = 'none';
+            homePage.style.display = 'flex';
+        }, 1000); // Give enough time for the fade-out
+    }, 2000); // Time before loader disappears
+}
+

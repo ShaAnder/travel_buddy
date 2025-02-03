@@ -1,5 +1,5 @@
-{% load static %}
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
 <section id="splash-screen">
     <div class="splash-screen-container text-center">
@@ -49,5 +49,9 @@
         </div>
     </div>
 </section>
-
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        handleSplashScreen();
+    });
+</script>
 {% endblock %}

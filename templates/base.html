@@ -76,11 +76,10 @@
 
     <!-- bootstrap scripts-->
     <script src="{% static 'js/vendor/bootstrap/bootstrap.bundle.min.js' %}"></script>
-    <!-- google maps api script -->
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}" loading=async ></script>
     <!-- our internal scripts -->
-    <script src="{% static 'js/utils.js' %}"></script>
     <script src="{% static 'js/script.js' %}"></script>
-    <script src="{% static 'js/splashScreen.js' %}"></script>
+    {% block extra_scripts %}
+
+    {% endblock %}
 </body>
 </html>

@@ -69,55 +69,8 @@
         </div>
     </div>
 </section>
-<!-- google maps api script -->
-<script>
-
-    // function to init map (we need it in the file so that google can find it)
-    function initMap() {
-        const storedLocation = localStorage.getItem("userLocation");
-
-        if (storedLocation) {
-            const { lat: userLat, lng: userLng } = JSON.parse(storedLocation);
-
-            // Check if we got lat/lng and create map on user's location 
-            if (userLat && userLng) {
-                map = new google.maps.Map(document.getElementById("map"), {
-                    center: { lat: userLat, lng: userLng },
-                    zoom: 12
-                });
-
-                userMarker = new google.maps.Marker({
-                    position: { lat: userLat, lng: userLng },
-                    map: map,
-                    title: "You are here",
-                    icon: {
-                        url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png', // Custom icon URL
-
-                    }
-                });
-            } else {
-                console.log("User location not found in localStorage");
-            }
-        }
-    }
-
-
-    // Function to update the map when user confirms a new location
-    function updateMapLocation(newLat, newLng) {
-        if (map && userMarker) {
-            // Update map center to new location
-            map.setCenter({ lat: newLat, lng: newLng });
-
-            // Update marker position
-            userMarker.setPosition({ lat: newLat, lng: newLng });
-
-            // Optionally, store the new location in local storage
-            localStorage.setItem("userLocation", JSON.stringify({ lat: newLat, lng: newLng }));
-        } else {
-            console.log("Map or marker is not initialized.");
-        }
-    }
-
-</script>
-
+    {% block extra_scripts %}
+    <!-- google maps api script -->
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}" loading=async ></script>
+    {% endblock %}
 {% endblock %}

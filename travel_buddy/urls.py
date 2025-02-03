@@ -20,8 +20,6 @@ from core import views
 
 # Custom error views
 handler403 = views.custom_403_view
-handler404 = views.custom_404_view
-handler500 = views.custom_500_view
 
 urlpatterns = [
     # Admin page
