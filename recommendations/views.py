@@ -15,15 +15,25 @@ from . import utils
 from travel_buddy.settings import GOOGLE_API
 
 
-class RecommendationViewSet(viewsets.ReadOnlyModelViewSet):
+class RecommendationViewSet(viewsets.ModelViewSet):
     """
-    ViewSet for the Recommendation model.
-
-    Provides read-only access to the list of recommendations through the API.
+    ViewSet for handling recommendation-related API requests.
     """
-
-    queryset = models.Recommendation.objects.all()
+    queryset = Recommendation.objects.all()
     serializer_class = RecommendationSerializer
+
+    def get_queryset(self):
+        """
+        Optionally filter recommendations by category.
+        If 'category' parameter is provided in the query string, filter the recommendations.
+        """
+        queryset = super().get_queryset()
+        category_id = self.request.query_params.get('category', None)
+        
+        if category_id and category_id != 'all':
+            queryset = queryset.filter(category_id=category_id)
+        
+        return queryset
 
 
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):

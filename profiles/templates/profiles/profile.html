@@ -52,6 +52,10 @@
                         <strong class="accordion-title">Description:</strong>
                         <p>{{ recommendation.description }}</p>
                     </div>
+                    <div>
+                        <strong class="accordion-title">Categories:</strong>
+                        <p>{{ recommendation.category }}</p>
+                    </div>
                     {% if user == profile.user %}
                     <div class="recommendation-buttons d-flex mt-3">
                         <div class="edit-button">

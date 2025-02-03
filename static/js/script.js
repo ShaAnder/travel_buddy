@@ -231,22 +231,29 @@ const fetchCategories = async () => {
 };
 
 // Modify this function to ensure the element exists
-const populateCategoryFilter = (categories) => {
-    const categorySelect = document.getElementById('categorySelect');
-    
-    if (categorySelect) {
-        // Clear existing options
-        categorySelect.innerHTML = '';
+const populateCategoryFilter = async () => {
+    try {
+        const response = await fetch('/api/categories/');
+        const categories = await response.json();
 
-        // Populate the select dropdown with categories
-        categories.forEach((category) => {
+        const categorySelect = document.getElementById('categorySelect');
+        if (!categorySelect) {
+            console.error("Category select element not found!");
+            return;
+        }
+
+        // Clear existing options except for the "Select a category" option
+        categorySelect.innerHTML = '<option value="">Select a category</option>';
+
+        categories.forEach(category => {
             const option = document.createElement('option');
             option.value = category.id;
             option.textContent = category.name;
             categorySelect.appendChild(option);
         });
-    } else {
-        console.error('Category select element not found!');
+
+    } catch (error) {
+        console.error("Error fetching categories:", error);
     }
 };
 
