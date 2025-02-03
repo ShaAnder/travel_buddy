@@ -1,22 +1,23 @@
 // --- QUERY SELECTORS / VARS --- //
+// Get references to the header toggle button, header, and nav links
 const headerToggleBtn = document.querySelector(".header-toggle");
 const header = document.querySelector("#header");
 const navLinks = document.querySelectorAll("#nav a");
 
+// Get references to the distance slider and output for user distance input
 const distanceSlider = document.getElementById('distanceSlider');
 const distanceOutput = document.getElementById('distanceOutput');
 
-let locationModal
-let filterModal
-let map
-let userMarker
-let markers = []
+// Initialize modals and markers as undefined
+let locationModal;
+let filterModal;
+let map;
+let userMarker;
+let markers = [];
 
 // --- TOGGLE HEADER --- //
 
-/**
- * Toggles the header visibility and button icons.
- */
+// Toggle the header visibility and icon state when clicked
 if (headerToggleBtn && header) {
     const handleHeaderToggle = () => {
         header.classList.toggle("header-show");
@@ -24,13 +25,11 @@ if (headerToggleBtn && header) {
         headerToggleBtn.classList.toggle("bi-x");
     };
 
-    // Attach click event listener to the toggle button
+    // Add event listener for the header toggle button
     headerToggleBtn.addEventListener("click", handleHeaderToggle);
-
-    /**
-     * Closes the navigation bar if a nav link is clicked when open.
-     */
-    navLinks.forEach((nav) => {
+    
+    // Add event listener for nav links to close the header when clicked
+    navLinks.forEach(nav => {
         nav.addEventListener("click", () => {
             if (header.classList.contains("header-show")) {
                 handleHeaderToggle();
@@ -41,33 +40,28 @@ if (headerToggleBtn && header) {
 
 // LOCATION TRACKING //
 
-
-// add an event listener for dom load
-document.addEventListener("DOMContentLoaded", function () {
-    // check if our user has a location
-    let userHasLocation = localStorage.getItem("userLocation");
-    // if no location show our location modal
+// Check if user has a stored location, show modal if not
+document.addEventListener("DOMContentLoaded", () => {
+    const userHasLocation = localStorage.getItem("userLocation");
     if (!userHasLocation) {
-        locationModal.show()
+        locationModal.show();
     }
 });
 
-// function to show location modal
-function toggleLocationModal() {
-    // Create the modal instance only once
+// Show or hide the location modal
+const toggleLocationModal = () => {
     if (!locationModal) {
         locationModal = new bootstrap.Modal(document.getElementById("locationModal"));
     }
-
-    // Toggle the modal (open if closed, close if open)
     if (locationModal._isShown) {
-        locationModal.hide();  // Close the modal if it's already open
+        locationModal.hide();
     } else {
-        locationModal.show();  // Open the modal if it's closed
+        locationModal.show();
     }
-}
+};
 
-function toggleFilterModal() {
+// Show or hide the filter modal
+const toggleFilterModal = () => {
     if (!filterModal) {
         filterModal = new bootstrap.Modal(document.getElementById('filterModal'));
     }
@@ -75,49 +69,46 @@ function toggleFilterModal() {
     if (filterModal._isShown) {
         filterModal.hide();
     } else {
-        filterModal.show()
+        filterModal.show();
     }
-}
+};
 
-// function to hide modal
-function closeModal() {
-    // get the instance of the modal
-    let locationModal = bootstrap.Modal.getInstance(document.getElementById("locationModal"));
-    // if open toggle to hide
+// Close the location modal
+const closeModal = () => {
+    const locationModal = bootstrap.Modal.getInstance(document.getElementById("locationModal"));
     if (locationModal) {
         locationModal.hide();
     }
-}
+};
 
-// set our location in local storage
-function setLocation(lat, lng) {
+// Store the user's location in localStorage
+const setLocation = (lat, lng) => {
     localStorage.setItem("userLocation", JSON.stringify({ lat, lng }));
-}
+};
 
-// change our city function
-function confirmLocation() {
-    let selectedCity = document.getElementById("citySelect").value;
-
+// Handle location confirmation by selected city or current location
+const confirmLocation = () => {
+    const selectedCity = document.getElementById("citySelect").value;
     if (!selectedCity && !localStorage.getItem("userLocation")) {
         alert("Please select a city or use your current location.");
         return;
     }
 
     if (selectedCity) {
-        let [lat, lng] = selectedCity.split(",");
+        const [lat, lng] = selectedCity.split(",");
         setLocation(parseFloat(lat), parseFloat(lng));  // Store selected city location
         updateMapLocation(parseFloat(lat), parseFloat(lng));  // Update map with new city location
     }
 
     closeModal();
-}
+};
 
-// get our current location function
-function getCurrentLocation() {
+// Get the current location using the Geolocation API
+const getCurrentLocation = () => {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
-            let lat = position.coords.latitude;
-            let lng = position.coords.longitude;
+        navigator.geolocation.getCurrentPosition(position => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
             setLocation(lat, lng);  // Store current location
             updateMapLocation(lat, lng);  // Update map with current location
             closeModal();
@@ -125,13 +116,12 @@ function getCurrentLocation() {
     } else {
         alert("Geolocation is not supported by your browser.");
     }
-}
-
+};
 
 // MAP INITIATION
 
-// function to load our map script
-function loadMapScript(callback) {
+// Load the Google Maps script and initialize the map
+const loadMapScript = (callback) => {
     // if google maps API is loaded, initialize
     if (typeof google !== 'undefined' && google.maps) {
         callback();
@@ -139,10 +129,10 @@ function loadMapScript(callback) {
         // Try again in 100ms
         setTimeout(() => loadMapScript(callback), 100);
     }
-}
+};
 
 // Update map location dynamically without reload
-function updateMapLocation(newLat, newLng) {
+const updateMapLocation = (newLat, newLng) => {
     if (map && userMarker) {
         // Update map center to new location
         map.setCenter({ lat: newLat, lng: newLng });
@@ -155,18 +145,17 @@ function updateMapLocation(newLat, newLng) {
     } else {
         console.log("Map or marker is not initialized.");
     }
-}
-
+};
 
 // Once the page is fully loaded, load the map
 document.addEventListener('DOMContentLoaded', () => {
     loadMapScript(initMap);  // Wait until Google Maps API is ready
 });
 
-
 // ADDING RECOMMENDATIONS TO MAP
 
-async function fetchRecommendations(filterCriteria = null) {
+// Fetch recommendations from the server, apply filters if any
+const fetchRecommendations = async (filterCriteria = null) => {
     try {
         const response = await fetch('/api/recommendations/');
         if (response.ok) {
@@ -186,9 +175,10 @@ async function fetchRecommendations(filterCriteria = null) {
     } catch (error) {
         console.error("Error fetching recommendations:", error);
     }
-}
+};
 
-async function fetchCategories() {
+// Fetch categories from the server to populate the filter
+const fetchCategories = async () => {
     try {
         const response = await fetch('/api/categories/');
         if (response.ok) {
@@ -200,9 +190,10 @@ async function fetchCategories() {
     } catch (error) {
         console.error("Error fetching categories:", error);
     }
-}
+};
 
-function populateCategoryFilter(categories) {
+// Populate category filter dropdown with fetched categories
+const populateCategoryFilter = (categories) => {
     const categorySelect = document.getElementById("categorySelect");
     categorySelect.innerHTML = '<option value="">Select a category</option>'; // Reset options
     categories.forEach(category => {
@@ -211,9 +202,10 @@ function populateCategoryFilter(categories) {
         option.textContent = category.name;
         categorySelect.appendChild(option);
     });
-}
+};
 
-function filterRecommendations(recommendations, filterCriteria) {
+// Filter recommendations based on selected criteria (distance, category)
+const filterRecommendations = (recommendations, filterCriteria) => {
     return recommendations.filter(recommendation => {
         const { latitude, longitude, category } = recommendation;
         let isValid = true;
@@ -231,18 +223,19 @@ function filterRecommendations(recommendations, filterCriteria) {
 
         return isValid;
     });
-}
+};
+
 // Function to clear existing markers
-function clearMarkers() {
+const clearMarkers = () => {
     // Loop through existing markers and remove them from the map
     markers.forEach(marker => {
         marker.setMap(null);
     });
     markers = []; // Clear the markers array
-}
+};
 
 // Function to add markers to the map
-function addMarkers(recommendations) {
+const addMarkers = (recommendations) => {
     recommendations.forEach(recommendation => {
         const { latitude, longitude, title } = recommendation;
 
@@ -265,39 +258,35 @@ function addMarkers(recommendations) {
         // Add marker to the markers array for future removal
         markers.push(marker);
     });
-}
+};
 
-
-document.addEventListener("DOMContentLoaded", function() {
+// Fetch initial recommendations and categories when the page loads
+document.addEventListener("DOMContentLoaded", () => {
     fetchRecommendations();
     fetchCategories();
-    
 });
 
-distanceSlider.addEventListener('input', function() {
+// Update the distance output as the slider changes
+distanceSlider.addEventListener('input', () => {
     distanceOutput.textContent = `${distanceSlider.value} km`;
 });
 
-// Apply Filters
-document.getElementById('filterForm').addEventListener('submit', function(event) {
+// Apply Filters on filter form submission
+document.getElementById('filterForm').addEventListener('submit', (event) => {
     event.preventDefault();
-    
+
     const selectedCategory = document.getElementById('categorySelect').value;
     const selectedDistance = distanceSlider.value;
-    
+
     // Build the filter criteria object
     const filterCriteria = {
         category: selectedCategory,
         distance: selectedDistance
     };
-    
+
     // Fetch recommendations and apply filters
     fetchRecommendations(filterCriteria);
 
     // Close the modal after applying filters
     toggleFilterModal();
-
-    
 });
-
-
