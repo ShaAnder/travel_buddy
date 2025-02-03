@@ -1,3 +1,12 @@
+"""
+URLs for the Recommendations app.
+
+This module defines the URL patterns for the `Recommendations` app, including 
+both regular views and API views. The regular views include pages for listing, 
+adding, editing, and deleting recommendations. The API views are handled using 
+Django REST framework's `DefaultRouter`, which automatically creates routes 
+for the `RecommendationViewSet` and `CategoryViewSet`.
+"""
 from django.urls import path, include
 from recommendations.views import *
 from rest_framework.routers import DefaultRouter
