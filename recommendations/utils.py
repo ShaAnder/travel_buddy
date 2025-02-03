@@ -45,7 +45,7 @@ def get_irish_cities():
         return []
 
 
-def get_coordinates_from_address(address):
+def get_lat_long(address):
     """
     Get latitude and longitude for a given address using Google Maps Geocoding API.
 
