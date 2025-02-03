@@ -1,7 +1,5 @@
 # Travel Buddy
 
-### My Adventures in Northern Sweden
-
 ![TravelBuddy](documentation/images/responsive.png)
 
 Portfolio 4 project as part of the Diploma in Full Stack Software Development by Code Institute.
@@ -109,43 +107,50 @@ Additonally I used a lot of icons in the page design, these were all added using
 
 ![Mobile Home Wireframe](documentation/wireframes/mobile_homepage_wireframe.png)
 
-![Mobile Profile Wireframe](documentation/wireframes/mobile_homepage_wireframe.png)
+![Mobile Profile Wireframe](documentation/wireframes/mobile_profile_wireframe.png)
 
-![Mobile Recommendations Wireframe](documentation/wireframes/mobile_homepage_wireframe.png)
+![Mobile Signup / Signin Wireframe](documentation/wireframes/mobile_signup_wireframe.png)
 
-![Mobile Signup / Signin Wireframe](documentation/wireframes/mobile_homepage_wireframe.png)
+![Desktop Home Wireframe](documentation/wireframes/deskop_homepage_wireframe.png)
 
-![Desktop Home Wireframe](documentation/wireframes/mobile_post_detail_wireframe.png)
+![Desktop Profile Wireframe](documentation/wireframes/desktop_profile_wireframe.png)
 
-![Desktop Profile Wireframe](documentation/wireframes/desktop_homepage_wireframe.png)
+![Desktop Recommendations Wireframe](documentation/wireframes/desktop_recommendation_wireframe.png)
 
-![Desktop Recommendations Wireframe](documentation/wireframes/desktop_postdetail_wireframe.png)
-
-![Desktop Signup / Signin Wireframe](documentation/wireframes/desktop_postdetail_wireframe.png)
+![Desktop Signup / Signin Wireframe](documentation/wireframes/desktop_signup_wireframe.png)
 
 ## Flow Diagram
 
 I opted to create a flow diagram alongside erds so that potential users and other devs can get a better idea of how the site flows
 
-![Site Flow Diagram](documentation/diagrams/site_flow_diagram.png)
+![Site Flow Diagram](documentation/diagrams/site_flow.png)
 
-![ERD](documentation/diagrams/database_plan.png)
+![ERD](documentation/diagrams/Database_ERD.png)
+(As some features were not implemented in the current version but are to add the diagram may not be wholly accurate)
 
 # Features
 
 The user Login or signup from the homepage
 
-![Create an Account](documentation/images/create_account.png)
+![Create an Account](documentation/features/create_account.png)
 
-![View edit or delete their profile](documentation/images/home.png)
+![View Profile](documentation/features/profile.png)
 
-![Create, view, edit, delete recommendations](documentation/images/browse_by_category.png)
+![Edit Profile](documentation/features/edit_profile.png)
 
-![Filter recommendations](documentation/images/commenting.png)
+![Delete Profile](documentation/features/delete_profile.png)
 
-![Set their location](documentation/images/commenting.png)
+![Create Recommendations](documentation/features/add_recommendation.png)
 
-![Get directions to potential choices!](documentation/images/commenting.png)
+![View Recommendations](documentation/features/recommendations.png)
+
+![Edit Recommendations](documentation/features/edit_recommendation.png)
+
+![Delete Recommendations](documentation/features/recommendation.png)
+
+![Get Recommendations Details](documentation/features/view_details.png)
+
+![Filter Recommendations](documentation/features/filter_recommendations.png)
 
 ## Future Features
 
@@ -153,6 +158,8 @@ The user Login or signup from the homepage
 - More detailed recommendations
 - Voting on recommendations
 - Selection of country
+
+I also want to work on code optimization and better stylistic choices, this is an app i loved making and want to work more on
 
 ## Features Not Included
 

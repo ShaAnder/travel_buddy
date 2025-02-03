@@ -172,5 +172,8 @@ Towards the end of completion, I had issues with heroku not taking the google ap
 
 The current two biggest issues are the aforementioned filtering bug nad sometimes the cities will not show due to googles pagination, which we need to work on in the future
 
+There's also a few profile styling bugs as well as some function call bugs, as it's one script file it loads the entire thing every page refresh, I actually may look to compartmentalizing each script to it's relevant template wiht script tags to see if it not only fixes the bug of incorrectly firing functions or the performance.
+
+These functions firing do not cause any problems, it's just they show up on the console.
 
 ### [BACK TO README](https://github.com/shaAnder/travel_buddy/blob/main/README.md)
