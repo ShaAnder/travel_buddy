@@ -14,6 +14,7 @@ let filterModal;
 let map;
 let userMarker;
 let markers = [];
+let currentInfoWindow;
 
 /**
  * Initialize the map and set the user's initial location.
@@ -320,6 +321,21 @@ const addMarkers = (recommendations) => {
         marker.addListener("click", () => {
             infoWindow.open(map, marker);
         });
+
+        // Add click listener to open the info window
+        marker.addListener("click", () => {
+            // If there is already an open InfoWindow, close it
+            if (currentInfoWindow) {
+                currentInfoWindow.close();
+            }
+
+            // Open the new info window
+            infoWindow.open(map, marker);
+
+            // Store the current info window as the open one
+            currentInfoWindow = infoWindow;
+        });
+
 
         markers.push(marker);
     });
