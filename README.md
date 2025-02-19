@@ -7,7 +7,7 @@ ___
 
 Travel buddy is a minimalist travelling app where you can find recommendations for other users quickly and efficiently, this also allows users to create their own profiles to share about themselves, add their own recommendations and also view others recommendations.
 
-Visit the delployed site! - [Travelbuddy!](https://md82p4blog.herokuapp.com/)
+Visit the delployed site! - [Travelbuddy!](https://travel-buddy-pp4-f336df297d97.herokuapp.com)
 
 ## CONTENTS
 
